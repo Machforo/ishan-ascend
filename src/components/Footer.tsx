@@ -17,10 +17,10 @@ const programs = [
 ];
 
 const socialLinks = [
-  { icon: Facebook, href: "https://facebook.com/ishan.ac", label: "Facebook" },
-  { icon: Instagram, href: "https://instagram.com/ishan.ac", label: "Instagram" },
-  { icon: Youtube, href: "https://youtube.com/@ishanac", label: "YouTube" },
-  { icon: Linkedin, href: "https://linkedin.com/company/ishan-ac", label: "LinkedIn" },
+  { icon: Facebook, href: "https://www.facebook.com/ishanedu", label: "Facebook" },
+  { icon: Instagram, href: "https://www.instagram.com/ishanfamily", label: "Instagram" },
+  { icon: Youtube, href: "https://www.youtube.com/@ishanedu", label: "YouTube" },
+  { icon: Linkedin, href: "https://www.linkedin.com/company/ishanfamily", label: "LinkedIn" },
   { icon: Twitter, href: "https://twitter.com/ishan_ac", label: "Twitter" },
 ];
 
