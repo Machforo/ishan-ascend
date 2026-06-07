@@ -33,10 +33,10 @@ export default function ContactPage() {
     }
 
     setSubmitting(true);
-    
+
     // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, 1000));
-    
+
     // Attempt real submit but don't block the UI if it fails (as backend might not be up)
     try {
       await fetch("https://ishan-backend-g096.onrender.com/api/iimt/leads", {
@@ -47,7 +47,7 @@ export default function ContactPage() {
     } catch (err) {
       console.warn("Backend not reachable, simulating success for demo", err);
     }
-    
+
     setSubmitted(true);
     setForm({ name: "", phone: "", email: "", program: "", message: "" });
     setSubmitting(false);
@@ -100,15 +100,15 @@ export default function ContactPage() {
                 ) : (
                   <form className="space-y-4" onSubmit={handleSubmit}>
                     <div className="grid sm:grid-cols-2 gap-4">
-                      <input type="text" placeholder="Full Name*" value={form.name} onChange={e => setForm(p => ({...p, name: e.target.value}))} required className="w-full px-4 py-3 text-sm rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow" />
-                      <input type="tel" placeholder="Phone Number*" value={form.phone} onChange={e => setForm(p => ({...p, phone: e.target.value}))} required className="w-full px-4 py-3 text-sm rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow" />
+                      <input type="text" placeholder="Full Name*" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required className="w-full px-4 py-3 text-sm rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow" />
+                      <input type="tel" placeholder="Phone Number*" value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} required className="w-full px-4 py-3 text-sm rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow" />
                     </div>
-                    <input type="email" placeholder="Email Address" value={form.email} onChange={e => setForm(p => ({...p, email: e.target.value}))} className="w-full px-4 py-3 text-sm rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow" />
-                    <select value={form.program} onChange={e => setForm(p => ({...p, program: e.target.value}))} className="w-full px-4 py-3 text-sm rounded-lg border bg-background text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow">
+                    <input type="email" placeholder="Email Address" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} className="w-full px-4 py-3 text-sm rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow" />
+                    <select value={form.program} onChange={e => setForm(p => ({ ...p, program: e.target.value }))} className="w-full px-4 py-3 text-sm rounded-lg border bg-background text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow">
                       <option value="">Select Program</option>
                       <option>BBA</option><option>B.Com</option><option>BCA</option><option>M.Com</option><option>B.Ed</option><option>M.Ed</option>
                     </select>
-                    <textarea placeholder="Your Message (optional)" rows={4} value={form.message} onChange={e => setForm(p => ({...p, message: e.target.value}))} className="w-full px-4 py-3 text-sm rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow resize-none" />
+                    <textarea placeholder="Your Message (optional)" rows={4} value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} className="w-full px-4 py-3 text-sm rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow resize-none" />
                     <button type="submit" disabled={submitting} className="w-full py-3.5 text-sm font-semibold bg-navy text-primary-foreground rounded-lg shadow-lg hover:bg-navy/90 transition-all active:scale-[0.97] disabled:opacity-60">
                       {submitting ? "Submitting..." : "Submit Enquiry"}
                     </button>
@@ -117,7 +117,7 @@ export default function ContactPage() {
               </div>
             </div>
           </div>
-          
+
           {collegeContacts.length > 0 && (
             <div className="mt-20 reveal">
               <h2 className="text-2xl font-display font-bold text-foreground mb-8 text-center">Departmental Contacts</h2>

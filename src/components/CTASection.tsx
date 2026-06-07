@@ -18,7 +18,7 @@ export default function CTASection() {
       toast.error("Please fill in all required fields.");
       return;
     }
-    
+
     setSubmitting(true);
     try {
       const res = await fetch("https://ishan-backend-g096.onrender.com/api/iimt/leads", {
@@ -112,7 +112,7 @@ export default function CTASection() {
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                   className="w-full px-4 py-3 text-sm rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow"
                 />
-                <select 
+                <select
                   className="w-full px-4 py-3 text-sm rounded-lg border bg-background text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow"
                   value={formData.course}
                   onChange={(e) => setFormData({ ...formData, course: e.target.value })}

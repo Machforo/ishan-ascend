@@ -22,11 +22,17 @@ export default function AdmissionsEnquiryPage() {
     }
 
     setSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      setSubmitted(true);
-      setSubmitting(false);
-    }, 1500);
+    try {
+      await fetch("https://ishan-backend-g096.onrender.com/api/iimt/leads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, email: form.email || form.phone + "@placeholder.com", message: "Programme: " + form.program + ". " + form.message, source: "Admissions Enquiry" }),
+      });
+    } catch (err) {
+      console.warn("Backend not reachable", err);
+    }
+    setSubmitted(true);
+    setSubmitting(false);
   };
 
   return (

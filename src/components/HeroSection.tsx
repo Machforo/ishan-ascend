@@ -87,39 +87,39 @@ export default function HeroSection() {
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const newsData = [
-    { 
-      type: 'EVENT', 
-      title: 'National Seminar on Drug Regulation', 
-      date: 'MAR 15', 
+    {
+      type: 'EVENT',
+      title: 'National Seminar on Drug Regulation',
+      date: 'MAR 15',
       action: 'popup',
       image: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=800&auto=format&fit=crop',
       details: 'A comprehensive seminar focusing on the latest regulatory updates and CDSCO guidelines for pharmacy students and professionals. Join industry experts for an in-depth discussion on global standards and local compliance.'
     },
-    { 
-      type: 'NEWS', 
-      title: 'Top Placements at Fortis Healthcare', 
-      date: 'FEB 24', 
+    {
+      type: 'NEWS',
+      title: 'Top Placements at Fortis Healthcare',
+      date: 'FEB 24',
       action: 'link',
       url: '/news'
     },
-    { 
-      type: 'FEATURED', 
-      title: 'Ishan Pharmacy Excellence Award', 
-      date: 'JAN 10', 
+    {
+      type: 'FEATURED',
+      title: 'Ishan Pharmacy Excellence Award',
+      date: 'JAN 10',
       action: 'none'
     },
-    { 
-      type: 'EVENT', 
-      title: 'Annual Sports Meet 2025', 
-      date: 'APR 05', 
+    {
+      type: 'EVENT',
+      title: 'Annual Sports Meet 2025',
+      date: 'APR 05',
       action: 'popup',
       image: 'https://images.unsplash.com/photo-1526676037777-05a232554f77?w=800&auto=format&fit=crop',
       details: 'The most anticipated athletic event of the year. Students from all departments compete in track, field, and indoor sports. A celebration of spirit, teamwork, and athletic excellence at IIMT.'
     },
-    { 
-      type: 'NEWS', 
-      title: 'New Research Lab Inaugurated', 
-      date: 'DEC 20', 
+    {
+      type: 'NEWS',
+      title: 'New Research Lab Inaugurated',
+      date: 'DEC 20',
       action: 'popup',
       image: 'https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=800&auto=format&fit=crop',
       details: 'State-of-the-art research facilities now available for advanced studies in pharmaceutical sciences and management analytics. Equipped with latest tools and industry-standard software.'
@@ -138,7 +138,7 @@ export default function HeroSection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     // Basic phone validation
     const phoneRegex = /^\d{10}$/;
     if (!phoneRegex.test(formData.phone)) {
@@ -162,7 +162,7 @@ export default function HeroSection() {
 
       setIsSubmitted(true);
       toast.success("Application received! Our admissions team will reach out shortly.");
-      
+
       setTimeout(() => {
         setIsSubmitted(false);
         setFormData({ name: "", phone: "", course: "" });
@@ -284,16 +284,16 @@ export default function HeroSection() {
           {/* ── Combined Enquiry & Campus Life (Tabbed) ── */}
           <div className="lg:col-span-5">
             <div className="bg-white/95 backdrop-blur-md rounded-3xl shadow-2xl overflow-hidden flex flex-col min-h-[540px]">
-              
+
               {/* Tabs Header */}
               <div className="flex border-b border-navy/5">
-                <button 
+                <button
                   onClick={() => setHeroActiveTab('enquiry')}
                   className={`flex-1 py-5 text-xs font-bold uppercase tracking-widest transition-all ${heroActiveTab === 'enquiry' ? 'bg-white text-navy' : 'bg-navy/[0.03] text-muted-foreground hover:bg-navy/[0.05]'}`}
                 >
                   Quick Enquiry
                 </button>
-                <button 
+                <button
                   onClick={() => setHeroActiveTab('campus')}
                   className={`flex-1 py-5 text-xs font-bold uppercase tracking-widest transition-all flex items-center justify-center gap-2 ${heroActiveTab === 'campus' ? 'bg-white text-navy' : 'bg-navy/[0.03] text-muted-foreground hover:bg-navy/[0.05]'}`}
                 >
@@ -310,7 +310,7 @@ export default function HeroSection() {
                       <h3 className="text-2xl font-display font-bold text-navy mb-2">Quick Enquiry</h3>
                       <p className="text-xs text-foreground/60 leading-relaxed font-medium uppercase tracking-wider">Start your professional journey</p>
                     </div>
-                    
+
                     {isSubmitted ? (
                       <div className="py-10 text-center space-y-6 flex-1 flex flex-col justify-center">
                         <div className="w-16 h-16 bg-success/10 rounded-full flex items-center justify-center mx-auto">
@@ -376,8 +376,8 @@ export default function HeroSection() {
                     <div className="flex-1 relative overflow-hidden group mb-6">
                       <div className="flex flex-col gap-4 animate-marquee-vertical group-hover:pause">
                         {newsData.concat(newsData.slice(0, 2)).map((item, idx) => (
-                          <div 
-                            key={idx} 
+                          <div
+                            key={idx}
                             onClick={() => handleNewsClick(item)}
                             className="p-4 rounded-2xl bg-muted/20 border border-transparent hover:border-gold/20 hover:bg-white hover:shadow-xl transition-all cursor-pointer group/item"
                           >
@@ -430,12 +430,12 @@ export default function HeroSection() {
       <AnimatePresence>
         {selectedNews && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-navy/60 backdrop-blur-md">
-            <motion.div 
-              initial={{ opacity: 0 }} 
-              animate={{ opacity: 1 }} 
-              exit={{ opacity: 0 }} 
-              onClick={() => setSelectedNews(null)} 
-              className="absolute inset-0" 
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setSelectedNews(null)}
+              className="absolute inset-0"
             />
             <motion.div
               initial={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -443,7 +443,7 @@ export default function HeroSection() {
               exit={{ scale: 0.95, opacity: 0, y: 20 }}
               className="relative w-full max-w-4xl bg-white rounded-3xl overflow-hidden shadow-2xl flex flex-col md:flex-row"
             >
-              <button 
+              <button
                 onClick={() => setSelectedNews(null)}
                 className="absolute top-4 right-4 w-10 h-10 rounded-full bg-black/10 text-navy hover:bg-gold transition-colors flex items-center justify-center z-10"
               >
@@ -452,13 +452,13 @@ export default function HeroSection() {
 
               {/* Left Side: Image */}
               <div className="md:w-5/12 h-64 md:h-auto relative overflow-hidden">
-                <img 
-                  src={selectedNews.image} 
+                <img
+                  src={selectedNews.image}
                   alt={selectedNews.title}
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-navy/60 to-transparent flex items-end p-8">
-                   <span className="text-white/80 text-xs font-bold uppercase tracking-widest">{selectedNews.date}</span>
+                  <span className="text-white/80 text-xs font-bold uppercase tracking-widest">{selectedNews.date}</span>
                 </div>
               </div>
 
@@ -473,7 +473,7 @@ export default function HeroSection() {
                 <p className="text-foreground/70 leading-relaxed text-base mb-8 whitespace-pre-wrap">
                   {selectedNews.details}
                 </p>
-                
+
                 <div className="mt-auto flex flex-wrap gap-4 pt-6 border-t border-navy/5">
                   <button className="px-8 py-3 bg-navy text-white font-bold rounded-xl hover:bg-gold hover:text-navy transition-all shadow-lg">Register Now</button>
                   <button onClick={() => setSelectedNews(null)} className="px-8 py-3 text-navy font-bold hover:text-gold transition-colors">Close</button>
