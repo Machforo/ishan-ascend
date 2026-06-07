@@ -30,10 +30,10 @@ export default function AdmissionsPage() {
   const ref = useScrollReveal();
   const { data } = useIIMTData("admissions");
   
-  const howToApply = data?.howToApply?.length > 0 ? data.howToApply : steps;
-  const docs = data?.documents?.length > 0 ? data.documents.map((d: any) => d.docName) : documents;
-  const alert = data?.alertBanner || { title: "Admissions Open for 2025-26", content: "Applications are being accepted for all programs.", isActive: true };
-  const contact = data?.admissionContact || { phone: "8448797700", email: "admissions@ishan.ac" };
+  const howToApply = data?.howToApply?.admissionProcess?.length > 0 ? data.howToApply.admissionProcess : steps;
+  const docs = data?.howToApply?.documentChecklist?.length > 0 ? data.howToApply.documentChecklist : documents;
+  const alert = data?.howToApply?.highlight ? { title: "Important Update", content: data.howToApply.highlight, isActive: true } : { title: "Admissions Open for 2025-26", content: "Applications are being accepted for all programs.", isActive: true };
+  const contact = { phone: "8448797700", email: "admissions@ishan.ac" };
 
   return (
     <Layout>
@@ -66,10 +66,10 @@ export default function AdmissionsPage() {
               {howToApply.map((step: any, i: number) => (
                 <div key={step.step || step.num || i} className={`reveal delay-${Math.min(i, 4)}00 flex gap-5 p-6 rounded-xl border bg-card`}>
                   <div className="w-12 h-12 rounded-xl bg-navy flex items-center justify-center shrink-0">
-                    <span className="text-sm font-bold text-primary-foreground">{step.step || step.num}</span>
+                    <span className="text-sm font-bold text-primary-foreground">{step.step || step.num || `0${i+1}`}</span>
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground mb-1">{step.title}</h3>
+                    <h3 className="font-semibold text-foreground mb-1">{step.title || step.step}</h3>
                     <p className="text-sm text-foreground/70 leading-relaxed">{step.desc}</p>
                   </div>
                 </div>

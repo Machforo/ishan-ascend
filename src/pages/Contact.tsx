@@ -9,13 +9,13 @@ import { toast } from "sonner";
 export default function ContactPage() {
   const ref = useScrollReveal();
   const { data } = useIIMTData("contact");
-  const mainContact = data?.mainContact || {
-    address: "IIMT, Knowledge Park-III, Greater Noida, Uttar Pradesh 201308",
-    phone: "8448797700",
-    email: "info@ishan.ac",
-    mapEmbed: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3507.2!2d77.49!3d28.47!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sIIMT+Greater+Noida!5e0!3m2!1sen!2sin!4v1"
+  const mainContact = {
+    address: data?.address || "IIMT, Knowledge Park-III, Greater Noida, Uttar Pradesh 201308",
+    phone: data?.phone || "8448797700",
+    email: data?.email || "info@ishan.ac",
+    mapEmbed: data?.mapEmbed || "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3507.2!2d77.49!3d28.47!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sIIMT+Greater+Noida!5e0!3m2!1sen!2sin!4v1"
   };
-  const collegeContacts = data?.collegeContacts || [];
+  const collegeContacts = data?.departments || [];
 
   const [form, setForm] = useState({ name: "", phone: "", email: "", program: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
@@ -39,7 +39,7 @@ export default function ContactPage() {
     
     // Attempt real submit but don't block the UI if it fails (as backend might not be up)
     try {
-      await fetch("http://localhost:5000/api/iimt/leads", {
+      await fetch("https://ishan-backend-g096.onrender.com/api/iimt/leads", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...form, source: "Contact Page" }),
@@ -124,7 +124,7 @@ export default function ContactPage() {
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {collegeContacts.map((c: any, i: number) => (
                   <div key={i} className="p-6 rounded-xl border bg-card">
-                    <h3 className="font-semibold text-foreground mb-3 border-b pb-2 text-sm">{c.collegeName}</h3>
+                    <h3 className="font-semibold text-foreground mb-3 border-b pb-2 text-sm">{c.name}</h3>
                     <div className="space-y-2.5">
                       <div className="flex items-center gap-2.5 text-xs text-foreground/70">
                         <Phone className="w-3.5 h-3.5 text-gold shrink-0" />
@@ -134,10 +134,12 @@ export default function ContactPage() {
                         <Mail className="w-3.5 h-3.5 text-gold shrink-0" />
                         <a href={`mailto:${c.email}`} className="hover:text-navy hover:underline">{c.email}</a>
                       </div>
-                      <div className="flex items-start gap-2.5 text-xs text-foreground/70">
-                        <MapPin className="w-3.5 h-3.5 text-gold shrink-0 mt-0.5" />
-                        <span>{c.address}</span>
-                      </div>
+                      {c.contactPerson && (
+                        <div className="flex items-start gap-2.5 text-xs text-foreground/70">
+                          <MapPin className="w-3.5 h-3.5 text-gold shrink-0 mt-0.5" />
+                          <span>Contact Person: {c.contactPerson}</span>
+                        </div>
+                      )}
                     </div>
                   </div>
                 ))}

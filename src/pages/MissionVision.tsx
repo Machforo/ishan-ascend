@@ -32,11 +32,9 @@ export default function MissionVisionPage() {
     { title: "Accessibility", description: "Providing high-quality professional education that is accessible to deserving candidates." },
   ];
 
-  // coreValues stored as newline-separated string in DB
-  const coreValuesStr = mv?.coreValues;
-  const coreValues = coreValuesStr
-    ? coreValuesStr.split('\n').filter((x: string) => x.trim() !== '')
-        .map((v: string) => ({ title: v.trim(), description: '' }))
+  const coreValuesRaw = mv?.coreValues;
+  const coreValues = Array.isArray(coreValuesRaw) && coreValuesRaw.length > 0
+    ? coreValuesRaw.map((v: string) => ({ title: v, description: '' }))
     : defaultCoreValues;
 
   return (

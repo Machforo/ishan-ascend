@@ -19,10 +19,9 @@ const defaultEvents = [
 
 export default function NewsEventsPage() {
   const ref = useScrollReveal();
-  const { data } = useIIMTData("newsevent");
-  const events = data?.events?.length > 0 
-    ? data.events.map((e: any) => ({ ...e, excerpt: e.description })) 
-    : defaultEvents;
+  const { data } = useIIMTData("newsevents");
+  const eventsData = data?.data?.length > 0 ? data.data : (Array.isArray(data) && data.length > 0 ? data : defaultEvents);
+  const events = eventsData.map((e: any) => ({ ...e, excerpt: e.description || e.excerpt }));
 
   const categories = ["All", ...Array.from(new Set(events.map((e: any) => e.category))).filter(Boolean) as string[]];
   const [activeCategory, setActiveCategory] = useState("All");

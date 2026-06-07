@@ -7,7 +7,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 export default function ProgramsSection() {
   const ref = useScrollReveal();
-  const { data } = useIIMTData("homepage");
+  const { data } = useIIMTData("courses");
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
 
   const fallbackPrograms = [
@@ -67,11 +67,20 @@ export default function ProgramsSection() {
     }
   ];
   
-  const programs = data?.academicPrograms?.length > 0 ? data.academicPrograms : fallbackPrograms;
+  const rawPrograms = data?.data?.length > 0 ? data.data : (Array.isArray(data) && data.length > 0 ? data : fallbackPrograms);
+  const programs = rawPrograms.map((p: any) => ({
+    name: p.programName || p.name,
+    type: p.type || "UG",
+    category: p.category || "Management",
+    description: p.homepageSummary || p.description || p.overview,
+    link: p.link || `/courses/${(p.programName || p.name || "").toLowerCase().replace(/[^a-z0-9]/g, '')}`,
+    overview: p.overview,
+    outcomes: p.careerOutcome ? p.careerOutcome.split(",").map((s: string) => s.trim()) : p.outcomes
+  }));
   
   // Dynamically generate available filters
-  const availableTypes = Array.from(new Set(programs.map((p: any) => p.type))).filter(Boolean) as string[];
-  const availableCats = Array.from(new Set(programs.map((p: any) => p.category))).filter(Boolean) as string[];
+  const availableTypes = Array.from(new Set(programs.map((p: any) => p.type || "Other"))).filter(Boolean) as string[];
+  const availableCats = Array.from(new Set(programs.map((p: any) => p.category || "Other"))).filter(Boolean) as string[];
   const filterOptions = ["All", ...availableTypes, ...availableCats];
 
   const [activeFilter, setActiveFilter] = useState("All");
@@ -158,7 +167,7 @@ export default function ProgramsSection() {
                     <p className="text-xs uppercase tracking-wider text-gold mt-1 font-semibold">
                       {program.description?.includes('.') 
                         ? program.description.split('.')[1]?.trim() 
-                        : (program.description || "Full Time")}
+                        : (program.description || program.quickFacts || "Full Time")}
                     </p>
                   </div>
                 </div>
@@ -167,7 +176,7 @@ export default function ProgramsSection() {
                   <div>
                     <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">Overview</p>
                     <p className="text-sm text-foreground/70 leading-relaxed italic">
-                      "{program.overview || program.description}"
+                      "{program.homepageSummary || program.overview || program.description}"
                     </p>
                   </div>
 
@@ -182,9 +191,9 @@ export default function ProgramsSection() {
                       >
                         <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">Career Outcomes</p>
                         <div className="flex flex-wrap gap-2">
-                          {(program.outcomes || ["Management Professional", "Industry Expert"]).map((outcome: string) => (
+                          {(program.outcomes || program.careerOutcome?.split(',') || ["Management Professional", "Industry Expert"]).map((outcome: string) => (
                             <span key={outcome} className="px-2.5 py-1 bg-muted rounded-full text-[10px] font-medium text-foreground/70">
-                              {outcome}
+                              {outcome.trim()}
                             </span>
                           ))}
                         </div>

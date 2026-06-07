@@ -16,7 +16,7 @@ const defaultAccreditations = [
 export default function ApprovalsPage() {
   const ref = useScrollReveal();
   const { data } = useIIMTData("aboutus");
-  const accreditations = data?.approvals?.length > 0 ? data.approvals : defaultAccreditations;
+  const accreditations = data?.approvalsAffiliations?.length > 0 ? data.approvalsAffiliations : defaultAccreditations;
 
   return (
     <Layout>
@@ -54,14 +54,14 @@ export default function ApprovalsPage() {
             {accreditations.map((acc: any, i: number) => (
               <div key={acc.title || acc.name || i} className={`reveal delay-${Math.min(i, 5)}00 bg-card rounded-xl border p-6 text-center shadow-sm hover:shadow-[0_8px_30px_hsl(var(--navy)/0.08)] transition-shadow`}>
                 {acc.logo ? (
-                  <img src={acc.logo} alt={acc.title || acc.name} className="h-20 mx-auto object-contain mb-4" loading="lazy" />
+                  <img src={acc.logo || acc.image} alt={acc.title || acc.name} className="h-20 mx-auto object-contain mb-4" loading="lazy" />
                 ) : (
                   <div className="h-20 flex items-center justify-center mb-4">
                     <span className="text-2xl font-display font-bold text-navy">{acc.title || acc.name}</span>
                   </div>
                 )}
                 <h3 className="font-semibold text-foreground text-sm">{acc.title || acc.name}</h3>
-                <p className="text-xs text-foreground/60 mt-2">{acc.description || acc.desc}</p>
+                <p className="text-xs text-foreground/60 mt-2">{acc.description || acc.desc || acc.subheading}</p>
               </div>
             ))}
           </div>

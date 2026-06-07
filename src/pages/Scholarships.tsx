@@ -44,9 +44,8 @@ export default function ScholarshipsPage() {
                     </div>
                     <div className="flex-1">
                       <h3 className="font-semibold text-foreground mb-3">{s.category}</h3>
-                      <div className="grid sm:grid-cols-3 gap-3 text-sm">
-                        <div><span className="text-muted-foreground block text-xs mb-1">Concession / Benefit</span><span className="text-foreground/80 font-medium">{s.concession}</span></div>
-                        <div className="sm:col-span-2"><span className="text-muted-foreground block text-xs mb-1">Details</span><span className="text-foreground/80">{s.description}</span></div>
+                      <div className="grid sm:grid-cols-1 gap-3 text-sm">
+                        <div className="sm:col-span-1"><span className="text-muted-foreground block text-xs mb-1">Details</span><span className="text-foreground/80">{s.description || s.concession}</span></div>
                       </div>
                     </div>
                   </div>

@@ -16,7 +16,7 @@ export default function AboutSection() {
   const defaultImage = libraryImg;
   const apiAbout = data?.aboutIimt;
   const about = {
-    title: apiAbout?.title || "A Legacy of Academic Excellence in Greater Noida",
+    title: apiAbout?.heading || "A Legacy of Academic Excellence in Greater Noida",
     description: apiAbout?.description || "Ishan Institute of Management & Technology, established in 1994, is the flagship institution of Ishan Educational Group. Affiliated to CCS University, Meerut and recognized by UGC, the institute focuses on nurturing future-ready professionals through a unique blend of academic rigor and practical exposure.",
     image: (apiAbout?.image && apiAbout.image.length > 5) ? apiAbout.image : "https://www.iecaonline.com/wp-content/uploads/2018/03/College-Campus-cropped-scaled.jpg"
   };
@@ -48,7 +48,7 @@ export default function AboutSection() {
           <div className="reveal-right space-y-6">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">About IIMT</p>
             <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground leading-tight">
-              A Legacy of Academic Excellence in Greater Noida
+              {about.title}
             </h2>
             <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">
               {about.description}

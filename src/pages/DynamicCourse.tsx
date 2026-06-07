@@ -71,8 +71,8 @@ export default function DynamicCourse() {
     },
   ];
 
-  const courseList = data?.courses?.length > 0 ? data.courses : fallbackCourses;
-  const course = courseList.find((c: any) => sanitizeSlug(c.programName).includes(sanitizeSlug(courseId || '')));
+  const courseList = data?.data?.length > 0 ? data.data : (Array.isArray(data) && data.length > 0 ? data : fallbackCourses);
+  const course = courseList.find((c: any) => sanitizeSlug(c.programName || c.name).includes(sanitizeSlug(courseId || '')));
 
   if (!course) return <NotFound />;
 
@@ -85,7 +85,7 @@ export default function DynamicCourse() {
         <div className="container-wide relative z-10">
           <div className="max-w-3xl">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-primary-foreground leading-tight mb-4">
-              {course.programName}
+              {course.programName || course.name}
             </h1>
             <p className="text-lg text-primary-foreground/70 leading-relaxed font-light">
               Expand your horizons and build a foundation for success.
@@ -101,7 +101,7 @@ export default function DynamicCourse() {
           <div className="lg:col-span-2 space-y-12">
             <div>
               <h2 className="text-2xl font-display font-bold text-navy mb-5 text-gold-underline">Program Overview</h2>
-              <p className="text-base text-foreground/80 leading-relaxed whitespace-pre-wrap">{course.overview || "Program overview details will be updated shortly."}</p>
+              <p className="text-base text-foreground/80 leading-relaxed whitespace-pre-wrap">{course.overview || course.description || "Program overview details will be updated shortly."}</p>
             </div>
 
             <div>
@@ -128,7 +128,7 @@ export default function DynamicCourse() {
                   </div>
                   <div>
                     <p className="text-sm text-primary-foreground/60 mb-1">Duration</p>
-                    <p className="font-semibold text-lg">{course.duration || "N/A"}</p>
+                    <p className="font-semibold text-lg">{course.duration || (course.quickFacts && course.quickFacts.split('|')[0]) || "N/A"}</p>
                   </div>
                 </div>
 
@@ -138,7 +138,7 @@ export default function DynamicCourse() {
                   </div>
                   <div>
                     <p className="text-sm text-primary-foreground/60 mb-1">Annual Fee</p>
-                    <p className="font-semibold text-lg">{course.annualFee || "N/A"}</p>
+                    <p className="font-semibold text-lg">{course.annualFee || (course.careerOutcome && course.careerOutcome.split('|')[0]) || "N/A"}</p>
                   </div>
                 </div>
 
@@ -158,7 +158,7 @@ export default function DynamicCourse() {
                   </div>
                   <div>
                     <p className="text-sm text-primary-foreground/60 mb-1">Eligibility</p>
-                    <p className="font-semibold">{course.eligibility || "N/A"}</p>
+                    <p className="font-semibold">{course.eligibility || (course.quickFacts && course.quickFacts.split('|')[1]) || "N/A"}</p>
                   </div>
                 </div>
               </div>

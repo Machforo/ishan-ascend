@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Quote, Star, User, Users } from "lucide-react";
+import { useIIMTData } from "@/hooks/useIIMTData";
 
 const studentTestimonials = [
   { 
@@ -40,6 +41,15 @@ const parentTestimonials = [
 
 export default function TestimonialsSection() {
   const [activeTab, setActiveTab] = useState<'students' | 'parents'>('students');
+  const { data } = useIIMTData("homepage");
+
+  const students = data?.successStories?.students?.length > 0 
+    ? data.successStories.students.map((s: any) => ({ name: s.name, role: "Student", text: s.feedback, image: s.photo }))
+    : studentTestimonials;
+
+  const parents = data?.successStories?.parents?.length > 0 
+    ? data.successStories.parents.map((p: any) => ({ name: p.name, role: "Parent", text: p.feedback, image: p.photo }))
+    : parentTestimonials;
 
   return (
     <section className="py-16 md:py-24 bg-section-alt overflow-hidden">
@@ -78,7 +88,7 @@ export default function TestimonialsSection() {
               exit={{ opacity: 0 }}
               className="flex gap-8 animate-marquee"
             >
-              {[...(activeTab === 'students' ? studentTestimonials : parentTestimonials), ...(activeTab === 'students' ? studentTestimonials : parentTestimonials)].map((t, i) => (
+              {[...(activeTab === 'students' ? students : parents), ...(activeTab === 'students' ? students : parents)].map((t, i) => (
                 <div key={`${t.name}-${i}`} className="shrink-0 w-[380px] bg-card border border-muted hover:border-gold/30 rounded-[2.5rem] p-8 relative shadow-lg hover:shadow-2xl transition-all group">
                   <div className="flex items-center gap-4 mb-6">
                     <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white shadow-lg">

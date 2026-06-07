@@ -53,7 +53,7 @@ export function QuickEnquiry() {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [formData, setFormData] = useState({ name: "", phone: "", question: "" });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     // Basic phone validation
@@ -63,17 +63,35 @@ export function QuickEnquiry() {
       return;
     }
 
-    // Simulate API call
-    console.log("Enquiry submitted:", formData);
-    setIsSubmitted(true);
-    toast.success("Enquiry sent successfully! Our counsellor will contact you.");
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || "https://ishan-backend-g096.onrender.com/api/iimt";
+      const response = await fetch(`${apiUrl}/leads`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: `${formData.phone}@placeholder.com`,
+          phone: formData.phone,
+          message: formData.question,
+          source: "Floating Action Quick Enquiry"
+        }),
+      });
 
-    // Reset after some time
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setIsOpen(false);
-      setFormData({ name: "", phone: "", question: "" });
-    }, 3000);
+      if (!response.ok) throw new Error("Failed to submit enquiry");
+
+      console.log("Enquiry submitted:", formData);
+      setIsSubmitted(true);
+      toast.success("Enquiry sent successfully! Our counsellor will contact you.");
+
+      // Reset after some time
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setIsOpen(false);
+        setFormData({ name: "", phone: "", question: "" });
+      }, 3000);
+    } catch (error) {
+      toast.error("Failed to submit. Please try again.");
+    }
   };
 
   return (

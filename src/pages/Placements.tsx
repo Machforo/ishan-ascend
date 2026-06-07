@@ -25,13 +25,12 @@ export default function PlacementsPage() {
   const ref = useScrollReveal();
   const { data } = useIIMTData("placements");
 
-  // Schema field names: placementNumbers, recruitingPartners, successStories, placementProcess
-  const stats = data?.placementNumbers?.length > 0 ? data.placementNumbers : defaultStats;
-  const recruiters: string[] = data?.recruitingPartners?.length > 0
-    ? data.recruitingPartners.map((r: any) => r.name || r)
+  const stats = data?.numbers?.length > 0 ? data.numbers.map((n: any) => ({ value: n.stat, label: n.label, icon: TrendingUp })) : defaultStats;
+  const recruiters: string[] = data?.partners?.length > 0
+    ? data.partners.map((r: any) => r.name || r)
     : defaultRecruiters;
   const testimonials = data?.successStories?.length > 0 ? data.successStories : defaultTestimonials;
-  const placementProcess: Array<{step:string;desc:string}> = data?.placementProcess?.length > 0 ? data.placementProcess : [
+  const placementProcess: Array<{step:string;desc:string}> = data?.process?.length > 0 ? data.process.map((p: any) => ({ step: p.step, desc: p.description })) : [
     { step: "1", desc: "Pre-placement training: resume building, aptitude, group discussion, mock interviews" },
     { step: "2", desc: "Company registration and job description sharing with students" },
     { step: "3", desc: "Aptitude test and/or technical assessment by the recruiter" },
@@ -90,8 +89,8 @@ export default function PlacementsPage() {
                 <div key={t.name || i} className="p-6 rounded-xl border bg-card">
                   {(t.quote || t.message) && <p className="text-sm text-foreground/70 leading-relaxed italic mb-4">"{t.quote || t.message}"</p>}
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-gold-light flex items-center justify-center">
-                      {t.image ? <img src={t.image} alt={t.name} className="w-full h-full rounded-full object-cover" /> : <span className="text-sm font-bold text-navy">{t.name?.[0]}</span>}
+                    <div className="w-10 h-10 rounded-full bg-gold-light flex items-center justify-center overflow-hidden">
+                      {t.photo || t.image ? <img src={t.photo || t.image} alt={t.name} className="w-full h-full object-cover" /> : <span className="text-sm font-bold text-navy">{t.name?.[0]}</span>}
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-foreground">{t.name}</p>

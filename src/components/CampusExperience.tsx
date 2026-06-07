@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { motion, AnimatePresence } from "framer-motion";
-const galleryImages = [
+import { useIIMTData } from "@/hooks/useIIMTData";
+
+const defaultGalleryImages = [
   { title: "Academic Excellence", img: "https://www.burohappold.com/wp-content/uploads/2022/05/BS-CMU_02_Albert-Vecerka-Esto-1024x683.jpg", category: "Campus" },
   { title: "Smart Resources", img: "https://studyus.dapodik.co.id/wp-content/uploads/2023/08/Exploring-US-University-Facilities-and-Resources-8QR-MPR.jpg", category: "Facilities" },
   { title: "Student Life", img: "https://www.kclas.ac.in/wp-content/uploads/2021/01/gallery-05.jpg", category: "Community" },
@@ -14,6 +16,11 @@ const galleryImages = [
 
 export default function CampusExperience() {
   const ref = useScrollReveal();
+  const { data } = useIIMTData("homepage");
+  const galleryImages = data?.lifeAtIimt?.images?.length > 0 
+    ? data.lifeAtIimt.images.map((img: string, i: number) => ({ title: `Campus View ${i+1}`, img, category: "Campus" }))
+    : defaultGalleryImages;
+
   const [activeIndices, setActiveIndices] = useState([0, 1, 2, 3, 4, 5, 6, 7, 8, 9]);
 
   // Subtle rotation of images in specific tiles to keep it "dynamic"
@@ -28,7 +35,7 @@ export default function CampusExperience() {
       });
     }, 5000);
     return () => clearInterval(interval);
-  }, []);
+  }, [galleryImages.length]);
 
   return (
     <section id="experience" className="py-16 md:py-24 bg-navy text-white overflow-hidden min-h-screen flex flex-col justify-center snap-start" ref={ref}>

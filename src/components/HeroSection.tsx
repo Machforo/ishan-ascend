@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { ArrowRight, Award, GraduationCap, Send, User, Phone as PhoneIcon, BookOpen, ChevronLeft, ChevronRight, CheckCircle, Newspaper, Sparkles, Calendar, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
+import { useIIMTData } from "@/hooks/useIIMTData";
 
 // ─── Slides ───────────────────────────────────────────────────────────────────
 const SLIDES = [
@@ -68,6 +69,16 @@ const SESSION_START = (() => {
 const DELAY = 5500;
 
 export default function HeroSection() {
+  const { data } = useIIMTData("homepage");
+  const backendSlides = data?.banners?.length > 0 ? data.banners.map((b: any) => ({
+    image: b.image,
+    badge: "NAAC Accredited · CCS University Affiliated",
+    title: b.heading || "Shaping Tomorrow's",
+    highlight: "Leaders Since 1994", // Add logic to split if needed
+    subtitle: b.subheading || "Offering BBA, B.Com, BCA, M.Com, B.Ed & M.Ed programs.",
+    cta1: { label: b.cta1 || "Explore Programs", href: "/education-overview" },
+    cta2: { label: b.cta2 || "Virtual Tour", href: "/infrastructure" },
+  })) : SLIDES;
   const [current, setCurrent] = useState(SESSION_START);
   const [formData, setFormData] = useState({ name: "", phone: "", course: "" });
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -125,7 +136,7 @@ export default function HeroSection() {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Basic phone validation
@@ -135,14 +146,30 @@ export default function HeroSection() {
       return;
     }
 
-    console.log("Admission enquiry submitted:", formData);
-    setIsSubmitted(true);
-    toast.success("Application received! Our admissions team will reach out shortly.");
-    
-    setTimeout(() => {
-      setIsSubmitted(false);
-      setFormData({ name: "", phone: "", course: "" });
-    }, 5000);
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || "https://ishan-backend-g096.onrender.com/api/iimt";
+      await fetch(`${apiUrl}/leads`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: formData.name,
+          email: `${formData.phone}@placeholder.com`,
+          phone: formData.phone,
+          course: formData.course,
+          source: 'Hero Enquiry'
+        })
+      });
+
+      setIsSubmitted(true);
+      toast.success("Application received! Our admissions team will reach out shortly.");
+      
+      setTimeout(() => {
+        setIsSubmitted(false);
+        setFormData({ name: "", phone: "", course: "" });
+      }, 5000);
+    } catch (error) {
+      toast.error("Something went wrong. Please try again.");
+    }
   };
 
   const go = useCallback((idx: number) => {
@@ -164,13 +191,13 @@ export default function HeroSection() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const slide = SLIDES[current];
+  const slide = backendSlides[current] || SLIDES[0];
 
   return (
     <section className="relative min-h-screen flex items-center overflow-hidden bg-navy">
 
       {/* ── Background images (simple absolute stack, only current is visible) ── */}
-      {SLIDES.map((s, i) => (
+      {backendSlides.map((s: any, i: number) => (
         <div
           key={i}
           aria-hidden={i !== current}
@@ -204,13 +231,13 @@ export default function HeroSection() {
             {/* Badge */}
             <div key={`badge-${current}`} className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm" style={{ animation: "fadeUp 0.5s ease both" }}>
               <Award className="w-4 h-4 text-gold shrink-0" />
-              <span className="text-xs font-bold text-white uppercase tracking-wider">{slide.badge}</span>
+              <span className="text-xs font-bold text-white uppercase tracking-wider">{slide.badge || "IIMT Greater Noida"}</span>
             </div>
 
             {/* Headline */}
             <h1 key={`h1-${current}`} className="text-4xl md:text-5xl lg:text-[3.5rem] font-display font-bold text-white leading-[1.1] tracking-tight drop-shadow-xl" style={{ animation: "fadeUp 0.55s 0.06s ease both" }}>
-              {slide.title}
-              <span className="text-gold block mt-1">{slide.highlight}</span>
+              {slide.title || slide.heading}
+              <span className="text-gold block mt-1">{slide.highlight || slide.subheading}</span>
             </h1>
 
             {/* Subtitle */}
@@ -220,12 +247,12 @@ export default function HeroSection() {
 
             {/* CTAs */}
             <div key={`cta-${current}`} className="flex flex-wrap gap-4" style={{ animation: "fadeUp 0.55s 0.18s ease both" }}>
-              <Link to={slide.cta1.href} className="inline-flex items-center gap-2 px-8 py-4 text-sm font-bold bg-gold text-navy rounded-xl shadow-[0_8px_30px_rgba(212,175,55,0.35)] hover:shadow-[0_12px_40px_rgba(212,175,55,0.5)] hover:scale-105 active:scale-95 transition-all">
-                {slide.cta1.label} <ArrowRight className="w-4 h-4" />
+              <Link to={slide.cta1?.href || "/education-overview"} className="inline-flex items-center gap-2 px-8 py-4 text-sm font-bold bg-gold text-navy rounded-xl shadow-[0_8px_30px_rgba(212,175,55,0.35)] hover:shadow-[0_12px_40px_rgba(212,175,55,0.5)] hover:scale-105 active:scale-95 transition-all">
+                {slide.cta1?.label || slide.cta1 || "Explore Programs"} <ArrowRight className="w-4 h-4" />
               </Link>
-              <Link to={slide.cta2.href} className="inline-flex items-center gap-2 px-8 py-4 text-sm font-bold text-white border-2 border-white/40 rounded-xl hover:bg-white/10 backdrop-blur-sm transition-all">
+              <Link to={slide.cta2?.href || "/infrastructure"} className="inline-flex items-center gap-2 px-8 py-4 text-sm font-bold text-white border-2 border-white/40 rounded-xl hover:bg-white/10 backdrop-blur-sm transition-all">
                 <GraduationCap className="w-4 h-4" />
-                {slide.cta2.label}
+                {slide.cta2?.label || slide.cta2 || "Virtual Tour"}
               </Link>
             </div>
 
@@ -236,7 +263,7 @@ export default function HeroSection() {
               </button>
 
               <div className="flex gap-2">
-                {SLIDES.map((_, i) => (
+                {backendSlides.map((_: any, i: number) => (
                   <button key={i} onClick={() => { go(i); resetTimer(); }} aria-label={`Slide ${i + 1}`}
                     className="h-1.5 rounded-full transition-all duration-500"
                     style={{ width: i === current ? "2rem" : "0.75rem", background: i === current ? "hsl(var(--gold))" : "rgba(255,255,255,0.35)" }}
@@ -249,7 +276,7 @@ export default function HeroSection() {
               </button>
 
               <span className="ml-2 text-[11px] font-bold text-white/40 tabular-nums">
-                {String(current + 1).padStart(2, "0")} / {String(SLIDES.length).padStart(2, "0")}
+                {String(current + 1).padStart(2, "0")} / {String(backendSlides.length).padStart(2, "0")}
               </span>
             </div>
           </div>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { ChevronDown, ChevronUp, MessageSquare } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useIIMTData } from "@/hooks/useIIMTData";
 
 const faqs = [
   {
@@ -33,6 +34,8 @@ const faqs = [
 export default function FAQSection() {
   const ref = useScrollReveal();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
+  const { data } = useIIMTData("admissions");
+  const faqList = data?.faqs?.length > 0 ? data.faqs : faqs;
 
   return (
     <section className="py-20 md:py-28 bg-white" ref={ref}>
@@ -46,7 +49,7 @@ export default function FAQSection() {
           </div>
 
           <div className="space-y-4">
-            {faqs.map((faq, i) => (
+            {faqList.map((faq: any, i: number) => (
               <motion.div 
                 key={i} 
                 initial={{ opacity: 0, y: 20 }}

@@ -15,9 +15,9 @@ const defaultRecruiters = [
 
 export default function PlacementsSection() {
   const ref = useScrollReveal();
-  const { data } = useIIMTData("homepage");
-  const placementsCfg = data?.placements || { title: "Placements That Speak for Themselves", description: "Career Outcomes" };
-  const recruiters = data?.recruitingPartners?.length > 0 ? data.recruitingPartners : defaultRecruiters;
+  const { data } = useIIMTData("placements");
+  const placementsCfg = { title: "Placements That Speak for Themselves", description: "Career Outcomes" };
+  const recruiters = data?.partners?.length > 0 ? data.partners : defaultRecruiters;
 
   return (
     <section id="placements" className="py-12 md:py-20" ref={ref}>

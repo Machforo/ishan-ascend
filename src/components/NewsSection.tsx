@@ -42,8 +42,8 @@ const defaultNews = [
 export default function NewsSection() {
   const ref = useScrollReveal();
   const [selectedNews, setSelectedNews] = useState<any>(null);
-  const { data } = useIIMTData("homepage");
-  const news = data?.newsEvents?.length > 0 ? data.newsEvents : defaultNews;
+  const { data } = useIIMTData("newsevents");
+  const news = data?.data?.length > 0 ? data.data : (Array.isArray(data) && data.length > 0 ? data : defaultNews);
 
   return (
     <section className="py-20 md:py-28 bg-section-alt" ref={ref}>

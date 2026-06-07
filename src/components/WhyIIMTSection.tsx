@@ -16,7 +16,9 @@ const defaultReasons = [
 export default function WhyIIMTSection() {
   const ref = useScrollReveal();
   const { data } = useIIMTData("homepage");
-  const reasons = data?.standApart?.length > 0 ? data.standApart : defaultReasons;
+  const reasons = data?.standApart?.points?.length > 0 
+    ? data.standApart.points.map((p: string) => ({ title: p, desc: p })) 
+    : defaultReasons;
 
   return (
     <section id="why-iimt" className="py-12 md:py-20" ref={ref}>
@@ -29,13 +31,13 @@ export default function WhyIIMTSection() {
               What Makes IIMT Stand Apart
             </h2>
             <p className="mt-4 text-foreground/60 leading-relaxed">
-              For over three decades, IIMT has maintained its commitment to academic excellence, holistic development, and career-focused education in the Delhi NCR region.
+              {data?.standApart?.description || "For over three decades, IIMT has maintained its commitment to academic excellence, holistic development, and career-focused education in the Delhi NCR region."}
             </p>
             <a
               href="#contact"
               className="inline-flex items-center gap-2 mt-8 px-6 py-3 text-sm font-semibold bg-navy text-primary-foreground rounded-lg hover:bg-navy/90 transition-colors active:scale-[0.97]"
             >
-              Schedule a Visit
+              {data?.standApart?.cta || "Schedule a Visit"}
             </a>
           </div>
 

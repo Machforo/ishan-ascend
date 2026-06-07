@@ -26,7 +26,7 @@ The campus itself is designed to provide a world-class learning environment, fea
 
   // Schema: aboutus.ourStory = { title, content } | aboutus.keyDifferentiators = [{title, description}]
   const ourStory = data?.ourStory;
-  const milestones = data?.milestones?.length > 0 ? data.milestones : defaultMilestones;
+  const milestones = data?.ourJourney?.length > 0 ? data.ourJourney : defaultMilestones;
   const keyDiffRaw = data?.keyDifferentiators;
   const keyDifferentiators: string[] = keyDiffRaw?.length > 0
     ? keyDiffRaw.map((k: any) => typeof k === 'string' ? k : k.title)
@@ -44,7 +44,7 @@ The campus itself is designed to provide a world-class learning environment, fea
   return (
     <Layout>
         <PageHeader
-        title={ourStory?.title || "About IIMT Greater Noida"}
+        title="About IIMT Greater Noida"
         subtitle="Transforming potential into performance through academic excellence since 1994."
         breadcrumbs={[{ label: "About IIMT" }]}
       />
@@ -61,10 +61,10 @@ The campus itself is designed to provide a world-class learning environment, fea
             <div className="reveal-right space-y-5">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Our Story</p>
               <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground leading-tight">
-                {ourStory?.title || "Legacy of Shaping Professional Excellence"}
+                Legacy of Shaping Professional Excellence
               </h2>
               <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">
-                {ourStory?.content || fallback}
+                {ourStory?.description || fallback}
               </p>
             </div>
           </div>
