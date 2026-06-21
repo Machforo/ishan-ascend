@@ -8,11 +8,11 @@ import { useIIMTData } from "@/hooks/useIIMTData";
 export default function MissionVisionPage() {
   const ref = useScrollReveal();
   const { data } = useIIMTData("aboutus");
-  
+
   const mv = data?.missionVision;
-  
+
   const vision = mv?.vision || `To be a premier institution in North India, recognized for producing ethical leaders and socially responsible professionals who contribute meaningfully to the regional and global economy.`;
-  
+
   const missionStr = mv?.mission;
   const missionList = missionStr ? missionStr.split('\n').filter((x: string) => x.trim() !== '') : [
     "IIMT delivers industry-aligned education in management, commerce, technology, and teacher training to empower students for professional success.",
@@ -34,7 +34,10 @@ export default function MissionVisionPage() {
 
   const coreValuesRaw = mv?.coreValues;
   const coreValues = Array.isArray(coreValuesRaw) && coreValuesRaw.length > 0
-    ? coreValuesRaw.map((v: string) => ({ title: v, description: '' }))
+    ? coreValuesRaw.map((v: any) => ({ 
+        title: typeof v === 'string' ? v : (v.text || v.title || ''), 
+        description: typeof v === 'string' ? '' : (v.description || '') 
+      }))
     : defaultCoreValues;
 
   return (

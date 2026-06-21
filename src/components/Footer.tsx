@@ -24,7 +24,49 @@ const socialLinks = [
   { icon: Twitter, href: "https://twitter.com/ishan_ac", label: "Twitter" },
 ];
 
+import { useIIMTData } from "../hooks/useIIMTData";
+
 export default function Footer() {
+  const { data } = useIIMTData("homepage");
+  const footerData = data?.footer;
+
+  const dynamicQuickLinks = footerData?.quickLinks && footerData.quickLinks.length > 0 ? footerData.quickLinks : quickLinks;
+  const dynamicPrograms = footerData?.programs && footerData.programs.length > 0 ? footerData.programs : programs;
+  const dynamicLegalLinks = footerData?.legalLinks && footerData.legalLinks.length > 0 ? footerData.legalLinks : [
+    { label: "Privacy Policy", href: "/privacy-policy" },
+    { label: "Anti-Ragging", href: "/anti-ragging" },
+    { label: "Grievance", href: "/grievance-redressal" },
+    { label: "Disclosures", href: "/mandatory-disclosure" },
+  ];
+  
+  const logoText = footerData?.logoText || "ISHAN";
+  const tagline = footerData?.description || "NAAC Accredited | Affiliated to CCS University, Meerut | Approved by UGC & AICTE. Pioneering professional education since 1994.";
+  const copyrightText = footerData?.copyright || `© ${new Date().getFullYear()} Ishan Institute of Management & Technology. All rights reserved.`;
+
+  const contactDetails = footerData?.contact || {
+    address: "Knowledge Park-III, Greater Noida, UP 201308",
+    phone: "8448797700",
+    email: "info@ishan.ac"
+  };
+
+  const getSocialIcon = (platform: string) => {
+    const p = platform.toLowerCase();
+    if (p.includes("facebook")) return Facebook;
+    if (p.includes("instagram")) return Instagram;
+    if (p.includes("youtube")) return Youtube;
+    if (p.includes("linkedin")) return Linkedin;
+    if (p.includes("twitter") || p.includes("x.com")) return Twitter;
+    return Facebook; // fallback
+  };
+
+  const dynamicSocialLinks = footerData?.socialLinks && footerData.socialLinks.length > 0
+    ? footerData.socialLinks.map((s: any) => ({
+        label: s.platform,
+        href: s.href,
+        icon: getSocialIcon(s.platform)
+      }))
+    : socialLinks;
+
   return (
     <footer className="bg-navy-dark text-primary-foreground border-t border-white/5">
       <div className="container-wide py-12">
@@ -33,15 +75,15 @@ export default function Footer() {
             <Link to="/" className="flex items-center gap-3">
               <img src="/favicon.png" alt="IIMT Logo" className="h-10 w-auto" />
               <div>
-                <p className="font-display font-bold text-lg leading-tight">ISHAN</p>
+                <p className="font-display font-bold text-lg leading-tight">{logoText}</p>
                 <p className="text-[10px] uppercase tracking-[0.15em] text-primary-foreground/40 leading-tight">Institute of Management & Technology</p>
               </div>
             </Link>
             <p className="text-sm text-primary-foreground/50 leading-relaxed max-w-xs">
-              NAAC Accredited | Affiliated to CCS University, Meerut | Approved by UGC & AICTE. Pioneering professional education since 1994.
+              {tagline}
             </p>
             <div className="flex gap-2">
-              {socialLinks.map((s) => (
+              {dynamicSocialLinks.map((s: any) => (
                 <a 
                   key={s.label} 
                   href={s.href} 
@@ -59,12 +101,19 @@ export default function Footer() {
           <div>
             <h4 className="font-bold text-sm uppercase tracking-wider mb-6 text-gold">Quick Links</h4>
             <ul className="space-y-3">
-              {quickLinks.map((l) => (
+              {dynamicQuickLinks.map((l: any) => (
                 <li key={l.label}>
-                  <Link to={l.href} className="text-sm text-primary-foreground/50 hover:text-white transition-colors flex items-center gap-2 group">
-                    <span className="w-1 h-1 rounded-full bg-gold/50 group-hover:bg-gold transition-colors" />
-                    {l.label}
-                  </Link>
+                  {l.href.startsWith("http") ? (
+                    <a href={l.href} target="_blank" rel="noopener noreferrer" className="text-sm text-primary-foreground/50 hover:text-white transition-colors flex items-center gap-2 group">
+                      <span className="w-1 h-1 rounded-full bg-gold/50 group-hover:bg-gold transition-colors" />
+                      {l.label}
+                    </a>
+                  ) : (
+                    <Link to={l.href} className="text-sm text-primary-foreground/50 hover:text-white transition-colors flex items-center gap-2 group">
+                      <span className="w-1 h-1 rounded-full bg-gold/50 group-hover:bg-gold transition-colors" />
+                      {l.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -73,12 +122,19 @@ export default function Footer() {
           <div>
             <h4 className="font-bold text-sm uppercase tracking-wider mb-6 text-gold">Top Programs</h4>
             <ul className="space-y-3">
-              {programs.map((p) => (
+              {dynamicPrograms.map((p: any) => (
                 <li key={p.label}>
-                  <Link to={p.href} className="text-sm text-primary-foreground/50 hover:text-white transition-colors flex items-center gap-2 group">
-                    <span className="w-1 h-1 rounded-full bg-gold/50 group-hover:bg-gold transition-colors" />
-                    {p.label}
-                  </Link>
+                  {p.href.startsWith("http") ? (
+                    <a href={p.href} target="_blank" rel="noopener noreferrer" className="text-sm text-primary-foreground/50 hover:text-white transition-colors flex items-center gap-2 group">
+                      <span className="w-1 h-1 rounded-full bg-gold/50 group-hover:bg-gold transition-colors" />
+                      {p.label}
+                    </a>
+                  ) : (
+                    <Link to={p.href} className="text-sm text-primary-foreground/50 hover:text-white transition-colors flex items-center gap-2 group">
+                      <span className="w-1 h-1 rounded-full bg-gold/50 group-hover:bg-gold transition-colors" />
+                      {p.label}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -89,15 +145,15 @@ export default function Footer() {
             <div className="space-y-4">
               <div className="flex items-start gap-3">
                 <MapPin className="w-5 h-5 shrink-0 text-gold mt-0.5" />
-                <span className="text-sm text-primary-foreground/50 leading-relaxed">Knowledge Park-III, Greater Noida, UP 201308</span>
+                <span className="text-sm text-primary-foreground/50 leading-relaxed">{contactDetails.address}</span>
               </div>
               <div className="flex items-center gap-3">
                 <Phone className="w-5 h-5 shrink-0 text-gold" />
-                <a href="tel:+918448797700" className="text-sm text-primary-foreground/50 hover:text-white transition-colors">8448797700</a>
+                <a href={`tel:${contactDetails.phone}`} className="text-sm text-primary-foreground/50 hover:text-white transition-colors">{contactDetails.phone}</a>
               </div>
               <div className="flex items-center gap-3">
                 <Mail className="w-5 h-5 shrink-0 text-gold" />
-                <a href="mailto:info@ishan.ac" className="text-sm text-primary-foreground/50 hover:text-white transition-colors">info@ishan.ac</a>
+                <a href={`mailto:${contactDetails.email}`} className="text-sm text-primary-foreground/50 hover:text-white transition-colors">{contactDetails.email}</a>
               </div>
             </div>
           </div>
@@ -107,18 +163,21 @@ export default function Footer() {
       <div className="border-t border-white/5 py-6 bg-black/20">
         <div className="container-wide flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-[11px] text-primary-foreground/30">
-            © {new Date().getFullYear()} Ishan Institute of Management & Technology. All rights reserved.
+            {copyrightText}
           </p>
           <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-            {[
-              { label: "Privacy Policy", href: "/privacy-policy" },
-              { label: "Anti-Ragging", href: "/anti-ragging" },
-              { label: "Grievance", href: "/grievance-redressal" },
-              { label: "Disclosures", href: "/mandatory-disclosure" },
-            ].map((l) => (
-              <Link key={l.label} to={l.href} className="text-[11px] text-primary-foreground/30 hover:text-gold transition-colors uppercase tracking-widest font-medium">
-                {l.label}
-              </Link>
+            {dynamicLegalLinks.map((l: any) => (
+              <span key={l.label}>
+                {l.href.startsWith("http") ? (
+                  <a href={l.href} target="_blank" rel="noopener noreferrer" className="text-[11px] text-primary-foreground/30 hover:text-gold transition-colors uppercase tracking-widest font-medium">
+                    {l.label}
+                  </a>
+                ) : (
+                  <Link to={l.href} className="text-[11px] text-primary-foreground/30 hover:text-gold transition-colors uppercase tracking-widest font-medium">
+                    {l.label}
+                  </Link>
+                )}
+              </span>
             ))}
           </div>
         </div>

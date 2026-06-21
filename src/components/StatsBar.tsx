@@ -2,12 +2,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useEffect, useState, useRef } from "react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 
-const defaultStats = [
-  { value: "30+", label: "Years of Excellence" },
-  { value: "94%", label: "Placement Success" },
-  { value: "15,000+", label: "Alumni Network" },
-  { value: "6", label: "Specializations" },
-];
+const defaultStats = [];
 
 function AnimatedCounter({ rawValue }: { rawValue: string }) {
   const numMatch = typeof rawValue === 'string' ? rawValue.match(/^[\d,.]+/) : null;
@@ -76,6 +71,10 @@ export default function StatsBar() {
     { name: "NCTE", logo: "https://upload.wikimedia.org/wikipedia/en/d/d1/NCTE_logo.png" }
   ];
 
+  const dynamicBrands = data?.partnerships && data.partnerships.length > 0
+    ? data.partnerships.map((p: any) => ({ name: p.name, logo: p.image }))
+    : brands;
+
   return (
     <section className="bg-navy relative z-10 overflow-hidden" ref={ref}>
       <div className="container-wide py-16 md:py-20">
@@ -98,7 +97,7 @@ export default function StatsBar() {
           </p>
           <div className="relative flex overflow-x-hidden">
             <div className="flex animate-marquee whitespace-nowrap items-center">
-              {[...brands, ...brands].map((brand, i) => (
+              {[...dynamicBrands, ...dynamicBrands].map((brand, i) => (
                 <div key={`${brand.name}-${i}`} className="mx-8 md:mx-12 shrink-0 group">
                   <img
                     src={brand.logo}

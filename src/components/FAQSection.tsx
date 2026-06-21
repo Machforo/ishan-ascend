@@ -32,10 +32,10 @@ const faqs = [
 ];
 
 export default function FAQSection() {
-  const ref = useScrollReveal();
   const [openIndex, setOpenIndex] = useState<number | null>(0);
   const { data } = useIIMTData("admissions");
   const faqList = data?.faqs?.length > 0 ? data.faqs : faqs;
+  const ref = useScrollReveal([faqList]);
 
   return (
     <section className="py-20 md:py-28 bg-white" ref={ref}>

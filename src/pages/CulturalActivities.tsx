@@ -9,11 +9,12 @@ export default function CulturalActivitiesPage() {
   const { data } = useIIMTData("campuslife");
   const cultural = data?.culturalActivities;
   const content = cultural?.content;
-  const specs = cultural?.specs?.length > 0 ? cultural.specs : [
+  const fallbackSpecs = [
     { label: "Flagship Event", value: "Kshitiz Fest" },
     { label: "Activities", value: "Music, Dance, Drama, Arts" },
     { label: "Clubs", value: "Literary, Cultural, Tech" }
   ];
+  const specs = cultural?.specs?.length > 0 ? cultural.specs : fallbackSpecs;
 
   return (
     <Layout>
@@ -22,7 +23,10 @@ export default function CulturalActivitiesPage() {
         <div className="container-wide">
           <div className="max-w-3xl mx-auto reveal space-y-6">
             {content ? (
-              <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">{content}</p>
+              <div 
+                className="text-foreground/70 leading-relaxed [&>p]:mb-4" 
+                dangerouslySetInnerHTML={{ __html: content }} 
+              />
             ) : (
               <>
                 <p className="text-foreground/70 leading-relaxed">Cultural activities at IIMT are anchored by Kshitiz — the annual inter-college cultural festival that draws participation from across the Delhi NCR region. Spanning three days of music, dance, drama, fashion, art, and literary competitions, Kshitiz is a platform for students to showcase their talents beyond the classroom.</p>

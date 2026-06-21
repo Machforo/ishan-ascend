@@ -3,21 +3,20 @@ import { TrendingUp, Building2, Users2, Star } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 
 const defaultRecruiters = [
-  { name: "Barclays", logo: "https://upload.wikimedia.org/wikipedia/commons/e/e4/Barclays_logo.svg" },
-  { name: "HDFC Bank", logo: "https://upload.wikimedia.org/wikipedia/commons/4/48/HDFC_Bank_Logo.svg" },
-  { name: "ICICI Bank", logo: "https://upload.wikimedia.org/wikipedia/commons/1/12/ICICI_Bank_Logo.svg" },
-  { name: "Infosys", logo: "https://upload.wikimedia.org/wikipedia/commons/9/95/Infosys_logo.svg" },
-  { name: "TCS", logo: "https://upload.wikimedia.org/wikipedia/commons/b/b1/Tata_Consultancy_Services_Logo.svg" },
-  { name: "Wipro", logo: "https://upload.wikimedia.org/wikipedia/commons/a/af/Wipro_logo.svg" },
-  { name: "Deloitte", logo: "https://upload.wikimedia.org/wikipedia/commons/2/2b/Deloitte.svg" },
-  { name: "Amazon", logo: "https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg" },
+  { name: "Barclays" }, { name: "HDFC Bank" }, { name: "ICICI Bank" },
+  { name: "Infosys" }, { name: "TCS" }, { name: "Wipro" },
+  { name: "Deloitte" }, { name: "Amazon" }
 ];
 
 export default function PlacementsSection() {
-  const ref = useScrollReveal();
   const { data } = useIIMTData("placements");
-  const placementsCfg = { title: "Placements That Speak for Themselves", description: "Career Outcomes" };
+  const placementsCfg = {
+    title: data?.heading || "Placements That Speak for Themselves",
+    description: data?.subheading || "Career Outcomes",
+    partnersHeading: data?.partnersHeading || "Our Recruiting Partners"
+  };
   const recruiters = data?.partners?.length > 0 ? data.partners : defaultRecruiters;
+  const ref = useScrollReveal([recruiters]);
 
   return (
     <section id="placements" className="py-12 md:py-20" ref={ref}>
@@ -32,7 +31,7 @@ export default function PlacementsSection() {
         {/* Recruiters marquee */}
         <div className="reveal delay-300">
           <p className="text-center text-sm font-semibold uppercase tracking-[0.2em] text-muted-foreground mb-6">
-            Our Recruiting Partners
+            {placementsCfg.partnersHeading}
           </p>
           <div className="overflow-hidden relative">
             <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-background to-transparent z-10" />

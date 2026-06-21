@@ -6,44 +6,44 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const defaultNews = [
   {
-    title: "National Seminar on NEP 2020: Challenges & Opportunities",
+    title: "Awareness Program on Gynecological Disorder",
     date: "April 15, 2025",
-    category: "Academic",
-    image: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?auto=format&fit=crop&w=800&q=80",
-    description: "The seminar explored the transformative potential of the National Education Policy 2020. Key speakers discussed implementation strategies, digital integration in classrooms, and the shift towards multidisciplinary learning. Faculty members and students actively participated in workshop sessions focusing on curriculum redesign and vocational training integration.",
-    location: "Main Auditorium, IIMT Campus"
+    location: "IIMT Auditorium",
+    category: "Health",
+    description: "A health awareness session organized for students featuring expert medical practitioners discussing women's health issues and preventive care.",
+    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80"
   },
   {
-    title: "Vyaparniti: Annual Business Plan Competition",
+    title: "Vyaparniti: The Art of Business and Innovation",
     date: "April 3, 2025",
-    category: "Competition",
-    image: "https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=800&q=80",
-    description: "Vyaparniti showcased the entrepreneurial spirit of our students. Over 50 teams presented innovative business models ranging from sustainable tech to social enterprises. The jury, consisting of seasoned venture capitalists and industry leaders, praised the depth of market research and the feasibility of the winning projects.",
-    location: "Management Block"
+    location: "Seminar Hall, IIMT",
+    category: "Management",
+    description: "Annual business competition where students showcase entrepreneurial skills through business plans and case study presentations.",
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80"
   },
   {
-    title: "Ishan Cultural Fest Kshitiz-2025 Highlights",
+    title: "Ishan Cultural Fest Kshitiz-2025",
     date: "March 26, 2025",
+    location: "IIMT Campus",
     category: "Cultural",
-    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=800&q=80",
-    description: "Kshitiz-2025 brought the campus to life with vibrant performances, art exhibitions, and competitive events. From classical dance to modern rock bands, the talent on display was exceptional. The fest also featured a food carnival and various club activities, fostering a sense of community and creative expression among students.",
-    location: "Campus Grounds"
+    description: "The flagship cultural festival featuring music, dance, drama, art, and inter-college competitions across three days.",
+    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80"
   },
   {
-    title: "Expert Guest Lecture on Digital Transformation",
+    title: "Digi-Udaya: Seminar on Digital Currency",
     date: "March 6, 2025",
-    category: "Guest Lecture",
-    image: "https://images.unsplash.com/photo-1540575861501-7cf05a4b125a?auto=format&fit=crop&w=800&q=80",
-    description: "Mr. Alok Nath, CTO of a leading tech firm, delivered an insightful session on how AI and Cloud computing are reshaping the global economy. He provided students with a roadmap for developing future-proof skills and discussed the importance of agility in the modern workforce.",
-    location: "Seminar Hall A"
-  },
+    location: "IIMT Auditorium",
+    category: "Seminar",
+    description: "Expert-led seminar exploring the future of digital currencies, blockchain technology, and their impact on financial systems.",
+    image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=800&q=80"
+  }
 ];
 
 export default function NewsSection() {
-  const ref = useScrollReveal();
   const [selectedNews, setSelectedNews] = useState<any>(null);
   const { data } = useIIMTData("newsevents");
   const news = data?.data?.length > 0 ? data.data : (Array.isArray(data) && data.length > 0 ? data : defaultNews);
+  const ref = useScrollReveal([news]);
 
   return (
     <section className="py-20 md:py-28 bg-section-alt" ref={ref}>

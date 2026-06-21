@@ -6,14 +6,7 @@ import { CheckCircle2 } from "lucide-react";
 import studentsImg from "@/assets/students-library.jpg";
 import { useIIMTData } from "@/hooks/useIIMTData";
 
-const defaultMilestones = [
-  { year: "1994", event: "Ishan Institute of Management & Technology established as the first college under the group" },
-  { year: "2002", event: "Ishan Institute of Engineering & Technology (later renamed Ishan College of Engineering & Technology)" },
-  { year: "2008", event: "Ishan Law College established with Bar Council of India approval" },
-  { year: "2012", event: "Ishan Institute of Medical Sciences launched — Pharmacy, Nursing and Allied Health Sciences" },
-  { year: "2018", event: "NAAC Accreditation granted to IIMT — a testament to quality education" },
-  { year: "2023", event: "Ishan Group crosses 10,000+ alumni and expands to 5 colleges across Greater Noida" },
-];
+const defaultMilestones = [];
 
 export default function AboutPage() {
   const ref = useScrollReveal();
@@ -43,9 +36,9 @@ The campus itself is designed to provide a world-class learning environment, fea
 
   return (
     <Layout>
-        <PageHeader
-        title="About IIMT Greater Noida"
-        subtitle="Transforming potential into performance through academic excellence since 1994."
+      <PageHeader
+        title={data?.pageHeading || "About IIMT Greater Noida"}
+        subtitle={data?.pageSubheading || "Transforming potential into performance through academic excellence since 1994."}
         breadcrumbs={[{ label: "About IIMT" }]}
       />
 
@@ -54,7 +47,7 @@ The campus itself is designed to provide a world-class learning environment, fea
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="reveal-left relative">
               <div className="rounded-2xl overflow-hidden shadow-[0_8px_40px_hsl(var(--navy)/0.1)]">
-                <img src={studentsImg} alt="Students at IIMT campus" className="w-full h-[400px] object-cover" />
+                <img src={data?.ourStory?.image || studentsImg} alt="Students at IIMT campus" className="w-full h-[400px] object-cover" />
               </div>
             </div>
 
@@ -76,7 +69,7 @@ The campus itself is designed to provide a world-class learning environment, fea
         <div className="container-wide">
           <div className="text-center mb-14">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold mb-3">Our Journey</p>
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">Milestones of Growth</h2>
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">{data?.journeyHeading || "Milestones of Growth"}</h2>
           </div>
           <div className="max-w-3xl mx-auto space-y-0 relative">
             <div className="absolute left-[22px] md:left-1/2 top-0 bottom-0 w-px bg-border md:-translate-x-px" />

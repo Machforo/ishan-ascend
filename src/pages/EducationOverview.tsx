@@ -4,9 +4,21 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Link } from "react-router-dom";
 import { GraduationCap, Users, ArrowRight, CheckCircle2 } from "lucide-react";
+import { useIIMTData } from "@/hooks/useIIMTData";
 
 export default function EducationOverviewPage() {
   const ref = useScrollReveal();
+  const { data, isLoading } = useIIMTData("academics");
+  
+  const fallbackDesc = "The Education wing of IIMT offers NCTE-approved Bachelor of Education (B.Ed) and Master of Education (M.Ed) programs under CCS University affiliation. Recognized by SCERT, Uttar Pradesh, these programs prepare aspiring teachers with the pedagogical skills, classroom management techniques, and subject expertise required for a successful teaching career. With dedicated pedagogy labs, micro-teaching facilities, ICT-integrated instruction, and a strong network of partner schools for practice teaching, IIMT's education programs stand among the best in the Delhi NCR region.";
+  const fallbackHighlights = [
+    "NCTE approved institution", "SCERT recognized", "CCS University affiliated",
+    "Dedicated pedagogy labs", "Practice teaching at partner schools", "ICT-integrated instruction",
+    "Prepares for CTET, UPTET, TGT, PGT", "Micro-teaching lab with video recording"
+  ];
+
+  const description = data?.educationOverview?.description || fallbackDesc;
+  const highlights = data?.educationOverview?.highlights?.length > 0 ? data.educationOverview.highlights : fallbackHighlights;
 
   return (
     <Layout>
@@ -20,15 +32,11 @@ export default function EducationOverviewPage() {
         <div className="container-wide">
           <div className="max-w-4xl mx-auto">
             <div className="reveal space-y-5 mb-16">
-              <p className="text-foreground/70 leading-relaxed">
-                The Education wing of IIMT offers NCTE-approved Bachelor of Education (B.Ed) and Master of Education (M.Ed) programs under CCS University affiliation. Recognized by SCERT, Uttar Pradesh, these programs prepare aspiring teachers with the pedagogical skills, classroom management techniques, and subject expertise required for a successful teaching career. With dedicated pedagogy labs, micro-teaching facilities, ICT-integrated instruction, and a strong network of partner schools for practice teaching, IIMT's education programs stand among the best in the Delhi NCR region.
+              <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">
+                {description}
               </p>
               <div className="grid sm:grid-cols-2 gap-4">
-                {[
-                  "NCTE approved institution", "SCERT recognized", "CCS University affiliated",
-                  "Dedicated pedagogy labs", "Practice teaching at partner schools", "ICT-integrated instruction",
-                  "Prepares for CTET, UPTET, TGT, PGT", "Micro-teaching lab with video recording"
-                ].map((item) => (
+                {highlights.map((item: string) => (
                   <div key={item} className="flex items-center gap-2.5 text-sm text-foreground/80">
                     <CheckCircle2 className="w-4 h-4 text-gold shrink-0" />
                     {item}

@@ -5,32 +5,21 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { TrendingUp, Building2, Users2, Star, CheckCircle2 } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 
-const defaultStats = [
-  { icon: TrendingUp, value: "90%+", label: "Placement Rate" },
-  { icon: Building2, value: "150+", label: "Recruiting Partners" },
-  { icon: Users2, value: "5000+", label: "Students Placed" },
-  { icon: Star, value: "₹8 LPA", label: "Highest Package" },
-];
+const defaultStats = [];
 
-const defaultRecruiters = ["Barclays", "HDFC Bank", "ICICI Bank", "Infosys", "TCS", "Wipro", "Deloitte", "Amazon", "Byju's", "Kotak Mahindra", "Axis Bank", "Genpact", "HCL", "Tech Mahindra", "Paytm"];
+const defaultRecruiters = [];
 
-const defaultTestimonials = [
-  { name: "Priya Sharma", program: "BBA 2023", company: "HDFC Bank", quote: "The placement cell at IIMT was incredibly supportive. They prepared me through mock interviews and resume workshops. I secured a role at HDFC Bank before my final exams." },
-  { name: "Rohit Verma", program: "BCA 2022", company: "Infosys", quote: "The practical training in IT labs and the certificate programs in Python gave me an edge during campus placements. Infosys was my dream company." },
-  { name: "Anjali Gupta", program: "B.Com 2023", company: "Deloitte", quote: "My Tally and GST certification from IIMT, combined with the B.Com degree, opened doors I didn't expect. The faculty mentoring was exceptional." },
-  { name: "Amit Kumar", program: "BBA 2022", company: "Amazon", quote: "IIMT's industry visits and guest lectures gave me real-world perspective. The placement team connected me with Amazon's recruitment drive." },
-];
+const defaultTestimonials = [];
 
 export default function PlacementsPage() {
-  const ref = useScrollReveal();
-  const { data } = useIIMTData("placements");
+  const { data, loading } = useIIMTData("placements");
 
-  const stats = data?.numbers?.length > 0 ? data.numbers.map((n: any) => ({ value: n.stat, label: n.label, icon: TrendingUp })) : defaultStats;
+  const stats = data?.stats?.length > 0 ? data.stats.map((n: any) => ({ value: n.value, label: n.label, icon: TrendingUp })) : defaultStats;
   const recruiters: string[] = data?.partners?.length > 0
     ? data.partners.map((r: any) => r.name || r)
     : defaultRecruiters;
-  const testimonials = data?.successStories?.length > 0 ? data.successStories : defaultTestimonials;
-  const placementProcess: Array<{step:string;desc:string}> = data?.process?.length > 0 ? data.process.map((p: any) => ({ step: p.step, desc: p.description })) : [
+  const testimonials = data?.studentSuccess?.length > 0 ? data.studentSuccess : defaultTestimonials;
+  const placementProcess: Array<{step:string;desc:string}> = data?.process?.length > 0 ? data.process.map((p: any) => ({ step: p.step, desc: p.desc || p.description })) : [
     { step: "1", desc: "Pre-placement training: resume building, aptitude, group discussion, mock interviews" },
     { step: "2", desc: "Company registration and job description sharing with students" },
     { step: "3", desc: "Aptitude test and/or technical assessment by the recruiter" },
@@ -38,9 +27,17 @@ export default function PlacementsPage() {
     { step: "5", desc: "Offer letter issuance and onboarding support" },
   ];
 
+  const ref = useScrollReveal([stats, recruiters, testimonials, placementProcess]);
+
+  if (loading) return null;
+
   return (
     <Layout>
-      <PageHeader title="Placements" subtitle="Consistent 90%+ placement record with 150+ recruiting partners across industries" breadcrumbs={[{ label: "Placements" }]} />
+      <PageHeader 
+        title={data?.heading || "Placements"} 
+        subtitle={data?.subheading || "Consistent 90%+ placement record with 150+ recruiting partners across industries"} 
+        breadcrumbs={[{ label: "Placements" }]} 
+      />
 
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
@@ -73,7 +70,7 @@ export default function PlacementsPage() {
 
           {/* Recruiters */}
           <div className="reveal delay-200 mb-16">
-            <h2 className="text-2xl font-display font-bold text-foreground mb-6 text-center">Our Recruiting Partners</h2>
+            <h2 className="text-2xl font-display font-bold text-foreground mb-6 text-center">{data?.partnersHeading || "Our Recruiting Partners"}</h2>
             <div className="flex flex-wrap justify-center gap-4">
               {recruiters.map((r: string, i: number) => (
                 <div key={r || i} className="px-6 py-3 rounded-lg border bg-card text-sm font-medium text-foreground/60">{r}</div>
@@ -82,7 +79,7 @@ export default function PlacementsPage() {
           </div>
 
           {/* Testimonials */}
-          <div className="reveal delay-300">
+          <div id="testimonials" className="reveal delay-300 scroll-mt-24">
             <h2 className="text-2xl font-display font-bold text-foreground mb-6 text-center">Student Success Stories</h2>
             <div className="grid sm:grid-cols-2 gap-6">
               {testimonials.map((t: any, i: number) => (

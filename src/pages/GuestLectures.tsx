@@ -1,12 +1,16 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useIIMTData } from "@/hooks/useIIMTData";
 import { Mic2, Calendar, User, Info } from "lucide-react";
 
 export default function GuestLecturesPage() {
   const ref = useScrollReveal();
+  const { data } = useIIMTData("learning");
+  
+  const lectures = data?.guestLectures;
 
-  const events = [
+  const events = lectures?.events?.length > 0 ? lectures.events : [
     {
       speaker: "Dr. Arvind Kumar",
       designation: "Senior Economist, RBI",
@@ -30,31 +34,44 @@ export default function GuestLecturesPage() {
     },
   ];
 
+  const description = lectures?.description || "IIMT hosts prominent professionals, academics, and industry leaders through guest lectures, national seminars, and conferences. Students gain insights beyond the classroom on topics ranging from finance and marketing to technology and entrepreneurship. These sessions bridge the gap between academic theory and the rapidly evolving industrial landscape.";
+
+  const nationalSeminars = lectures?.nationalSeminars || "IIMT regularly organises national-level academic events that bring together researchers, practitioners, and students to discuss emerging trends in management, commerce, and education.";
+
   return (
     <Layout>
       <PageHeader
-        title="Guest Lectures & Seminars"
-        subtitle="Insights from prominent professionals, academics, and industry leaders."
-        breadcrumbs={[{ label: "Guest Lectures" }]}
+        title={lectures?.pageTitle || "Guest Lectures & Seminars"}
+        subtitle={lectures?.pageSubtitle || "Insights from prominent professionals, academics, and industry leaders."}
+        breadcrumbs={[{ label: "Learning" }, { label: "Guest Lectures" }]}
       />
 
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="reveal-left space-y-6">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Beyond Textbooks</p>
+          <div className="max-w-4xl mx-auto space-y-16 md:space-y-24">
+            <div className="reveal-up space-y-6 text-center max-w-3xl mx-auto">
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">{lectures?.subheading || "Beyond Textbooks"}</p>
               <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground leading-tight">
-                Engaging with Industry Pioneers
+                {lectures?.heading || "Engaging with Industry Pioneers"}
               </h2>
-              <p className="text-foreground/70 leading-relaxed">
-                IIMT hosts prominent professionals, academics, and industry leaders through guest lectures, national seminars, and conferences. Students gain insights beyond the classroom on topics ranging from finance and marketing to technology and entrepreneurship. These sessions bridge the gap between academic theory and the rapidly evolving industrial landscape.
-              </p>
+              {lectures?.description ? (
+                <div 
+                  className="text-foreground/70 leading-relaxed [&>p]:mb-4"
+                  dangerouslySetInnerHTML={{ __html: description }} 
+                />
+              ) : (
+                <p className="text-foreground/70 leading-relaxed">
+                  {description}
+                </p>
+              )}
               <div className="bg-muted/50 p-6 rounded-2xl border border-border/50">
                 <div className="flex gap-4 items-start">
                   <Info className="w-5 h-5 text-gold shrink-0 mt-0.5" />
                   <div className="space-y-1">
-                    <p className="text-sm font-bold text-foreground">What to Expect</p>
-                    <p className="text-xs text-foreground/60 leading-relaxed">Sessions are open to all students across programmes. Topics and schedules are posted in advance on the Events Calendar. We also provide session recordings for student review where possible.</p>
+                    <h3 className="font-bold text-foreground mb-2">{lectures?.whatToExpectTitle || "What to Expect"}</h3>
+                    <p className="text-sm text-foreground/70 leading-relaxed">
+                      {lectures?.whatToExpectDesc || "Sessions are open to all students across programmes. Topics and schedules are posted in advance on the Events Calendar. We also provide session recordings for student review where possible."}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -90,9 +107,9 @@ export default function GuestLecturesPage() {
       <section className="py-16 md:py-24 bg-section-alt">
         <div className="container-wide text-center">
           <div className="max-w-2xl mx-auto space-y-4">
-            <h2 className="text-3xl font-display font-bold text-foreground">National Seminars & Conferences</h2>
+            <h2 className="text-3xl font-display font-bold text-foreground">{lectures?.nationalSeminarsHeading || "National Seminars & Conferences"}</h2>
             <p className="text-foreground/70">
-              IIMT regularly organises national-level academic events that bring together researchers, practitioners, and students to discuss emerging trends in management, commerce, and education.
+              {nationalSeminars}
             </p>
           </div>
         </div>

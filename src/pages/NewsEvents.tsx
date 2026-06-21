@@ -7,18 +7,41 @@ import { Calendar, ArrowRight, Search, X } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 
 const defaultEvents = [
-  { title: "Awareness Program on Gynecological Disorder", date: "April 15, 2025", category: "Seminar", excerpt: "A health awareness session organized for students featuring expert medical practitioners discussing women's health issues.", image: "https://iimt.ishan.ac/images/news/news-1.jpg" },
-  { title: "Vyaparniti: The Art of Business and Innovation", date: "April 3, 2025", category: "Event", excerpt: "Annual business competition where students showcase entrepreneurial skills through business plans and case study presentations.", image: "https://iimt.ishan.ac/images/news/news-2.jpg" },
-  { title: "Ishan Cultural Fest Kshitiz-2025", date: "March 26, 2025", category: "Cultural", excerpt: "The flagship cultural festival featuring music, dance, drama, art, and inter-college competitions across three days.", image: "https://iimt.ishan.ac/images/news/news-3.jpg" },
-  { title: "Digi-Udaya: Seminar on Digital Currency", date: "March 6, 2025", category: "Seminar", excerpt: "Expert-led seminar exploring the future of digital currencies, blockchain technology, and their impact on financial systems.", image: "https://iimt.ishan.ac/images/news/news-4.jpg" },
-  { title: "Annual Sports Meet 2025", date: "February 20, 2025", category: "Sports", excerpt: "Inter-department sports competition featuring cricket, basketball, badminton, athletics and more.", image: "" },
-  { title: "Industrial Visit to Reserve Bank of India", date: "February 8, 2025", category: "Industrial Visit", excerpt: "B.Com and BBA students visited the RBI facility to understand monetary policy, currency management, and central banking operations.", image: "" },
-  { title: "Guest Lecture: Career in Data Science", date: "January 22, 2025", category: "Guest Lecture", excerpt: "Mr. Amit Sharma from Infosys delivered an insightful session on career opportunities in data science and AI for BCA students.", image: "" },
-  { title: "Republic Day Celebration", date: "January 26, 2025", category: "Event", excerpt: "Flag hoisting ceremony followed by cultural performances celebrating India's Republic Day with the entire IIMT family.", image: "" },
+  {
+    title: "Awareness Program on Gynecological Disorder",
+    date: "April 15, 2025",
+    location: "IIMT Auditorium",
+    category: "Health",
+    description: "A health awareness session organized for students featuring expert medical practitioners discussing women's health issues and preventive care.",
+    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    title: "Vyaparniti: The Art of Business and Innovation",
+    date: "April 3, 2025",
+    location: "Seminar Hall, IIMT",
+    category: "Management",
+    description: "Annual business competition where students showcase entrepreneurial skills through business plans and case study presentations.",
+    image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    title: "Ishan Cultural Fest Kshitiz-2025",
+    date: "March 26, 2025",
+    location: "IIMT Campus",
+    category: "Cultural",
+    description: "The flagship cultural festival featuring music, dance, drama, art, and inter-college competitions across three days.",
+    image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80"
+  },
+  {
+    title: "Digi-Udaya: Seminar on Digital Currency",
+    date: "March 6, 2025",
+    location: "IIMT Auditorium",
+    category: "Seminar",
+    description: "Expert-led seminar exploring the future of digital currencies, blockchain technology, and their impact on financial systems.",
+    image: "https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=800&q=80"
+  }
 ];
 
 export default function NewsEventsPage() {
-  const ref = useScrollReveal();
   const { data } = useIIMTData("newsevents");
   const eventsData = data?.data?.length > 0 ? data.data : (Array.isArray(data) && data.length > 0 ? data : defaultEvents);
   const events = eventsData.map((e: any) => ({ ...e, excerpt: e.description || e.excerpt }));
@@ -34,6 +57,8 @@ export default function NewsEventsPage() {
       (e.excerpt || "").toLowerCase().includes(newsSearch.toLowerCase());
     return matchesCategory && matchesSearch;
   });
+
+  const ref = useScrollReveal([filteredEvents]);
 
   return (
     <Layout>

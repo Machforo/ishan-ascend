@@ -5,14 +5,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Award, ExternalLink } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 
-const defaultScholarships = [
-  { category: "Merit Scholarship", concession: "Up to 25% fee waiver", description: "Automatically applied for students in the top 10% of university exam results." },
-  { category: "SC/ST/OBC Scholarship", concession: "As per UP Scholarship Portal norms", description: "Apply through scholarship.up.gov.in. IIMT assists in documentation." },
-  { category: "Economically Weaker Section", concession: "Partial fee concession", description: "Family income below ₹2.5 LPA. Submit income certificate with admission application." },
-  { category: "Sibling Discount", concession: "10% fee waiver", description: "Two or more siblings enrolled simultaneously at Ishan Group. Inform admissions office during enrolment." },
-  { category: "Sports Scholarship", concession: "Up to 15% fee waiver", description: "State or National level sports achievement required. Submit certificates during admission." },
-  { category: "Single Girl Child", concession: "5% fee concession", description: "Sole girl child in family. Submit affidavit with admission documents." },
-];
+const defaultScholarships = [];
 
 export default function ScholarshipsPage() {
   const ref = useScrollReveal();

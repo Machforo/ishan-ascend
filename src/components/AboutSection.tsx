@@ -3,16 +3,11 @@ import { CheckCircle2 } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import libraryImg from "@/assets/students-library.jpg";
 
-const defaultHighlights = [
-  "Top 5 institution in Delhi NCR for value",
-  "ISO 14000:2015 & 50001:2018 Certified",
-  "40%+ female student enrollment",
-  "Global learning & placement opportunities",
-];
+const defaultHighlights = [];
 
 export default function AboutSection() {
-  const ref = useScrollReveal();
   const { data } = useIIMTData("homepage");
+  const ref = useScrollReveal([data]);
   const defaultImage = libraryImg;
   const apiAbout = data?.aboutIimt;
   const about = {
@@ -50,9 +45,10 @@ export default function AboutSection() {
             <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground leading-tight">
               {about.title}
             </h2>
-            <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">
-              {about.description}
-            </p>
+            <p
+              className="text-foreground/70 leading-relaxed whitespace-pre-wrap"
+              dangerouslySetInnerHTML={{ __html: about.description }}
+            />
             <div className="space-y-3 pt-2">
               {defaultHighlights.map((item) => (
                 <div key={item} className="flex items-start gap-3">

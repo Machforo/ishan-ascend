@@ -6,7 +6,7 @@ import { useIIMTData } from "@/hooks/useIIMTData";
 export default function StudentPortalPage() {
   const ref = useScrollReveal();
   const { data } = useIIMTData("studentportal");
-  const content = data?.content;
+  const content = data || {};
 
   return (
     <Layout>
@@ -15,13 +15,13 @@ export default function StudentPortalPage() {
         <div className="container-wide">
           <div className="max-w-2xl mx-auto">
             <div className="reveal space-y-4 mb-10 text-center">
-              <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">{content?.instructions || "Current IIMT students can access their Office 365 accounts for email, timetables, and academic resources. Examination results are available through the CCS University result portal."}</p>
+              <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">{content?.description || "Current IIMT students can access their Office 365 accounts for email, timetables, and academic resources. Examination results are available through the CCS University result portal."}</p>
             </div>
             
             {content?.link ? (
               <div className="flex justify-center">
                 <a href={content.link} target="_blank" rel="noopener" className="inline-flex items-center gap-2 px-8 py-4 text-sm font-semibold bg-gold text-foreground rounded-lg shadow-[0_4px_16px_hsl(var(--gold)/0.3)] hover:shadow-[0_6px_24px_hsl(var(--gold)/0.4)] transition-shadow active:scale-[0.97]">
-                  Access Student Portal →
+                  {content?.cta || "Access Student Portal →"}
                 </a>
               </div>
             ) : (

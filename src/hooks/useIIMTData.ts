@@ -4,7 +4,8 @@ export function useIIMTData(endpoint: string) {
   return useQuery({
     queryKey: ['iimt', endpoint],
     queryFn: async () => {
-      const response = await fetch(`https://ishan-backend-g096.onrender.com/api/iimt/${endpoint}`);
+      const apiBase = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      const response = await fetch(`${apiBase}/iimt/${endpoint}`);
       if (!response.ok) {
         throw new Error(`Failed to fetch ${endpoint} data`);
       }

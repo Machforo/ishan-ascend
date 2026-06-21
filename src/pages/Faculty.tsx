@@ -5,28 +5,14 @@ import { useState } from "react";
 import { Search, X } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 
-const defaultDepartments = ["All", "Management", "Commerce", "IT", "Education"];
+const defaultDepartments = [];
 
-const defaultFaculty = [
-  { name: "Dr. Ramesh Kumar", designation: "Professor & HoD", dept: "Management", qualification: "PhD, MBA", specialisation: "Strategic Management & Marketing" },
-  { name: "Dr. Sunita Sharma", designation: "Associate Professor", dept: "Commerce", qualification: "PhD, M.Com, UGC NET", specialisation: "Financial Accounting & Taxation" },
-  { name: "Prof. Anil Verma", designation: "Assistant Professor", dept: "IT", qualification: "MCA, M.Tech", specialisation: "Data Structures & Software Engineering" },
-  { name: "Dr. Meena Gupta", designation: "Professor & HoD", dept: "Education", qualification: "PhD, M.Ed", specialisation: "Pedagogy & Curriculum Development" },
-  { name: "Dr. Vikash Singh", designation: "Associate Professor", dept: "Management", qualification: "PhD, MBA", specialisation: "Human Resource Management" },
-  { name: "Prof. Priya Jain", designation: "Assistant Professor", dept: "Commerce", qualification: "M.Com, CA Inter, UGC NET", specialisation: "Cost Accounting & Auditing" },
-  { name: "Dr. Rajesh Tiwari", designation: "Associate Professor", dept: "IT", qualification: "PhD, MCA", specialisation: "Database Systems & Cloud Computing" },
-  { name: "Prof. Kavita Yadav", designation: "Assistant Professor", dept: "Education", qualification: "M.Ed, UGC NET", specialisation: "Educational Psychology" },
-  { name: "Dr. Sanjay Mishra", designation: "Professor", dept: "Management", qualification: "PhD, MBA, FDP (IIM)", specialisation: "Operations & Supply Chain Management" },
-  { name: "Prof. Neha Agarwal", designation: "Assistant Professor", dept: "Commerce", qualification: "M.Com, UGC NET", specialisation: "Banking & Financial Services" },
-  { name: "Prof. Amit Chauhan", designation: "Assistant Professor", dept: "IT", qualification: "M.Tech, MCA", specialisation: "Web Technologies & Python" },
-  { name: "Dr. Pooja Rawat", designation: "Associate Professor", dept: "Education", qualification: "PhD, M.Ed", specialisation: "Inclusive Education & Assessment" },
-];
+const defaultFaculty = [];
 
 export default function FacultyPage() {
-  const ref = useScrollReveal();
   const { data } = useIIMTData("campuslife");
-
   const faculty = data?.faculty?.length > 0 ? data.faculty : defaultFaculty;
+  const ref = useScrollReveal([faculty]);
   const departments = ["All", ...Array.from(new Set(faculty.map((f: any) => f.dept || f.department || "General"))).filter(Boolean) as string[]];
 
   const [filter, setFilter] = useState("All");

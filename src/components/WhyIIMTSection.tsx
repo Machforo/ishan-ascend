@@ -3,22 +3,25 @@ import { Award, Users, Globe, BookOpen, Building, TrendingUp, Shield, Lightbulb 
 import { useIIMTData } from "@/hooks/useIIMTData";
 
 const defaultReasons = [
-  { icon: Award, title: "NAAC Accredited", desc: "Quality benchmark certified by the National Assessment body" },
-  { icon: TrendingUp, title: "90%+ Placements", desc: "Consistent placement record with top recruiters across sectors" },
-  { icon: Globe, title: "Global Exposure", desc: "International tours and cross-cultural learning opportunities" },
-  { icon: BookOpen, title: "Industry Curriculum", desc: "Courses designed with input from industry professionals" },
-  { icon: Building, title: "Modern Campus", desc: "State-of-the-art infrastructure with smart classrooms" },
-  { icon: Users, title: "Expert Faculty", desc: "Experienced academicians and visiting industry professionals" },
-  { icon: Shield, title: "UGC & AICTE Approved", desc: "Fully recognized by national regulatory bodies" },
-  { icon: Lightbulb, title: "Skill Programs", desc: "Tally, GST, Digital Marketing, and more add-on certifications" },
+  { title: "Academic Excellence", description: "Pioneering professional education with NAAC accreditation.", icon: "Award" },
+  { title: "Industry-aligned Curriculum", description: "Courses updated continuously in response to industry trends.", icon: "BookOpen" },
+  { title: "Experienced Faculty", description: "Learn from recognized experts and researchers with years of experience.", icon: "Users" },
+  { title: "Modern Campus Labs", description: "High-speed internet, IT systems, and advanced learning tools.", icon: "Globe" },
 ];
 
+const getWhyIcon = (iconName: string) => {
+  const iconMap: Record<string, any> = {
+    Award, Users, Globe, BookOpen, Building, TrendingUp, Shield, Lightbulb
+  };
+  return iconMap[iconName] || Award;
+};
+
 export default function WhyIIMTSection() {
-  const ref = useScrollReveal();
   const { data } = useIIMTData("homepage");
   const reasons = data?.standApart?.points?.length > 0 
-    ? data.standApart.points.map((p: string) => ({ title: p, desc: p })) 
+    ? data.standApart.points 
     : defaultReasons;
+  const ref = useScrollReveal([reasons]);
 
   return (
     <section id="why-iimt" className="py-12 md:py-20" ref={ref}>
@@ -28,11 +31,14 @@ export default function WhyIIMTSection() {
           <div className="reveal-left">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold mb-3">Why Choose Us</p>
             <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground leading-tight">
-              What Makes IIMT Stand Apart
+              {data?.standApart?.heading || "What Makes IIMT Stand Apart"}
             </h2>
-            <p className="mt-4 text-foreground/60 leading-relaxed">
-              {data?.standApart?.description || "For over three decades, IIMT has maintained its commitment to academic excellence, holistic development, and career-focused education in the Delhi NCR region."}
-            </p>
+            <p 
+              className="mt-4 text-foreground/60 leading-relaxed"
+              dangerouslySetInnerHTML={{ 
+                __html: data?.standApart?.description || "For over three decades, IIMT has maintained its commitment to academic excellence, holistic development, and career-focused education in the Delhi NCR region." 
+              }}
+            />
             <a
               href="#contact"
               className="inline-flex items-center gap-2 mt-8 px-6 py-3 text-sm font-semibold bg-navy text-primary-foreground rounded-lg hover:bg-navy/90 transition-colors active:scale-[0.97]"
@@ -44,7 +50,7 @@ export default function WhyIIMTSection() {
           {/* Right grid */}
           <div className="grid sm:grid-cols-2 gap-4">
             {reasons.map((r: any, i: number) => {
-              const Icon = r.icon && typeof r.icon !== 'string' ? r.icon : Award;
+              const Icon = typeof r.icon === 'string' ? getWhyIcon(r.icon) : (r.icon || Award);
               return (
                 <div
                   key={r.title || i}

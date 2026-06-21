@@ -7,6 +7,7 @@ import {
   MessageSquare, Briefcase, Search
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useIIMTData } from "../hooks/useIIMTData";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 interface NavLink { label: string; href: string; }
@@ -59,8 +60,8 @@ const navLinks: NavItem[] = [
         icon: Award,
         links: [
           { label: "Placement Overview", href: "/placements" },
-          { label: "Placement Testimonials", href: "/placement-testimonials" },
-          { label: "Alumni Network", href: "/alumni-network" },
+          { label: "Placement Testimonials", href: "/placements#testimonials" },
+          { label: "Alumni Network", href: "/e-cell#alumni" },
           { label: "Entrepreneurship Cell", href: "/e-cell" },
         ],
       },
@@ -227,7 +228,43 @@ const navLinks: NavItem[] = [
 ];
 
 // ─── Component ─────────────────────────────────────────────────────────────────
+const getColIcon = (col: any) => {
+  if (col.icon && typeof col.icon !== 'string') return col.icon;
+  const heading = (col.heading || "").toLowerCase();
+  if (heading.includes("institution") || heading.includes("campus") || heading.includes("facility")) return Building2;
+  if (heading.includes("faculty") || heading.includes("alumni") || heading.includes("student") || heading.includes("zone")) return Users;
+  if (heading.includes("placement") || heading.includes("career") || heading.includes("work")) return Award;
+  if (heading.includes("management") || heading.includes("commerce") || heading.includes("academic") || heading.includes("program")) return BookOpen;
+  if (heading.includes("tech") || heading.includes("lab") || heading.includes("science")) return Microscope;
+  if (heading.includes("education")) return GraduationCap;
+  if (heading.includes("gallery") || heading.includes("media")) return Camera;
+  if (heading.includes("contact") || heading.includes("get in touch") || heading.includes("policy") || heading.includes("welfare")) return MessageSquare;
+  return BookOpen;
+};
 export default function Navbar({ isNotFound = false }: { isNotFound?: boolean }) {
+  const { data } = useIIMTData("homepage");
+  const headerData = data?.header;
+
+  const phone = headerData?.phone || "+91 8448797700";
+  const email = headerData?.email || "info@ishan.ac";
+  const logoText = headerData?.logoText || "ISHAN";
+  const logoSubtext = headerData?.logoSubtext || "Institute of Management & Technology";
+  const alertText = headerData?.alertText;
+  const alertLinkText = headerData?.alertLinkText;
+  const alertLink = headerData?.alertLink;
+
+  const portalLinks = headerData?.portalLinks && headerData.portalLinks.length > 0
+    ? headerData.portalLinks
+    : [
+        { label: "Fee Payment", href: "/fee-payment" },
+        { label: "Student Portal", href: "/student-portal" },
+        { label: "News", href: "/news-events" }
+      ];
+
+  const dynamicNavLinks = headerData?.navLinks && headerData.navLinks.length > 0
+    ? headerData.navLinks
+    : navLinks;
+
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
@@ -297,7 +334,7 @@ export default function Navbar({ isNotFound = false }: { isNotFound?: boolean })
     }
   }, []);
 
-  const activeLink = navLinks.find((l) => l.label === openDropdown) ?? null;
+  const activeLink = dynamicNavLinks.find((l) => l.label === openDropdown) ?? null;
   const textCls = (scrolled || isNotFound)
     ? "text-navy/80 hover:text-navy hover:bg-muted"
     : "text-white hover:text-white hover:bg-white/10 drop-shadow-lg";
@@ -315,11 +352,11 @@ export default function Navbar({ isNotFound = false }: { isNotFound?: boolean })
         <div className={`bg-navy/10 backdrop-blur-sm text-white text-sm hidden md:block transition-all duration-500 ${scrolled ? "h-0 overflow-hidden" : "py-2 border-b border-white/10"}`}>
           <div className="container-wide flex items-center justify-between">
             <div className="flex items-center gap-6">
-              <a href="mailto:info@ishan.ac" className="flex items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity">
-                <Mail className="w-3.5 h-3.5" /> info@ishan.ac
+              <a href={`mailto:${email}`} className="flex items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity">
+                <Mail className="w-3.5 h-3.5" /> {email}
               </a>
-              <a href="tel:+918448797700" className="flex items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity">
-                <Phone className="w-3.5 h-3.5" /> 8448797700
+              <a href={`tel:${phone}`} className="flex items-center gap-1.5 opacity-80 hover:opacity-100 transition-opacity">
+                <Phone className="w-3.5 h-3.5" /> {phone}
               </a>
             </div>
             <div className="flex items-center gap-4 text-xs font-medium">
@@ -330,11 +367,16 @@ export default function Navbar({ isNotFound = false }: { isNotFound?: boolean })
                 <button onClick={resetFont} className="w-5 h-5 flex items-center justify-center hover:bg-white/10 rounded transition-colors" title="Reset font size" aria-label="Reset font size">A</button>
                 <button onClick={() => adjustFont(1)} className="w-5 h-5 flex items-center justify-center hover:bg-white/10 rounded transition-colors" title="Increase font size" aria-label="Increase font size">A+</button>
               </div>
-              <Link to="/fee-payment" className="opacity-80 hover:opacity-100 transition-opacity">Fee Payment</Link>
-              <span className="opacity-30">|</span>
-              <Link to="/student-portal" className="opacity-80 hover:opacity-100 transition-opacity">Student Portal</Link>
-              <span className="opacity-30">|</span>
-              <Link to="/news-events" className="opacity-80 hover:opacity-100 transition-opacity">News</Link>
+              {portalLinks.map((pl, idx) => (
+                <span key={pl.label} className="inline-flex items-center gap-4">
+                  {idx > 0 && <span className="opacity-30">|</span>}
+                  {pl.href.startsWith("http") ? (
+                    <a href={pl.href} target="_blank" rel="noopener noreferrer" className="opacity-80 hover:opacity-100 transition-opacity">{pl.label}</a>
+                  ) : (
+                    <Link to={pl.href} className="opacity-80 hover:opacity-100 transition-opacity">{pl.label}</Link>
+                  )}
+                </span>
+              ))}
             </div>
           </div>
         </div>
@@ -347,17 +389,17 @@ export default function Navbar({ isNotFound = false }: { isNotFound?: boolean })
             <img src="/favicon.png" alt="IIMT Logo" className="h-8 md:h-10 w-auto" />
             <div className="flex flex-col leading-tight">
               <span className={`font-display font-bold text-lg md:text-xl tracking-tight transition-colors duration-500 ${(scrolled || isNotFound) ? "text-navy" : "text-white drop-shadow-lg"}`}>
-                ISHAN
+                {logoText}
               </span>
               <span className={`text-[9px] uppercase font-bold tracking-[0.15em] leading-none transition-colors duration-500 ${(scrolled || isNotFound) ? "text-muted-foreground" : "text-white/90 drop-shadow-md"}`}>
-                Institute of Management &amp; Technology
+                {logoSubtext}
               </span>
             </div>
           </Link>
 
           {/* Desktop nav — only trigger buttons here */}
           <nav className="hidden lg:flex items-center gap-0.5">
-            {navLinks.map((link) => (
+            {dynamicNavLinks.map((link) => (
               <button
                 key={link.label}
                 className={`flex items-center gap-1 px-3 py-1.5 text-[13px] font-bold transition-all rounded-md ${textCls} ${openDropdown === link.label ? "bg-white/10" : ""}`}
@@ -441,7 +483,7 @@ export default function Navbar({ isNotFound = false }: { isNotFound?: boolean })
                       style={{ gridTemplateColumns: `repeat(${activeLink.columns.length}, minmax(0,1fr))` }}
                     >
                       {activeLink.columns.map((col) => {
-                        const ColIcon = col.icon;
+                        const ColIcon = getColIcon(col);
                         return (
                           <div key={col.heading}>
                             <div className="flex items-center gap-2 mb-3 pb-2 border-b border-border/50">
@@ -503,7 +545,7 @@ export default function Navbar({ isNotFound = false }: { isNotFound?: boolean })
           <div className="lg:hidden border-t bg-card animate-fade-up max-h-[80vh] overflow-y-auto">
             <div className="container-wide py-4 space-y-1">
               <Link to="/" className="block px-3 py-2.5 text-sm font-bold text-navy">🏠 Home</Link>
-              {navLinks.map((link) => {
+              {dynamicNavLinks.map((link) => {
                 const allChildren = link.columns.flatMap((c) => c.links);
                 return (
                   <div key={link.label}>
@@ -615,6 +657,24 @@ export default function Navbar({ isNotFound = false }: { isNotFound?: boolean })
         </AnimatePresence>
 
       </header>
+      {alertText && (
+        <div className="fixed top-5 right-5 z-[999999] bg-white/95 backdrop-blur-md border border-slate-200 p-4 px-5 rounded-2xl shadow-2xl font-sans text-sm text-slate-800 max-w-[320px] leading-relaxed text-left pointer-events-auto transition-all animate-fade-in hover:shadow-gold/5">
+          <p className="font-semibold text-slate-900 flex items-center gap-1.5 mb-1">
+            <span>⚠️ Alert Notice</span>
+          </p>
+          <span className="text-slate-600 text-xs font-medium">{alertText}</span>
+          {alertLink && alertLinkText && (
+            <a 
+              href={alertLink} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-navy hover:text-gold font-bold text-xs underline block mt-2 transition-colors"
+            >
+              {alertLinkText}
+            </a>
+          )}
+        </div>
+      )}
     </>
   );
 }

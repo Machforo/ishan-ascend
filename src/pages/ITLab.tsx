@@ -5,21 +5,32 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Monitor, Wifi, Clock, Shield } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 
-const defaultSpecs = [
-  { label: "Computers", value: "120+ desktops" },
-  { label: "Internet Speed", value: "100 Mbps dedicated" },
-  { label: "Student:Computer", value: "1:1 during lab hours" },
-  { label: "Operating Systems", value: "Windows 11, Ubuntu" },
-  { label: "Software", value: "MS Office, VS Code, Eclipse, MySQL, Python, Tally" },
-  { label: "Timings", value: "8:30 AM – 5:30 PM (Mon-Sat)" },
-];
+
 
 export default function ITLabPage() {
   const ref = useScrollReveal();
   const { data } = useIIMTData("campuslife");
-  const itLab = data?.itLab;
-  const content = itLab?.content;
-  const specs = itLab?.specs?.length > 0 ? itLab.specs : defaultSpecs;
+  const itLabs = data?.itLabs;
+  const content = itLabs?.content;
+  const specs = itLabs?.specs ? [
+    { label: "Computers", value: itLabs.specs.computers },
+    { label: "Internet Connection", value: itLabs.specs.internetSpeed },
+    { label: "Software Installed", value: itLabs.specs.software },
+    { label: "Operating Hours", value: itLabs.specs.timings },
+  ] : [
+    { label: "Computers", value: "100+ High-Performance Systems" },
+    { label: "Internet Connection", value: "100 Mbps Dedicated Fiber" },
+    { label: "Software Installed", value: "MS Office, VS Code, Python, Tally Prime" },
+    { label: "Operating Hours", value: "09:00 AM to 05:00 PM" },
+  ];
+
+  const rules = itLabs?.rules && itLabs.rules.length > 0 ? itLabs.rules : [
+    "Students must carry their ID card to access the lab",
+    "No food or beverages inside the lab area",
+    "Personal USB drives require prior scanning approval",
+    "Report any hardware/software issues to the lab attendant immediately",
+    "Save work regularly — the institute is not responsible for data loss"
+  ];
 
   return (
     <Layout>
@@ -34,7 +45,7 @@ export default function ITLabPage() {
           <div className="max-w-4xl mx-auto">
             <div className="reveal space-y-5 mb-12">
               {content ? (
-                <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">{content}</p>
+                <div className="text-foreground/70 leading-relaxed [&>p]:mb-4" dangerouslySetInnerHTML={{ __html: content }} />
               ) : (
                 <>
                   <p className="text-foreground/70 leading-relaxed">
@@ -59,11 +70,10 @@ export default function ITLabPage() {
             <div className="reveal delay-200 rounded-xl border bg-section-alt p-6">
               <h3 className="font-semibold text-foreground mb-3">Lab Rules</h3>
               <ul className="space-y-2 text-sm text-foreground/70">
-                <li>• Students must carry their ID card to access the lab</li>
-                <li>• No food or beverages inside the lab area</li>
-                <li>• Personal USB drives require prior scanning approval</li>
-                <li>• Report any hardware/software issues to the lab attendant immediately</li>
-                <li>• Save work regularly — the institute is not responsible for data loss</li>
+                {rules.map((rule: any, i: number) => {
+                  const text = typeof rule === 'string' ? rule : rule.text || '';
+                  return <li key={i}>• {text}</li>;
+                })}
               </ul>
             </div>
           </div>

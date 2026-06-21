@@ -1,8 +1,9 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useIIMTData } from "@/hooks/useIIMTData";
 
-const visitingFaculty = [
+const defaultFaculty = [
   { name: "CA Rakesh Mehta", org: "Mehta & Associates", specialisation: "Advanced Accounting & Taxation", dept: "Commerce" },
   { name: "Mr. Sunil Kapoor", org: "HDFC Bank (Retd. VP)", specialisation: "Banking Operations & Risk Management", dept: "Management" },
   { name: "Ms. Deepika Nair", org: "Google India (Sr. Manager)", specialisation: "Digital Marketing & Analytics", dept: "IT" },
@@ -14,7 +15,11 @@ const visitingFaculty = [
 ];
 
 export default function VisitingFacultyPage() {
-  const ref = useScrollReveal();
+  const { data, loading } = useIIMTData("campuslife");
+  const visitingFaculty = data?.visitingFaculty?.length > 0 ? data.visitingFaculty : defaultFaculty;
+  const ref = useScrollReveal([visitingFaculty]);
+
+  if (loading) return null;
 
   return (
     <Layout>
@@ -31,11 +36,11 @@ export default function VisitingFacultyPage() {
           </p>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {visitingFaculty.map((f, i) => (
-              <div key={f.name} className={`reveal delay-${Math.min(i % 4, 3)}00 bg-card rounded-xl border p-6 hover:shadow-[0_4px_20px_hsl(var(--navy)/0.06)] transition-shadow`}>
+            {visitingFaculty.map((f: any, i: number) => (
+              <div key={f.name || i} className={`reveal delay-${Math.min(i % 4, 3)}00 bg-card rounded-xl border p-6 hover:shadow-[0_4px_20px_hsl(var(--navy)/0.06)] transition-shadow`}>
                 <div className="w-14 h-14 rounded-full bg-navy flex items-center justify-center mb-4">
                   <span className="text-sm font-bold text-primary-foreground">
-                    {f.name.split(" ").map((n) => n[0]).join("").slice(0, 2)}
+                    {f.name?.split(" ").map((n: string) => n[0]).join("").slice(0, 2)}
                   </span>
                 </div>
                 <h3 className="font-semibold text-foreground text-sm">{f.name}</h3>

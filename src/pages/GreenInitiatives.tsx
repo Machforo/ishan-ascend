@@ -14,9 +14,9 @@ const initiatives = [
 ];
 
 export default function GreenInitiativesPage() {
-  const ref = useScrollReveal();
   const { data } = useIIMTData("aboutus");
   const content = data?.greenInitiatives?.content;
+  const ref = useScrollReveal([content]);
 
   return (
     <Layout>
@@ -30,9 +30,10 @@ export default function GreenInitiativesPage() {
         <div className="container-wide">
           <div className="max-w-4xl mx-auto space-y-8">
             {content && (
-              <div className="reveal space-y-6 mb-12">
-                <p className="text-lg text-foreground/70 leading-relaxed whitespace-pre-wrap">{content}</p>
-              </div>
+              <div 
+                className="reveal space-y-6 mb-12 prose max-w-none text-lg text-foreground/70 leading-relaxed whitespace-pre-wrap"
+                dangerouslySetInnerHTML={{ __html: content }}
+              />
             )}
             {initiatives.map((item, i) => {
               const Icon = item.icon;

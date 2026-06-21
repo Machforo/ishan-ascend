@@ -1,12 +1,16 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useIIMTData } from "@/hooks/useIIMTData";
 import { Factory, Landmark, Cpu, Building2, ExternalLink } from "lucide-react";
 
 export default function IndustrialVisitsPage() {
   const ref = useScrollReveal();
+  const { data } = useIIMTData("learning");
 
-  const visits = [
+  const industrial = data?.industrialVisits;
+  
+  const visits = industrial?.visits?.length > 0 ? industrial.visits : [
     {
       company: "Mother Dairy",
       sector: "FMCG / Manufacturing",
@@ -37,10 +41,18 @@ export default function IndustrialVisitsPage() {
     },
   ];
 
+  const description = industrial?.description || "Industrial visits are a core part of experiential learning at IIMT. Students visit manufacturing plants, financial institutions, tech companies, and government organisations to witness classroom theory in action. These visits are organised semester-wise for all programmes to ensure students stay updated with current industry practices.";
+  
+  const whyMatters = industrial?.whyVisitsMatter?.length > 0 ? industrial.whyVisitsMatter : [
+    "Professional environment exposure helps students adapt to workplace culture early.",
+    "Industry networking opportunities with professionals and HR managers during visits.",
+    "Organisational culture insights provide clarity on career paths and industry expectations."
+  ];
+
   return (
     <Layout>
       <PageHeader
-        title="Industrial Visits"
+        title={visitsData?.pageTitle || "Industrial Visits"}
         subtitle="Connecting classroom theory with real-world industrial operations."
         breadcrumbs={[{ label: "Industrial Visits" }]}
       />
@@ -53,9 +65,16 @@ export default function IndustrialVisitsPage() {
               <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground leading-tight">
                 Beyond the Classroom Walls
               </h2>
-              <p className="text-foreground/70 leading-relaxed">
-                Industrial visits are a core part of experiential learning at IIMT. Students visit manufacturing plants, financial institutions, tech companies, and government organisations to witness classroom theory in action. These visits are organised semester-wise for all programmes to ensure students stay updated with current industry practices.
-              </p>
+              {industrial?.description ? (
+                <div 
+                  className="text-foreground/70 leading-relaxed [&>p]:mb-4"
+                  dangerouslySetInnerHTML={{ __html: industrial.description }} 
+                />
+              ) : (
+                <p className="text-foreground/70 leading-relaxed">
+                  {description}
+                </p>
+              )}
               <div className="grid grid-cols-2 gap-4">
                 <div className="p-4 rounded-xl border bg-card flex items-center gap-3">
                   <Factory className="w-5 h-5 text-gold" />
@@ -79,24 +98,17 @@ export default function IndustrialVisitsPage() {
             <div className="reveal-right bg-section-alt rounded-3xl p-8 md:p-10 border shadow-sm">
               <h3 className="text-2xl font-display font-bold text-foreground mb-6">Why Visits Matter</h3>
               <ul className="space-y-6">
-                <li className="flex gap-4">
-                  <div className="w-6 h-6 rounded-full bg-gold/20 flex items-center justify-center shrink-0 mt-1">
-                    <span className="text-xs font-bold text-gold">1</span>
-                  </div>
-                  <p className="text-foreground/70 text-sm">Professional environment exposure helps students adapt to workplace culture early.</p>
-                </li>
-                <li className="flex gap-4">
-                  <div className="w-6 h-6 rounded-full bg-gold/20 flex items-center justify-center shrink-0 mt-1">
-                    <span className="text-xs font-bold text-gold">2</span>
-                  </div>
-                  <p className="text-foreground/70 text-sm">Industry networking opportunities with professionals and HR managers during visits.</p>
-                </li>
-                <li className="flex gap-4">
-                  <div className="w-6 h-6 rounded-full bg-gold/20 flex items-center justify-center shrink-0 mt-1">
-                    <span className="text-xs font-bold text-gold">3</span>
-                  </div>
-                  <p className="text-foreground/70 text-sm">Organisational culture insights provide clarity on career paths and industry expectations.</p>
-                </li>
+                {whyMatters.map((m: any, i: number) => {
+                  const text = typeof m === 'string' ? m : m.text || '';
+                  return (
+                    <li key={i} className="flex gap-4">
+                      <div className="w-6 h-6 rounded-full bg-gold/20 flex items-center justify-center shrink-0 mt-1">
+                        <span className="text-xs font-bold text-gold">{i + 1}</span>
+                      </div>
+                      <p className="text-foreground/70 text-sm">{text}</p>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </div>

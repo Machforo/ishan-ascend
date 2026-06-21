@@ -5,22 +5,12 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Award, Users, Globe, BookOpen, Building, TrendingUp, Shield, Lightbulb, GraduationCap, Heart, CheckCircle } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 
-const defaultReasons = [
-  { icon: Award, title: "30 Years of Academic Legacy", description: "Established in 1994, IIMT has three decades of experience in producing industry-ready professionals. Our legacy is built on a foundation of trust, quality, and a proven track record of transforming students into leaders in Knowledge Park, Greater Noida." },
-  { icon: Users, title: "Experienced & Mentoring Faculty", description: "Our faculty is a rich blend of academic researchers and industry practitioners. With qualifications from top universities, they bring real-world context to the classroom and maintain a strong mentoring culture for every student." },
-  { icon: Lightbulb, title: "Practical & Experiential Learning", description: "Education at IIMT goes beyond theory. We emphasize case studies, live projects, industrial visits, and hands-on training through our E-Cell and skill development workshops to ensure practical proficiency." },
-  { icon: TrendingUp, title: "Dedicated Placement Support", description: "Our active placement cell works year-round to build corporate tie-ups and organize placement drives. We provide comprehensive interview preparation, aptitude training, and communication workshops to ensure students are career-ready." },
-  { icon: Building, title: "Modern Campus & Facilities", description: "Located in the educational hub of Knowledge Park I, our campus features smart classrooms, well-equipped IT labs, a vast library, and a professional auditorium, all designed to enhance the student experience." },
-  { icon: Heart, title: "Vibrant Student Life", description: "From the flagship 'Kshitiz' annual fest to NSS activities and sports meets, IIMT offers a vibrant campus life that encourages talent, teamwork, and overall personality development." },
-  { icon: Shield, title: "Regulatory Excellence", description: "NAAC accredited and fully approved by AICTE and NCTE, with affiliation to CCS University, Meerut. We maintain the highest standards of regulatory compliance for student peace of mind." },
-  { icon: GraduationCap, title: "Holistic Development Focus", description: "We focus on the all-round development of our students, integrating soft skills, professional etiquette, and ethical values into the core academic experience." },
-];
+const defaultReasons = [];
 
 export default function WhyIIMTPage() {
-  const ref = useScrollReveal();
   const { data } = useIIMTData("aboutus");
-  // Schema: whyIimt = { content: string }. Render as text content, fall back to card grid.
   const whyContent: string | undefined = data?.whyIimt?.content;
+  const ref = useScrollReveal([whyContent]);
 
   return (
     <Layout>
@@ -34,11 +24,10 @@ export default function WhyIIMTPage() {
         <div className="container-wide">
           <div className="max-w-4xl mx-auto">
             {whyContent ? (
-              <div className="reveal prose max-w-none">
-                {whyContent.split('\n').filter((l: string) => l.trim()).map((line: string, i: number) => (
-                  <p key={i} className="text-foreground/70 leading-relaxed mb-3">{line}</p>
-                ))}
-              </div>
+              <div 
+                className="reveal prose max-w-none text-foreground/70 leading-relaxed whitespace-pre-wrap"
+                dangerouslySetInnerHTML={{ __html: whyContent }}
+              />
             ) : (
               <div className="space-y-6">
                 {defaultReasons.map((r, i) => {

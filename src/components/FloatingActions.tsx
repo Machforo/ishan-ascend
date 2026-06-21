@@ -64,8 +64,8 @@ export function QuickEnquiry() {
     }
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || "https://ishan-backend-g096.onrender.com/api/iimt";
-      const response = await fetch(`${apiUrl}/leads`, {
+      const apiBase = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      const response = await fetch(`${apiBase}/iimt/leads`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

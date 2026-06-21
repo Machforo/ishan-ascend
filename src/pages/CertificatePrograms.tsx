@@ -4,8 +4,9 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
+import { useIIMTData } from "@/hooks/useIIMTData";
 
-const programs = [
+const defaultPrograms = [
   { name: "Tally ERP 9 / Prime", duration: "3 Months", fee: "₹5,000", eligibility: "Any student / graduate", desc: "Complete accounting software training covering voucher entries, GST reports, balance sheets, and payroll management." },
   { name: "GST Compliance", duration: "2 Months", fee: "₹3,500", eligibility: "B.Com / BBA students", desc: "Practical training in GST registration, return filing (GSTR-1, 3B, 9), invoice generation, and input tax credit." },
   { name: "Stock Market & Trading", duration: "3 Months", fee: "₹6,000", eligibility: "Any student", desc: "Learn fundamental and technical analysis, demat account operations, mutual funds, and investment strategies." },
@@ -16,6 +17,11 @@ const programs = [
 
 export default function CertificateProgramsPage() {
   const ref = useScrollReveal();
+  const { data } = useIIMTData("academics");
+  const certData = data?.certificatePrograms;
+
+  const introText = certData?.introText || "IIMT offers structured certificate programs alongside regular degree courses. These industry-aligned short courses help students develop practical skills that employers actively seek — from accounting software to digital marketing and financial trading. All certificate programs include hands-on training, assessments, and a certificate of completion.";
+  const programsList = certData?.programs?.length > 0 ? certData.programs : defaultPrograms;
 
   return (
     <Layout>
@@ -27,12 +33,12 @@ export default function CertificateProgramsPage() {
 
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
-          <p className="reveal text-foreground/70 leading-relaxed max-w-3xl mb-12">
-            IIMT offers structured certificate programs alongside regular degree courses. These industry-aligned short courses help students develop practical skills that employers actively seek — from accounting software to digital marketing and financial trading. All certificate programs include hands-on training, assessments, and a certificate of completion.
+          <p className="reveal text-foreground/70 leading-relaxed max-w-3xl mb-12 whitespace-pre-wrap">
+            {introText}
           </p>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {programs.map((p, i) => (
+            {programsList.map((p: any, i: number) => (
               <div key={p.name} className={`reveal delay-${Math.min(i, 5)}00 bg-card rounded-xl border p-6 hover:shadow-[0_4px_20px_hsl(var(--navy)/0.06)] transition-shadow`}>
                 <h3 className="font-display font-bold text-foreground mb-2">{p.name}</h3>
                 <div className="flex items-center gap-3 text-xs text-muted-foreground mb-3">

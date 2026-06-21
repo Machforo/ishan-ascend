@@ -11,11 +11,12 @@ export default function AuditoriumPage() {
   const defaultImage = auditoriumImg;
   const auditorium = data?.auditorium;
   const content = auditorium?.content;
-  const specs = auditorium?.specs?.length > 0 ? auditorium.specs : [
+  const fallbackSpecs = [
     { label: "Seating", value: "500+ seats" },
     { label: "AV Equipment", value: "Professional setup" },
     { label: "Events Hosted", value: "Convocations, Seminars, Kshitiz" }
   ];
+  const specs = auditorium?.specs?.length > 0 ? auditorium.specs : fallbackSpecs;
 
   return (
     <Layout>
@@ -28,7 +29,10 @@ export default function AuditoriumPage() {
             </div>
             <div className="reveal delay-100 space-y-5 mb-12">
               {content ? (
-                <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">{content}</p>
+                <div 
+                  className="text-foreground/70 leading-relaxed [&>p]:mb-4" 
+                  dangerouslySetInnerHTML={{ __html: content }} 
+                />
               ) : (
                 <>
                   <p className="text-foreground/70 leading-relaxed">The IIMT auditorium is a 500+ seat multipurpose venue equipped with professional audio-visual systems, stage lighting, and climate control. It serves as the primary venue for convocation ceremonies, national seminars, guest lectures, cultural performances during Kshitiz fest, and institutional functions.</p>

@@ -1,15 +1,19 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
+import { useIIMTData } from "@/hooks/useIIMTData";
 
 export default function FeedbackPage() {
   const ref = useScrollReveal();
+  const { data } = useIIMTData("contact");
+  const feedbackData = data?.feedback || {};
+
   return (
     <Layout>
-      <PageHeader title="Feedback" subtitle="Help us improve — share your experience as a student, parent, or visitor" breadcrumbs={[{ label: "Contact", href: "/contact" }, { label: "Feedback" }]} />
+      <PageHeader title={feedbackData.pageTitle || "Feedback"} subtitle={feedbackData.pageSubtitle || "Help us improve — share your experience as a student, parent, or visitor"} breadcrumbs={[{ label: "Contact", href: "/contact" }, { label: "Feedback" }]} />
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide"><div className="max-w-2xl mx-auto">
-          <p className="reveal text-foreground/70 leading-relaxed mb-8">Your feedback is invaluable in helping us continuously improve our academic programs, campus facilities, and student support services. All feedback is reviewed by the administration and appropriate action is taken within 7 working days.</p>
+          <p className="reveal text-foreground/70 leading-relaxed mb-8">{feedbackData.description || "Your feedback is invaluable in helping us continuously improve our academic programs, campus facilities, and student support services. All feedback is reviewed by the administration and appropriate action is taken within 7 working days."}</p>
           <div className="reveal delay-100 bg-card rounded-2xl p-8 shadow-sm border">
             <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
               <div className="grid sm:grid-cols-2 gap-4">

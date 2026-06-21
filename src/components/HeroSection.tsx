@@ -147,8 +147,8 @@ export default function HeroSection() {
     }
 
     try {
-      const apiUrl = import.meta.env.VITE_API_URL || "https://ishan-backend-g096.onrender.com/api/iimt";
-      await fetch(`${apiUrl}/leads`, {
+      const apiBase = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      await fetch(`${apiBase}/iimt/leads`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

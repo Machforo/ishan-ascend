@@ -11,7 +11,7 @@ export default function LibraryPage() {
   const defaultImage = libraryImg;
   const library = data?.library;
   const content = library?.content;
-  const specs = library?.specs?.length > 0 ? library.specs : [
+  const fallbackSpecs = [
     { label: "Total Books", value: "15,000+" },
     { label: "Journals", value: "50+ subscriptions" },
     { label: "Reading Room", value: "100+ seats" },
@@ -21,6 +21,7 @@ export default function LibraryPage() {
     { label: "E-Journals", value: "6,000+ via N-LIST" },
     { label: "Archive", value: "Past papers & dissertations" },
   ];
+  const specs = library?.specs?.length > 0 ? library.specs : fallbackSpecs;
   return (
     <Layout>
       <PageHeader
@@ -36,7 +37,10 @@ export default function LibraryPage() {
             </div>
             <div className="reveal space-y-5 mb-12">
               {content ? (
-                <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">{content}</p>
+                <div 
+                  className="text-foreground/70 leading-relaxed [&>p]:mb-4" 
+                  dangerouslySetInnerHTML={{ __html: content }} 
+                />
               ) : (
                 <>
                   <p className="text-foreground/70 leading-relaxed">

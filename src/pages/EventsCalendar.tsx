@@ -2,66 +2,78 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Calendar, MapPin, Tag, Clock, Share2 } from "lucide-react";
+import { useIIMTData } from "@/hooks/useIIMTData";
+
+const fallbackEvents = [
+  {
+    name: "National Seminar on Digital Business",
+    date: "May 15, 2024",
+    venue: "Main Auditorium",
+    category: "Academic",
+    description: "A comprehensive seminar on how digital transformation is reshaping traditional business models.",
+  },
+  {
+    name: "Kshitiz 2024: Annual Cultural Fest",
+    date: "June 05-07, 2024",
+    venue: "Campus Grounds",
+    category: "Cultural",
+    description: "Our flagship cultural festival featuring music, dance, and arts from across the region.",
+  },
+  {
+    name: "Mega Placement Drive",
+    date: "May 20, 2024",
+    venue: "Placement Cell",
+    category: "Placement",
+    description: "Annual recruitment event with 30+ corporate partners participating.",
+  },
+  {
+    name: "Workshop on Python for Data Science",
+    date: "May 10, 2024",
+    venue: "IT Lab 1",
+    category: "Workshop",
+    description: "Hands-on skill development workshop for BCA and interested BBA students.",
+  },
+];
 
 export default function EventsCalendarPage() {
   const ref = useScrollReveal();
-
-  const events = [
-    {
-      name: "National Seminar on Digital Business",
-      date: "May 15, 2024",
-      venue: "Main Auditorium",
-      category: "Academic",
-      description: "A comprehensive seminar on how digital transformation is reshaping traditional business models.",
-    },
-    {
-      name: "Kshitiz 2024: Annual Cultural Fest",
-      date: "June 05-07, 2024",
-      venue: "Campus Grounds",
-      category: "Cultural",
-      description: "Our flagship cultural festival featuring music, dance, and arts from across the region.",
-    },
-    {
-      name: "Mega Placement Drive",
-      date: "May 20, 2024",
-      venue: "Placement Cell",
-      category: "Placement",
-      description: "Annual recruitment event with 30+ corporate partners participating.",
-    },
-    {
-      name: "Workshop on Python for Data Science",
-      date: "May 10, 2024",
-      venue: "IT Lab 1",
-      category: "Workshop",
-      description: "Hands-on skill development workshop for BCA and interested BBA students.",
-    },
-  ];
+  const { data } = useIIMTData("learning");
+  const calendar = data?.eventsCalendar;
+  
+  const events = calendar?.events?.length > 0 ? calendar.events : fallbackEvents;
 
   return (
     <Layout>
       <PageHeader
-        title="Events Calendar"
-        subtitle="Stay updated with academic, cultural, and professional events at IIMT."
-        breadcrumbs={[{ label: "Events Calendar" }]}
+        title={calendar?.pageTitle || "Events Calendar"}
+        subtitle={calendar?.pageSubtitle || "Stay updated with academic, cultural, and professional events at IIMT."}
+        breadcrumbs={[{ label: calendar?.pageTitle || "Events Calendar" }]}
       />
 
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-4xl mx-auto space-y-12">
             <div className="reveal-up space-y-6 text-center">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">What's Happening</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">{calendar?.subheading || "What's Happening"}</p>
               <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground leading-tight">
-                Plan Your Campus Experience
+                {calendar?.heading || "Plan Your Campus Experience"}
               </h2>
-              <p className="text-foreground/70 leading-relaxed max-w-2xl mx-auto">
-                IIMT maintains a packed events calendar including national seminars, guest lectures, cultural festivals, sports meets, and placement drives. This helps students plan their participation and never miss an opportunity for growth.
-              </p>
+              {calendar?.description ? (
+                <div 
+                  className="text-foreground/70 leading-relaxed max-w-2xl mx-auto [&>p]:mb-4"
+                  dangerouslySetInnerHTML={{ __html: calendar.description }} 
+                />
+              ) : (
+                <p className="text-foreground/70 leading-relaxed max-w-2xl mx-auto">
+                  IIMT maintains a packed events calendar including national seminars, guest lectures, cultural festivals, sports meets, and placement drives. This helps students plan their participation and never miss an opportunity for growth.
+                </p>
+              )}
               <div className="flex justify-center gap-4 pt-2">
                 <button className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/20 text-xs font-bold text-navy hover:bg-gold hover:text-white transition-all shadow-sm">
-                  <Share2 className="w-3 h-3" /> Export to Google Calendar
+                  <Share2 className="w-3 h-3" /> {calendar?.ctaText1 || "Export to Google Calendar"}
                 </button>
                 <button className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-gold/20 text-xs font-bold text-navy hover:bg-gold hover:text-white transition-all shadow-sm">
-                  <Share2 className="w-3 h-3" /> Download iCal
+                  <Share2 className="w-3 h-3" /> {calendar?.ctaText2 || "Download iCal"}
                 </button>
               </div>
             </div>
