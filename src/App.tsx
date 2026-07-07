@@ -7,6 +7,7 @@ import { lazy, Suspense, useEffect } from "react";
 
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
+import DynamicPageRenderer from "./components/DynamicPageRenderer";
 import ScrollToTop from "./components/ScrollToTop";
 
 // Lazy load all inner pages
@@ -165,11 +166,17 @@ const App = () => (
             <Route path="/feedback" element={<Feedback />} />
 
             {/* Policies */}
+            <Route path="/code-of-conduct" element={<CodeOfConduct />} />
             <Route path="/anti-ragging" element={<AntiRagging />} />
             <Route path="/grievance-redressal" element={<GrievanceRedressal />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
 
-            <Route path="*" element={<NotFound />} />
+            {/* Dynamic Pages */}
+            <Route path="/p/:slug" element={<DynamicPageRenderer portal="iimt" />} />
+
+            {/* Catch-all 404 */}
+            <Route path="/404" element={<NotFound />} />
+            <Route path="*" element={<Navigate to="/404" replace />} />
           </Routes>
         </Suspense>
       </BrowserRouter>
