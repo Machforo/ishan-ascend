@@ -399,16 +399,32 @@ export default function Navbar({ isNotFound = false }: { isNotFound?: boolean })
 
           {/* Desktop nav — only trigger buttons here */}
           <nav className="hidden lg:flex items-center gap-0.5">
-            {dynamicNavLinks.map((link) => (
-              <button
-                key={link.label}
-                className={`flex items-center gap-1 px-3 py-1.5 text-[13px] font-bold transition-all rounded-md ${textCls} ${openDropdown === link.label ? "bg-white/10" : ""}`}
-                onMouseEnter={() => openMenu(link.label)}
-              >
-                {link.label}
-                <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${openDropdown === link.label ? "rotate-180" : ""}`} />
-              </button>
-            ))}
+            {dynamicNavLinks.map((link) => {
+              const hasDropdown = link.columns && link.columns.length > 0;
+              
+              if (!hasDropdown && link.href) {
+                return (
+                  <Link
+                    key={link.label}
+                    to={link.href}
+                    className={`flex items-center gap-1 px-3 py-1.5 text-[13px] font-bold transition-all rounded-md ${textCls}`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              }
+
+              return (
+                <button
+                  key={link.label}
+                  className={`flex items-center gap-1 px-3 py-1.5 text-[13px] font-bold transition-all rounded-md ${textCls} ${openDropdown === link.label ? "bg-white/10" : ""}`}
+                  onMouseEnter={() => openMenu(link.label)}
+                >
+                  {link.label}
+                  <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${openDropdown === link.label ? "rotate-180" : ""}`} />
+                </button>
+              );
+            })}
           </nav>
 
           {/* Search + CTA + hamburger */}
@@ -546,7 +562,22 @@ export default function Navbar({ isNotFound = false }: { isNotFound?: boolean })
             <div className="container-wide py-4 space-y-1">
               <Link to="/" className="block px-3 py-2.5 text-sm font-bold text-navy">🏠 Home</Link>
               {dynamicNavLinks.map((link) => {
-                const allChildren = link.columns.flatMap((c) => c.links);
+                const hasDropdown = link.columns && link.columns.length > 0;
+
+                if (!hasDropdown && link.href) {
+                  return (
+                    <Link
+                      key={link.label}
+                      to={link.href}
+                      className="block px-3 py-2.5 text-sm font-semibold text-foreground/80 hover:text-navy hover:bg-muted rounded-md"
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {link.label}
+                    </Link>
+                  );
+                }
+
+                const allChildren = hasDropdown ? link.columns.flatMap((c) => c.links || []) : [];
                 return (
                   <div key={link.label}>
                     <button

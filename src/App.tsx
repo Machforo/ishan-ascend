@@ -81,40 +81,7 @@ function PageLoader() {
   );
 }
 
-// Intercepts clicks to course/admissions pages for the pop-under consultation flow
-import { useNavigate } from "react-router-dom";
-function GlobalClickInterceptor() {
-  const navigate = useNavigate();
 
-  useEffect(() => {
-    const handleClick = (e: MouseEvent) => {
-      // Find closest anchor tag
-      const target = (e.target as HTMLElement).closest('a');
-      if (!target) return;
-
-      const href = target.getAttribute('href');
-      if (!href) return;
-
-      // Check if it's a course or admissions link
-      if (href.startsWith('/courses/') || href === '/admissions' || href === '/admissions-education') {
-        // Prevent default navigation
-        e.preventDefault();
-        
-        // Open the target (Course/Admissions) in a NEW tab
-        window.open(href, '_blank');
-        
-        // Redirect the CURRENT tab to the consultation page
-        navigate('/consultation');
-      }
-    };
-
-    // Use capture phase to intercept before normal link behavior
-    document.addEventListener('click', handleClick, true);
-    return () => document.removeEventListener('click', handleClick, true);
-  }, [navigate]);
-
-  return null;
-}
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -123,7 +90,7 @@ const App = () => (
       <Sonner />
       <BrowserRouter>
         <ScrollToTop />
-        <GlobalClickInterceptor />
+
         <Suspense fallback={<PageLoader />}>
           <Routes>
             <Route path="/" element={<Index />} />
