@@ -13,8 +13,8 @@ const videos = [
 ];
 
 export default function VideoGalleryPage() {
-  const ref = useScrollReveal();
   const { data } = useIIMTData("gallery");
+  const ref = useScrollReveal([data]);
 
   const getYTId = (url: string) => {
     if (!url) return "";

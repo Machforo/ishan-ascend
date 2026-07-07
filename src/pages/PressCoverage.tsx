@@ -4,8 +4,8 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
 
 export default function PressCoveragePage() {
-  const ref = useScrollReveal();
   const { data } = useIIMTData("gallery");
+  const ref = useScrollReveal([data]);
   const pressItems = data?.pressCoverage?.length > 0 ? data.pressCoverage.map((p: any) => ({
     publication: p.title.split('—')[1]?.trim() || "Press Release",
     date: p.date,

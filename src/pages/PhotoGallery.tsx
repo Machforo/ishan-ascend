@@ -18,7 +18,6 @@ const staticAlbums = [
 const staticCategories = ["All", ...staticAlbums.map((a) => a.category)];
 
 export default function PhotoGalleryPage() {
-  const ref = useScrollReveal();
   const { data } = useIIMTData("gallery");
   const [filter, setFilter] = useState("All");
   const [imgErrors, setImgErrors] = useState<Record<string, boolean>>({});
@@ -26,6 +25,8 @@ export default function PhotoGalleryPage() {
   // CMS data: gallery.photos = [{title, url}]
   const photos: Photo[] = data?.photos?.length > 0 ? data.photos : [];
   const usingCMS = photos.length > 0;
+
+  const ref = useScrollReveal([photos.length, filter]);
 
   const activeCategories = usingCMS ? ["All"] : staticCategories;
   const filteredAlbums = usingCMS
