@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 export default function FeedbackPage() {
   const ref = useScrollReveal();
@@ -13,6 +14,15 @@ export default function FeedbackPage() {
       <PageHeader title={feedbackData.pageTitle || "Feedback"} subtitle={feedbackData.pageSubtitle || "Help us improve — share your experience as a student, parent, or visitor"} breadcrumbs={[{ label: "Contact", href: "/contact" }, { label: "Feedback" }]} />
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide"><div className="max-w-2xl mx-auto">
+          {feedbackData?.bannerImage && (
+            <div className="reveal mb-10 rounded-2xl overflow-hidden aspect-[21/9]">
+              <ImageWithFallback
+                src={feedbackData.bannerImage}
+                alt="Feedback Banner"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
           <p className="reveal text-foreground/70 leading-relaxed mb-8">{feedbackData.description || "Your feedback is invaluable in helping us continuously improve our academic programs, campus facilities, and student support services. All feedback is reviewed by the administration and appropriate action is taken within 7 working days."}</p>
           <div className="reveal delay-100 bg-card rounded-2xl p-8 shadow-sm border">
             <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>

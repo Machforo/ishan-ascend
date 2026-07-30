@@ -3,6 +3,7 @@ import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { FileText, Download } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 export default function DownloadsPage() {
   const ref = useScrollReveal();
@@ -30,6 +31,15 @@ export default function DownloadsPage() {
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-3xl mx-auto space-y-3">
+            {downloadsData?.bannerImage && (
+              <div className="reveal mb-12 rounded-2xl overflow-hidden aspect-[21/9]">
+                <ImageWithFallback
+                  src={downloadsData.bannerImage}
+                  alt="Downloads Banner"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
             {downloads.map((d: any, i: number) => (
               <div key={d.name || i} className={`reveal delay-${Math.min(i % 4, 3)}00 flex items-center gap-4 p-4 rounded-xl border bg-card hover:shadow-sm transition-shadow`}>
                 <div className="w-10 h-10 rounded-lg bg-destructive/10 flex items-center justify-center shrink-0"><FileText className="w-5 h-5 text-destructive" /></div>

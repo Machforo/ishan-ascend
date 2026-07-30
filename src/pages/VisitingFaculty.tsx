@@ -38,11 +38,15 @@ export default function VisitingFacultyPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {visitingFaculty.map((f: any, i: number) => (
               <div key={f.name || i} className={`reveal delay-${Math.min(i % 4, 3)}00 bg-card rounded-xl border p-6 hover:shadow-[0_4px_20px_hsl(var(--navy)/0.06)] transition-shadow`}>
-                <div className="w-14 h-14 rounded-full bg-navy flex items-center justify-center mb-4">
-                  <span className="text-sm font-bold text-primary-foreground">
-                    {f.name?.split(" ").map((n: string) => n[0]).join("").slice(0, 2)}
-                  </span>
-                </div>
+                {f.image ? (
+                  <img src={f.image} alt={f.name} className="w-14 h-14 rounded-full object-cover mb-4" />
+                ) : (
+                  <div className="w-14 h-14 rounded-full bg-navy flex items-center justify-center mb-4">
+                    <span className="text-sm font-bold text-primary-foreground">
+                      {f.name?.split(" ").map((n: string) => n[0]).join("").slice(0, 2)}
+                    </span>
+                  </div>
+                )}
                 <h3 className="font-semibold text-foreground text-sm">{f.name}</h3>
                 <p className="text-xs text-gold font-medium mt-1">{f.org}</p>
                 <p className="text-xs text-foreground/60 mt-2">{f.specialisation}</p>

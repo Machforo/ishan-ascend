@@ -39,6 +39,14 @@ export default function PlacementsPage() {
         breadcrumbs={[{ label: "Placements" }]} 
       />
 
+      {data?.placementBanner && (
+        <div className="container-wide mt-12">
+          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+            <img src={data.placementBanner} alt="Placements Banner" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      )}
+
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           {/* Stats */}
@@ -79,7 +87,7 @@ export default function PlacementsPage() {
           </div>
 
           {/* Testimonials */}
-          <div id="testimonials" className="reveal delay-300 scroll-mt-24">
+          <div id="testimonials" className="reveal delay-300 scroll-mt-24 mb-16">
             <h2 className="text-2xl font-display font-bold text-foreground mb-6 text-center">Student Success Stories</h2>
             <div className="grid sm:grid-cols-2 gap-6">
               {testimonials.map((t: any, i: number) => (
@@ -99,6 +107,28 @@ export default function PlacementsPage() {
               ))}
             </div>
           </div>
+
+          {/* Recruiter Interactions */}
+          {data?.recruiterInteractionPhotos?.length > 0 && (
+            <div className="reveal mt-16 pt-10 border-t">
+              <h2 className="text-2xl font-display font-bold text-navy mb-6 text-center">Recruitment Activities & Mock Interviews</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                {data.recruiterInteractionPhotos.map((photo: any, i: number) => {
+                  const url = photo?.url || photo;
+                  if (!url) return null;
+                  return (
+                    <div key={i} className="rounded-2xl overflow-hidden shadow-md h-48 bg-slate-100 group">
+                      <img 
+                        src={url} 
+                        alt={`Recruiter Interaction ${i + 1}`} 
+                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

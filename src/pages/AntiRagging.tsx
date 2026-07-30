@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 export default function AntiRaggingPage() {
   const ref = useScrollReveal();
@@ -17,15 +18,25 @@ export default function AntiRaggingPage() {
       />
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
-          <div className="max-w-3xl mx-auto reveal space-y-6">
-            <div className="p-6 rounded-xl bg-destructive/5 border border-destructive/20">
+          <div className="max-w-3xl mx-auto space-y-6">
+            {antiRagging?.bannerImage && (
+              <div className="reveal mb-8 rounded-2xl overflow-hidden aspect-[21/9]">
+                <ImageWithFallback
+                  src={antiRagging.bannerImage}
+                  alt="Anti-Ragging Banner"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+            <div className="reveal p-6 rounded-xl bg-destructive/5 border border-destructive/20">
               <p className="text-sm font-semibold text-destructive mb-2">24x7 Anti-Ragging Helpline</p>
               <p className="text-2xl font-display font-bold text-foreground">{antiRagging?.helplinePhone || "1800-180-5522"}</p>
               <p className="text-xs text-muted-foreground mt-1">Toll-free | UGC helpline available round the clock</p>
             </div>
             
-            {antiRagging?.content ? (
-              <div 
+            <div className="reveal">
+              {antiRagging?.content ? (
+                <div 
                 className="text-foreground/70 leading-relaxed [&>p]:mb-4 [&>h2]:text-lg [&>h2]:font-display [&>h2]:font-bold [&>h2]:text-foreground [&>h2]:mt-8 [&>h2]:mb-3 [&>ol]:list-decimal [&>ol]:pl-5 [&>ol]:mb-4 [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:mb-4"
                 dangerouslySetInnerHTML={{ __html: antiRagging.content }}
               />
@@ -43,9 +54,10 @@ export default function AntiRaggingPage() {
                   <li>Report online at www.antiragging.in</li>
                 </ol>
                 <h2 className="text-lg font-display font-bold text-foreground">Student Pledge</h2>
-                <p className="text-foreground/70 leading-relaxed text-sm">Every student at IIMT is required to sign the anti-ragging undertaking at the time of admission. This pledge confirms that the student will not engage in any form of ragging and understands the consequences of violation including immediate expulsion and criminal proceedings.</p>
-              </>
-            )}
+                  <p className="text-foreground/70 leading-relaxed text-sm">Every student at IIMT is required to sign the anti-ragging undertaking at the time of admission. This pledge confirms that the student will not engage in any form of ragging and understands the consequences of violation including immediate expulsion and criminal proceedings.</p>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </section>

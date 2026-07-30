@@ -50,9 +50,19 @@ I warmly invite you to join the IIMT community and experience an education that 
               </div>
 
               <div className="reveal-right space-y-6">
-                <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">
+                <div className="text-foreground/70 leading-relaxed whitespace-pre-wrap">
                    {msg.message}
-                </p>
+                </div>
+
+                {msg.candidImage && (
+                  <div className="mt-8 rounded-2xl overflow-hidden shadow-md max-h-[350px]">
+                    <img 
+                      src={msg.candidImage} 
+                      alt={`${msg.name} Academic Setting`} 
+                      className="w-full h-full object-cover" 
+                    />
+                  </div>
+                )}
 
                 <div className="pt-4 border-t">
                   <p className="font-semibold text-foreground">{msg.name}</p>

@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 export default function CareersPage() {
   const ref = useScrollReveal();
@@ -20,6 +21,15 @@ export default function CareersPage() {
       <PageHeader title={careersData.pageTitle || "Careers at IIMT"} subtitle={careersData.pageSubtitle || "Join our team of dedicated educators and professionals"} breadcrumbs={[{ label: "Contact", href: "/contact" }, { label: "Careers" }]} />
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide"><div className="max-w-3xl mx-auto">
+          {careersData?.bannerImage && (
+            <div className="reveal mb-10 rounded-2xl overflow-hidden aspect-[21/9]">
+              <ImageWithFallback
+                src={careersData.bannerImage}
+                alt="Careers Banner"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
           <p className="reveal text-foreground/70 leading-relaxed mb-10 whitespace-pre-wrap">{careersData.description || "Ishan Institute of Management & Technology is always looking for passionate educators and professionals to join our growing team. We offer competitive compensation, a supportive work environment, and opportunities for professional development."}</p>
           <div className="space-y-4">
             {jobs.map((j: any, i: number) => (

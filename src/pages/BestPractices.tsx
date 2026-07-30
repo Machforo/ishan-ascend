@@ -5,11 +5,10 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
 
 export default function BestPracticesPage() {
-  const ref = useScrollReveal();
   const { data } = useIIMTData("aboutus");
-  // Schema: bestPractices is an array of { title, content }
-  const practices: Array<{title:string;content:string}> = data?.bestPractices?.length > 0 ? data.bestPractices : [];
-  const legacyContent = practices.length === 0 ? null : null; // just to keep clarity
+  // Schema: bestPractices is an array of { title, content, image }
+  const practices: Array<{title:string;content:string;image?:string}> = data?.bestPractices?.length > 0 ? data.bestPractices : [];
+  const ref = useScrollReveal([practices]);
 
   return (
     <Layout>
@@ -19,15 +18,30 @@ export default function BestPracticesPage() {
         breadcrumbs={[{ label: "About", href: "/about" }, { label: "Best Practices" }]}
       />
 
+      {data?.bestPracticesBanner && (
+        <div className="container-wide mt-12">
+          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+            <img src={data.bestPracticesBanner} alt="Best Practices Banner" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      )}
+
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-3xl mx-auto prose prose-foreground">
             <div className="reveal space-y-8">
               {practices.length > 0 ? (
                 practices.map((p, i) => (
-                  <div key={p.title || i} className="p-6 rounded-xl border bg-card">
-                    <h2 className="text-xl font-display font-bold text-foreground mb-3">{i+1}. {p.title}</h2>
-                    <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">{p.content}</p>
+                  <div key={p.title || i} className="p-6 rounded-xl border bg-card grid sm:grid-cols-[1fr_200px] gap-6 items-center">
+                    <div>
+                      <h2 className="text-xl font-display font-bold text-foreground mb-3">{i+1}. {p.title}</h2>
+                      <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">{p.content}</p>
+                    </div>
+                    {p.image && (
+                      <div className="rounded-xl overflow-hidden shadow-sm h-36 bg-slate-100 shrink-0">
+                        <img src={p.image} alt={p.title} className="w-full h-full object-cover" />
+                      </div>
+                    )}
                   </div>
                 ))
               ) : (

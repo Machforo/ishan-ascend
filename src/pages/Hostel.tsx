@@ -13,10 +13,10 @@ const fallbackAmenities = [
 ];
 
 export default function HostelPage() {
-  const ref = useScrollReveal();
   const { data } = useIIMTData("campuslife");
   const hostel = data?.hostel;
   const content = hostel?.content;
+  const ref = useScrollReveal([hostel]);
   const specs = hostel?.specs?.length > 0 ? hostel.specs : [
     { label: "Boys Hostel Fee", value: "₹60,000 / year" },
     { label: "Girls Hostel Fee", value: "₹65,000 / year" },
@@ -27,6 +27,14 @@ export default function HostelPage() {
   return (
     <Layout>
       <PageHeader title="Hostel" subtitle="Safe, comfortable residential facilities for outstation students" breadcrumbs={[{ label: "Campus", href: "/infrastructure" }, { label: "Hostel" }]} />
+      {hostel?.bannerImage && (
+        <div className="container-wide mt-12">
+          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+            <img src={hostel.bannerImage} alt="Hostel Banner" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      )}
+
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-4xl mx-auto">
@@ -63,6 +71,27 @@ export default function HostelPage() {
               ))}
             </div>
 
+            {hostel?.images?.length > 0 && (
+              <div className="reveal mt-12 pt-10 border-t mb-12">
+                <h3 className="text-2xl font-display font-bold text-navy mb-6 text-center">Hostel Rooms & Amenities</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                  {hostel.images.map((photo: any, i: number) => {
+                    const url = photo?.url || photo;
+                    if (!url) return null;
+                    return (
+                      <div key={i} className="rounded-2xl overflow-hidden shadow-md h-48 bg-slate-100 group">
+                        <img 
+                          src={url} 
+                          alt={`Hostel Room ${i + 1}`} 
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             <div className="reveal delay-300 rounded-xl border bg-card p-6">
               <h3 className="font-semibold text-foreground mb-3">Warden Contact</h3>
               <p className="text-sm text-foreground/70">For hostel enquiries and applications, contact the admissions office at <a href="tel:+918448797700" className="text-navy font-semibold">8448797700</a> or visit the campus.</p>
@@ -70,6 +99,7 @@ export default function HostelPage() {
           </div>
         </div>
       </section>
+
       <EnquiryCTA />
     </Layout>
   );

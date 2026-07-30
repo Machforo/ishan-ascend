@@ -3,12 +3,13 @@ import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import { Mic2, Calendar, User, Info } from "lucide-react";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 export default function GuestLecturesPage() {
-  const ref = useScrollReveal();
   const { data } = useIIMTData("learning");
   
   const lectures = data?.guestLectures;
+  const ref = useScrollReveal([lectures]);
 
   const events = lectures?.events?.length > 0 ? lectures.events : [
     {
@@ -77,11 +78,20 @@ export default function GuestLecturesPage() {
               </div>
             </div>
 
-            <div className="reveal-right space-y-4">
+            <div className="reveal-right grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {events.map((e, i) => (
-                <div key={i} className="group p-6 rounded-2xl border bg-card hover:bg-muted transition-all duration-300">
+                <div key={i} className="group flex flex-col p-6 rounded-2xl border bg-card hover:bg-muted transition-all duration-300">
+                  {e.image && (
+                    <div className="w-full h-40 rounded-xl overflow-hidden mb-4 shrink-0">
+                      <ImageWithFallback
+                        src={e.image}
+                        alt={e.speaker}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                  )}
                   <div className="flex items-center gap-4 mb-4">
-                    <div className="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center text-gold group-hover:bg-gold group-hover:text-white transition-colors">
+                    <div className="w-12 h-12 rounded-full bg-gold/10 flex items-center justify-center text-gold group-hover:bg-gold group-hover:text-white transition-colors shrink-0">
                       <Mic2 className="w-5 h-5" />
                     </div>
                     <div>

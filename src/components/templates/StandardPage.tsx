@@ -23,13 +23,13 @@ export interface StandardPageProps {
 }
 
 export default function StandardPage({ pageTitle, pageSubtitle, breadcrumbs, sections }: StandardPageProps) {
-  const ref = useScrollReveal();
+  const ref = useScrollReveal([sections]);
 
   const renderSection = (section: PageSection, index: number) => {
     switch (section.type) {
       case "hero":
         return (
-          <section key={section.id} className={cn("py-20 md:py-28", section.className)} ref={ref}>
+          <section key={section.id} className={cn("py-20 md:py-28", section.className)}>
             <div className="container-wide">
               <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                 {section.image && (
@@ -62,7 +62,7 @@ export default function StandardPage({ pageTitle, pageSubtitle, breadcrumbs, sec
         
       case "content":
         return (
-          <section key={section.id} className={cn("py-16 md:py-24 bg-slate-50/50", section.className)} ref={ref}>
+          <section key={section.id} className={cn("py-16 md:py-24 bg-slate-50/50", section.className)}>
             <div className="container-wide">
               <div className="max-w-4xl mx-auto text-center space-y-8">
                 {section.subtitle && <p className="text-gold font-bold uppercase tracking-widest text-sm">{section.subtitle}</p>}
@@ -77,7 +77,7 @@ export default function StandardPage({ pageTitle, pageSubtitle, breadcrumbs, sec
 
       case "grid":
         return (
-          <section key={section.id} className={cn("py-16 md:py-24", section.className)} ref={ref}>
+          <section key={section.id} className={cn("py-16 md:py-24", section.className)}>
             <div className="container-wide">
               <div className="max-w-3xl mx-auto mb-16 text-center">
                  {section.subtitle && <p className="text-gold font-bold uppercase tracking-widest text-sm mb-4">{section.subtitle}</p>}
@@ -108,7 +108,9 @@ export default function StandardPage({ pageTitle, pageSubtitle, breadcrumbs, sec
         subtitle={pageSubtitle}
         breadcrumbs={breadcrumbs}
       />
-      {sections.map((section, index) => renderSection(section, index))}
+      <div ref={ref}>
+        {sections.map((section, index) => renderSection(section, index))}
+      </div>
     </Layout>
   );
 }

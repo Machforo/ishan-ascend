@@ -26,6 +26,14 @@ export default function GreenInitiativesPage() {
         breadcrumbs={[{ label: "About", href: "/about" }, { label: "Green Initiatives" }]}
       />
 
+      {data?.greenInitiatives?.bannerImage && (
+        <div className="container-wide mt-12">
+          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+            <img src={data.greenInitiatives.bannerImage} alt="Green Initiatives Banner" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      )}
+
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-4xl mx-auto space-y-8">
@@ -54,6 +62,27 @@ export default function GreenInitiativesPage() {
                 </div>
               );
             })}
+
+            {data?.greenInitiatives?.images?.length > 0 && (
+              <div className="reveal mt-12 pt-10 border-t">
+                <h3 className="text-2xl font-display font-bold text-navy mb-6 text-center">Green Campus Gallery</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                  {data.greenInitiatives.images.map((photo: any, i: number) => {
+                    const url = photo?.url || photo;
+                    if (!url) return null;
+                    return (
+                      <div key={i} className="rounded-2xl overflow-hidden shadow-md h-48 bg-slate-100 group">
+                        <img 
+                          src={url} 
+                          alt={`Green Initiative ${i + 1}`} 
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>

@@ -7,8 +7,8 @@ import { GraduationCap, Users, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 
 export default function EducationOverviewPage() {
-  const ref = useScrollReveal();
   const { data, isLoading } = useIIMTData("academics");
+  const ref = useScrollReveal([data]);
   
   const fallbackDesc = "The Education wing of IIMT offers NCTE-approved Bachelor of Education (B.Ed) and Master of Education (M.Ed) programs under CCS University affiliation. Recognized by SCERT, Uttar Pradesh, these programs prepare aspiring teachers with the pedagogical skills, classroom management techniques, and subject expertise required for a successful teaching career. With dedicated pedagogy labs, micro-teaching facilities, ICT-integrated instruction, and a strong network of partner schools for practice teaching, IIMT's education programs stand among the best in the Delhi NCR region.";
   const fallbackHighlights = [
@@ -28,13 +28,21 @@ export default function EducationOverviewPage() {
         breadcrumbs={[{ label: "Education Programs" }]}
       />
 
+      {data?.educationOverview?.bannerImage && (
+        <div className="container-wide mt-12">
+          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+            <img src={data.educationOverview.bannerImage} alt="Education Programs Banner" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      )}
+
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-4xl mx-auto">
             <div className="reveal space-y-5 mb-16">
-              <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">
+              <div className="text-foreground/70 leading-relaxed whitespace-pre-wrap">
                 {description}
-              </p>
+              </div>
               <div className="grid sm:grid-cols-2 gap-4">
                 {highlights.map((item: string) => (
                   <div key={item} className="flex items-center gap-2.5 text-sm text-foreground/80">
@@ -44,6 +52,40 @@ export default function EducationOverviewPage() {
                 ))}
               </div>
             </div>
+
+            {data?.educationOverview?.editorialPhotos?.length > 0 && (
+              <div className="reveal mt-12 pt-10 border-t">
+                <h3 className="text-2xl font-display font-bold text-navy mb-6 text-center">Interactive Learning & Classrooms</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
+                  {data.educationOverview.editorialPhotos.map((photo: any, i: number) => {
+                    const url = photo?.url || photo;
+                    if (!url) return null;
+                    return (
+                      <div key={i} className="rounded-2xl overflow-hidden shadow-md h-48 bg-slate-100 group">
+                        <img 
+                          src={url} 
+                          alt={`Learning Action ${i + 1}`} 
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {data?.educationOverview?.infographicImage && (
+              <div className="reveal mt-12 pt-10 border-t">
+                <h3 className="text-2xl font-display font-bold text-navy mb-6 text-center">Curriculum & Pedagogy Milestones</h3>
+                <div className="rounded-3xl overflow-hidden border border-slate-100 shadow-md bg-white p-2 mb-12">
+                  <img 
+                    src={data.educationOverview.infographicImage} 
+                    alt="Curriculum Infographic" 
+                    className="w-full max-h-[350px] object-contain mx-auto" 
+                  />
+                </div>
+              </div>
+            )}
 
             <div className="grid sm:grid-cols-2 gap-6">
               <Link to="/courses/bed" className="reveal group block p-8 rounded-xl border bg-card hover:shadow-[0_8px_30px_hsl(var(--navy)/0.1)] transition-shadow">

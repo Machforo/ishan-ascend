@@ -22,6 +22,13 @@ export default function ResearchJournalPage() {
   return (
     <Layout>
       <PageHeader title="Research Journal" subtitle="Management Stream — UGC CARE listed peer-reviewed journal" breadcrumbs={[{ label: "Research" }, { label: "Journal" }]} />
+      {content?.bannerImage && (
+        <div className="container-wide mt-12">
+          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+            <img src={content.bannerImage} alt="Research Journal Banner" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      )}
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide"><div className="max-w-3xl mx-auto reveal space-y-6">
           <p className="text-foreground/70 leading-relaxed">{content.description}</p>

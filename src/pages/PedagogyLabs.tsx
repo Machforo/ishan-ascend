@@ -70,6 +70,14 @@ export default function PedagogyLabsPage() {
         breadcrumbs={[{ label: "Pedagogy Labs" }]}
       />
 
+      {labsData?.equipmentWideImage && (
+        <div className="container-wide mt-12">
+          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+            <img src={labsData.equipmentWideImage} alt="Pedagogy Lab Wide Angle" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      )}
+
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
@@ -101,17 +109,84 @@ export default function PedagogyLabsPage() {
               ))}
             </div>
           </div>
+
+          <div className="grid lg:grid-cols-2 gap-12 mt-16 pt-10 border-t">
+            {labsData?.equipmentCloseups?.length > 0 && (
+              <div className="reveal">
+                <h3 className="text-xl font-bold text-navy mb-6">Lab Equipment Closeups</h3>
+                <div className="grid grid-cols-3 gap-4">
+                  {labsData.equipmentCloseups.map((photo: any, i: number) => {
+                    const url = photo?.url || photo;
+                    if (!url) return null;
+                    return (
+                      <div key={i} className="rounded-2xl overflow-hidden shadow-sm h-28 bg-slate-100 group">
+                        <img 
+                          src={url} 
+                          alt={`Equipment Closeup ${i + 1}`} 
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {labsData?.studentsWorkingImages?.length > 0 && (
+              <div className="reveal">
+                <h3 className="text-xl font-bold text-navy mb-6">Trainee Teachers in Practice</h3>
+                <div className="grid grid-cols-2 gap-4">
+                  {labsData.studentsWorkingImages.map((photo: any, i: number) => {
+                    const url = photo?.url || photo;
+                    if (!url) return null;
+                    return (
+                      <div key={i} className="rounded-2xl overflow-hidden shadow-sm h-28 bg-slate-100 group">
+                        <img 
+                          src={url} 
+                          alt={`Students Working ${i + 1}`} 
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {labsData?.safetySignageImage && (
+              <div className="reveal lg:col-span-2 p-6 bg-amber-50/50 border border-amber-200/50 rounded-2xl flex flex-col sm:flex-row gap-6 items-center">
+                <div className="space-y-2 flex-1">
+                  <h4 className="font-bold text-amber-900 text-lg">Lab Safety & Regulations</h4>
+                  <p className="text-sm text-amber-800">Trainees must adhere to safety procedures and follow signage instructions inside pedagogy and micro-teaching labs.</p>
+                </div>
+                <div className="w-24 h-24 rounded-xl overflow-hidden shrink-0 border bg-white shadow-sm">
+                  <img src={labsData.safetySignageImage} alt="Safety Signage" className="w-full h-full object-cover" />
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
       <section className="py-16 md:py-24 bg-section-alt">
-        <div className="container-wide text-center">
-          <div className="max-w-3xl mx-auto space-y-6">
-            <GraduationCap className="w-12 h-12 text-gold mx-auto" />
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">Practice Teaching Programme</h2>
-            <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">
-              {practiceTeachingDesc}
-            </p>
+        <div className="container-wide">
+          <div className="grid md:grid-cols-2 gap-12 items-center max-w-5xl mx-auto">
+            <div className="space-y-6">
+              <GraduationCap className="w-12 h-12 text-gold" />
+              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">Practice Teaching Programme</h2>
+              <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">
+                {practiceTeachingDesc}
+              </p>
+            </div>
+            {labsData?.practiceTeachingImage && (
+              <div className="rounded-3xl overflow-hidden shadow-md h-64 border border-slate-100 bg-white p-2">
+                <img 
+                  src={labsData.practiceTeachingImage} 
+                  alt="Practice Teaching" 
+                  className="w-full h-full object-cover rounded-2xl" 
+                />
+              </div>
+            )}
           </div>
         </div>
       </section>

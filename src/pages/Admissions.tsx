@@ -4,6 +4,7 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { FileText, Calendar, Phone, CheckCircle2, ArrowRight } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 const steps = [
   { num: "01", title: "CCS University Registration", desc: "Begin by registering on the official CCS University web-portal. This is mandatory for all students seeking admission to B.Com, BBA, BCA, M.Com, B.Ed, and M.Ed programmes at IIMT." },
@@ -59,6 +60,17 @@ export default function AdmissionsPage() {
               </div>
             )}
 
+            {/* Banner Image */}
+            {data?.howToApply?.bannerImage && (
+              <div className="reveal mb-14 rounded-2xl overflow-hidden aspect-[21/9]">
+                <ImageWithFallback
+                  src={data.howToApply.bannerImage}
+                  alt="Admissions Banner"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+
             {/* Steps */}
             <h2 className="text-2xl font-display font-bold text-foreground mb-8">Admission Process</h2>
             
@@ -75,6 +87,21 @@ export default function AdmissionsPage() {
                 </div>
               ))}
             </div>
+            
+            {/* Gallery Images */}
+            {data?.howToApply?.images && data.howToApply.images.length > 0 && (
+              <div className="reveal grid grid-cols-1 md:grid-cols-3 gap-4 mb-16">
+                {data.howToApply.images.map((img: any, i: number) => (
+                  <div key={i} className="rounded-xl overflow-hidden aspect-video">
+                    <ImageWithFallback
+                      src={img.url}
+                      alt={`Admission Gallery ${i + 1}`}
+                      className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Documents */}
             <h2 className="text-2xl font-display font-bold text-foreground mb-6">Document Checklist</h2>

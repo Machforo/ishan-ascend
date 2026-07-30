@@ -5,6 +5,7 @@ import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import { useState } from "react";
 import { toast } from "sonner";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 export default function ContactPage() {
   const ref = useScrollReveal();
@@ -61,6 +62,15 @@ export default function ContactPage() {
         <div className="container-wide">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
             <div className="reveal-left space-y-8">
+              {data?.mainContact?.bannerImage && (
+                <div className="rounded-xl overflow-hidden aspect-[21/9]">
+                  <ImageWithFallback
+                    src={data.mainContact.bannerImage}
+                    alt="Contact Banner"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              )}
               <div>
                 <h2 className="text-2xl font-display font-bold text-foreground mb-6">Get in Touch</h2>
                 <div className="space-y-4">
@@ -83,6 +93,20 @@ export default function ContactPage() {
               <div className="rounded-xl overflow-hidden border h-[300px]">
                 <iframe src={mainContact.mapEmbed} width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" title="IIMT Location" />
               </div>
+              
+              {data?.mainContact?.images && data.mainContact.images.length > 0 && (
+                <div className="grid grid-cols-3 gap-2">
+                  {data.mainContact.images.map((img: any, i: number) => (
+                    <div key={i} className="rounded-lg overflow-hidden aspect-square">
+                      <ImageWithFallback
+                        src={img.url}
+                        alt={`Campus View ${i + 1}`}
+                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
 
             <div className="reveal-right">

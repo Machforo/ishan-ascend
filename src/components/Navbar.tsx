@@ -688,24 +688,7 @@ export default function Navbar({ isNotFound = false }: { isNotFound?: boolean })
         </AnimatePresence>
 
       </header>
-      {alertText && (
-        <div className="fixed top-5 right-5 z-[999999] bg-white/95 backdrop-blur-md border border-slate-200 p-4 px-5 rounded-2xl shadow-2xl font-sans text-sm text-slate-800 max-w-[320px] leading-relaxed text-left pointer-events-auto transition-all animate-fade-in hover:shadow-gold/5">
-          <p className="font-semibold text-slate-900 flex items-center gap-1.5 mb-1">
-            <span>⚠️ Alert Notice</span>
-          </p>
-          <span className="text-slate-600 text-xs font-medium">{alertText}</span>
-          {alertLink && alertLinkText && (
-            <a 
-              href={alertLink} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="text-navy hover:text-gold font-bold text-xs underline block mt-2 transition-colors"
-            >
-              {alertLinkText}
-            </a>
-          )}
-        </div>
-      )}
+
     </>
   );
 }

@@ -8,10 +8,10 @@ import { useIIMTData } from "@/hooks/useIIMTData";
 
 
 export default function ITLabPage() {
-  const ref = useScrollReveal();
   const { data } = useIIMTData("campuslife");
   const itLabs = data?.itLabs;
   const content = itLabs?.content;
+  const ref = useScrollReveal([itLabs]);
   const specs = itLabs?.specs ? [
     { label: "Computers", value: itLabs.specs.computers },
     { label: "Internet Connection", value: itLabs.specs.internetSpeed },
@@ -40,6 +40,14 @@ export default function ITLabPage() {
         breadcrumbs={[{ label: "Campus", href: "/infrastructure" }, { label: "IT Lab" }]}
       />
 
+      {itLabs?.equipmentWideImage && (
+        <div className="container-wide mt-12">
+          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+            <img src={itLabs.equipmentWideImage} alt="IT Lab Equipment Wide" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      )}
+
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-4xl mx-auto">
@@ -66,6 +74,54 @@ export default function ITLabPage() {
                 </div>
               ))}
             </div>
+
+            <div className="grid lg:grid-cols-2 gap-12 mt-12 pt-10 border-t mb-12">
+              {itLabs?.equipmentCloseups?.length > 0 && (
+                <div className="reveal">
+                  <h3 className="text-xl font-bold text-navy mb-6">Lab Systems & Technology</h3>
+                  <div className="grid grid-cols-3 gap-4">
+                    {itLabs.equipmentCloseups.map((photo: any, i: number) => {
+                      const url = photo?.url || photo;
+                      if (!url) return null;
+                      return (
+                        <div key={i} className="rounded-2xl overflow-hidden shadow-sm h-28 bg-slate-100 group">
+                          <img src={url} alt={`IT Equipment ${i + 1}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {itLabs?.studentsWorkingImages?.length > 0 && (
+                <div className="reveal">
+                  <h3 className="text-xl font-bold text-navy mb-6">Students Collaborating</h3>
+                  <div className="grid grid-cols-2 gap-4">
+                    {itLabs.studentsWorkingImages.map((photo: any, i: number) => {
+                      const url = photo?.url || photo;
+                      if (!url) return null;
+                      return (
+                        <div key={i} className="rounded-2xl overflow-hidden shadow-sm h-28 bg-slate-100 group">
+                          <img src={url} alt={`Students Working ${i + 1}`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {itLabs?.safetySignageImage && (
+              <div className="reveal p-6 bg-rose-50/50 border border-rose-200/50 rounded-2xl flex flex-col sm:flex-row gap-6 items-center mb-12">
+                <div className="space-y-2 flex-1">
+                  <h4 className="font-bold text-rose-900 text-lg">Computer Lab Safety & Policies</h4>
+                  <p className="text-sm text-rose-800">Please respect lab policies, wear proper identification, and refrain from food/beverages in systems area.</p>
+                </div>
+                <div className="w-24 h-24 rounded-xl overflow-hidden shrink-0 border bg-white shadow-sm">
+                  <img src={itLabs.safetySignageImage} alt="IT Lab Safety Signage" className="w-full h-full object-cover" />
+                </div>
+              </div>
+            )}
 
             <div className="reveal delay-200 rounded-xl border bg-section-alt p-6">
               <h3 className="font-semibold text-foreground mb-3">Lab Rules</h3>

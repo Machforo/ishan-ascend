@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 export default function GrievanceRedressalPage() {
   const ref = useScrollReveal();
@@ -17,8 +18,18 @@ export default function GrievanceRedressalPage() {
       />
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
-          <div className="max-w-3xl mx-auto reveal space-y-6">
-            {grievanceRedressal?.content ? (
+          <div className="max-w-3xl mx-auto space-y-6">
+            {grievanceRedressal?.bannerImage && (
+              <div className="reveal mb-8 rounded-2xl overflow-hidden aspect-[21/9]">
+                <ImageWithFallback
+                  src={grievanceRedressal.bannerImage}
+                  alt="Grievance Redressal Banner"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+            <div className="reveal">
+              {grievanceRedressal?.content ? (
               <div 
                 className="text-foreground/70 leading-relaxed [&>p]:mb-4 [&>h2]:text-lg [&>h2]:font-display [&>h2]:font-bold [&>h2]:text-foreground [&>h2]:mt-8 [&>h2]:mb-3 [&>ol]:list-decimal [&>ol]:pl-5 [&>ol]:mb-4 [&>ul]:list-disc [&>ul]:pl-5 [&>ul]:mb-4"
                 dangerouslySetInnerHTML={{ __html: grievanceRedressal.content }}
@@ -39,6 +50,7 @@ export default function GrievanceRedressalPage() {
                 </div>
               </>
             )}
+            </div>
           </div>
         </div>
       </section>

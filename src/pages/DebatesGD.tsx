@@ -3,6 +3,7 @@ import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import { MessageSquare, Users, Mic2, Briefcase, Trophy } from "lucide-react";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 // Helper to map icon string to Lucide component
 const getIcon = (name: string) => {
@@ -16,10 +17,10 @@ const getIcon = (name: string) => {
 };
 
 export default function DebatesGDPage() {
-  const ref = useScrollReveal();
   const { data } = useIIMTData("learning");
 
   const debates = data?.debatesGD;
+  const ref = useScrollReveal([debates]);
   
   const activities = debates?.activities?.length > 0 ? debates.activities : [
     {
@@ -65,7 +66,17 @@ export default function DebatesGDPage() {
 
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {debates?.bannerImage && (
+            <div className="reveal mb-16 rounded-2xl overflow-hidden aspect-[21/9]">
+              <ImageWithFallback
+                src={debates.bannerImage}
+                alt="Debates & GD Banner"
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-20">
             <div className="reveal-left space-y-6">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Communication Culture</p>
               <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground leading-tight">
@@ -84,9 +95,14 @@ export default function DebatesGDPage() {
               <div className="space-y-4">
                 <p className="text-sm font-bold text-foreground">Participation includes:</p>
                 <ul className="grid sm:grid-cols-2 gap-3">
-                  {points.map((p: string, i: number) => (
-                    <li key={i} className="flex items-center gap-2 text-sm text-foreground/70"><Users className="w-4 h-4 text-gold" /> {p}</li>
-                  ))}
+                  {points.map((p: any, i: number) => {
+                    const text = typeof p === 'string' ? p : p?.text || '';
+                    return (
+                      <li key={i} className="flex items-center gap-2 text-sm text-foreground/70">
+                        <Users className="w-4 h-4 text-gold" /> {text}
+                      </li>
+                    );
+                  })}
                 </ul>
               </div>
             </div>
@@ -105,6 +121,20 @@ export default function DebatesGDPage() {
               ))}
             </div>
           </div>
+          
+          {debates?.images && debates.images.length > 0 && (
+            <div className="reveal grid grid-cols-1 md:grid-cols-3 gap-4">
+              {debates.images.map((img: any, i: number) => (
+                <div key={i} className="rounded-xl overflow-hidden aspect-video">
+                  <ImageWithFallback
+                    src={img.url}
+                    alt={`Debates Gallery ${i + 1}`}
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

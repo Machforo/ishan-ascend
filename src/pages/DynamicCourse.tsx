@@ -82,6 +82,12 @@ export default function DynamicCourse() {
       
       {/* Header */}
       <div className="bg-navy py-20 md:py-32 relative overflow-hidden">
+        {course.bannerImage && (
+          <div className="absolute inset-0 z-0">
+            <img src={course.bannerImage} alt={course.programName || course.name} className="w-full h-full object-cover opacity-35" />
+            <div className="absolute inset-0 bg-gradient-to-r from-navy via-navy/90 to-transparent"></div>
+          </div>
+        )}
         <div className="container-wide relative z-10">
           <div className="max-w-3xl">
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-display font-bold text-primary-foreground leading-tight mb-4">
@@ -103,6 +109,27 @@ export default function DynamicCourse() {
               <h2 className="text-2xl font-display font-bold text-navy mb-5 text-gold-underline">Program Overview</h2>
               <p className="text-base text-foreground/80 leading-relaxed whitespace-pre-wrap">{course.overview || course.description || "Program overview details will be updated shortly."}</p>
             </div>
+
+            {course.images?.length > 0 && (
+              <div>
+                <h2 className="text-2xl font-display font-bold text-navy mb-5 text-gold-underline">Campus Experience & Learning</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                  {course.images.map((photo: any, i: number) => {
+                    const url = photo?.url || photo;
+                    if (!url) return null;
+                    return (
+                      <div key={i} className="rounded-2xl overflow-hidden shadow-md h-40 bg-slate-100 group">
+                        <img 
+                          src={url} 
+                          alt={`Course Experience ${i + 1}`} 
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             <div>
               <h2 className="text-2xl font-display font-bold text-navy mb-5 text-gold-underline">Curriculum Structure</h2>

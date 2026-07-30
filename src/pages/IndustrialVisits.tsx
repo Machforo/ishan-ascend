@@ -3,6 +3,7 @@ import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import { Factory, Landmark, Cpu, Building2, ExternalLink } from "lucide-react";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 export default function IndustrialVisitsPage() {
   const ref = useScrollReveal();
@@ -52,7 +53,7 @@ export default function IndustrialVisitsPage() {
   return (
     <Layout>
       <PageHeader
-        title={visitsData?.pageTitle || "Industrial Visits"}
+        title={industrial?.pageTitle || "Industrial Visits"}
         subtitle="Connecting classroom theory with real-world industrial operations."
         breadcrumbs={[{ label: "Industrial Visits" }]}
       />
@@ -120,17 +121,26 @@ export default function IndustrialVisitsPage() {
           <h2 className="text-3xl font-display font-bold text-foreground mb-12 text-center">Recent Industrial Visits</h2>
           <div className="grid md:grid-cols-2 gap-6">
             {visits.map((v, i) => (
-              <div key={i} className="group p-6 rounded-2xl border bg-background hover:border-gold transition-all duration-300">
+              <div key={i} className="group flex flex-col p-6 rounded-2xl border bg-background hover:border-gold transition-all duration-300">
+                {v.image && (
+                  <div className="w-full h-48 rounded-xl overflow-hidden mb-6">
+                    <ImageWithFallback
+                      src={v.image}
+                      alt={v.company}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                  </div>
+                )}
                 <div className="flex justify-between items-start mb-4">
                   <div>
                     <h4 className="text-xl font-bold text-foreground group-hover:text-navy transition-colors">{v.company}</h4>
                     <p className="text-xs font-semibold text-gold uppercase tracking-widest">{v.sector}</p>
                   </div>
-                  <span className="text-xs font-medium px-2 py-1 bg-muted rounded text-foreground/60">{v.year}</span>
+                  <span className="text-xs font-medium px-2 py-1 bg-muted rounded text-foreground/60 shrink-0">{v.year}</span>
                 </div>
-                <div className="space-y-3">
+                <div className="space-y-3 flex-1 flex flex-col justify-between">
                   <p className="text-sm text-foreground/80 leading-relaxed italic">"{v.outcome}"</p>
-                  <div className="flex items-center gap-2 pt-2 border-t border-border/50 text-[11px] font-bold text-foreground/50 uppercase">
+                  <div className="flex items-center gap-2 pt-4 border-t border-border/50 text-[11px] font-bold text-foreground/50 uppercase">
                     <span>Program: {v.program}</span>
                   </div>
                 </div>

@@ -4,6 +4,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Download, FileText, Search } from "lucide-react";
 import { useState } from "react";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 export default function PastPapersPage() {
   const ref = useScrollReveal();
@@ -36,6 +37,15 @@ export default function PastPapersPage() {
       <section className="py-20" ref={ref}>
         <div className="container-wide">
           <div className="max-w-4xl mx-auto space-y-12">
+            {pastPapersData?.bannerImage && (
+              <div className="reveal mb-8 rounded-2xl overflow-hidden aspect-[21/9]">
+                <ImageWithFallback
+                  src={pastPapersData.bannerImage}
+                  alt="Past Papers Banner"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
             <div className="reveal-up space-y-6 text-center">
               <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">{pastPapersData?.subheading || "Exam Resources"}</p>
               <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground">{pastPapersData?.heading || "Prepare with Confidence"}</h2>

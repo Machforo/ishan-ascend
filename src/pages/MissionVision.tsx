@@ -6,10 +6,10 @@ import { Target, Eye, Compass } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 
 export default function MissionVisionPage() {
-  const ref = useScrollReveal();
   const { data } = useIIMTData("aboutus");
 
   const mv = data?.missionVision;
+  const ref = useScrollReveal([mv]);
 
   const vision = mv?.vision || `To be a premier institution in North India, recognized for producing ethical leaders and socially responsible professionals who contribute meaningfully to the regional and global economy.`;
 
@@ -47,6 +47,14 @@ export default function MissionVisionPage() {
         subtitle="Guiding principles that drive academic excellence and holistic development at IIMT"
         breadcrumbs={[{ label: "About", href: "/about" }, { label: "Mission & Vision" }]}
       />
+
+      {mv?.bannerImage && (
+        <div className="container-wide mt-12">
+          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+            <img src={mv.bannerImage} alt="Mission & Vision Banner" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      )}
 
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
@@ -99,6 +107,28 @@ export default function MissionVisionPage() {
                 </div>
               </div>
             </div>
+
+            {/* Editorial Photos */}
+            {mv?.editorialPhotos?.length > 0 && (
+              <div className="reveal pt-10 border-t">
+                <h3 className="text-2xl font-display font-bold text-navy mb-6 text-center">Our Vision in Action</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+                  {mv.editorialPhotos.map((photo: any, i: number) => {
+                    const url = photo?.url || photo;
+                    if (!url) return null;
+                    return (
+                      <div key={i} className="rounded-2xl overflow-hidden shadow-md h-48 bg-slate-100 group">
+                        <img 
+                          src={url} 
+                          alt={`Vision Action ${i + 1}`} 
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </section>

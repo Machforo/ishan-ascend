@@ -60,6 +60,14 @@ export default function FAQsPage() {
         breadcrumbs={[{ label: "Admissions", href: "/admissions" }, { label: "FAQs" }]}
       />
 
+      {data?.faqsBanner && (
+        <div className="container-wide mt-12">
+          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+            <img src={data.faqsBanner} alt="FAQs Banner" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      )}
+
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-3xl mx-auto space-y-10">

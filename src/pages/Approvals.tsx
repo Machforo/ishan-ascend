@@ -66,6 +66,16 @@ export default function ApprovalsPage() {
             ))}
           </div>
 
+          {data?.campusCredibilityPhoto && (
+            <div className="reveal mt-16 max-w-5xl mx-auto rounded-3xl overflow-hidden shadow-lg border border-slate-100 bg-slate-50 p-2">
+              <img 
+                src={data.campusCredibilityPhoto} 
+                alt="Institutional Accreditation & Credibility" 
+                className="w-full h-auto object-cover rounded-2xl" 
+              />
+            </div>
+          )}
+
           <div className="mt-16 max-w-3xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-gold-light border border-[hsl(var(--gold)/0.2)]">
               <FileText className="w-4 h-4 text-navy" />

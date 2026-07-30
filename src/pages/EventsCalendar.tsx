@@ -3,6 +3,7 @@ import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Calendar, MapPin, Tag, Clock, Share2 } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 const fallbackEvents = [
   {
@@ -81,11 +82,25 @@ export default function EventsCalendarPage() {
             <div className="reveal-up grid gap-6">
               {events.map((e, i) => (
                 <div key={i} className="group relative flex flex-col md:flex-row gap-6 p-6 rounded-2xl border bg-card hover:border-gold transition-all duration-300">
-                  <div className="md:w-32 shrink-0 flex flex-col items-center justify-center p-4 bg-muted rounded-xl text-center group-hover:bg-gold group-hover:text-white transition-colors">
-                    <Calendar className="w-6 h-6 mb-2" />
-                    <span className="text-sm font-bold uppercase tracking-tighter leading-none">{e.date.split(',')[0]}</span>
-                    <span className="text-xl font-display font-black leading-none">{e.date.split(' ')[1].replace(',', '')}</span>
-                  </div>
+                  {e.image ? (
+                    <div className="md:w-32 h-32 shrink-0 rounded-xl overflow-hidden relative group-hover:shadow-md transition-all">
+                      <ImageWithFallback 
+                        src={e.image} 
+                        alt={e.name} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+                      />
+                      <div className="absolute top-2 left-2 px-2 py-1 bg-navy/80 backdrop-blur-sm rounded text-white flex flex-col items-center justify-center border border-white/10">
+                        <span className="text-[10px] font-bold uppercase tracking-tighter leading-none">{e.date.split(',')[0]}</span>
+                        <span className="text-sm font-display font-black leading-none mt-1">{e.date.split(' ')[1]?.replace(',', '')}</span>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="md:w-32 shrink-0 flex flex-col items-center justify-center p-4 bg-muted rounded-xl text-center group-hover:bg-gold group-hover:text-white transition-colors">
+                      <Calendar className="w-6 h-6 mb-2" />
+                      <span className="text-sm font-bold uppercase tracking-tighter leading-none">{e.date.split(',')[0]}</span>
+                      <span className="text-xl font-display font-black leading-none">{e.date.split(' ')[1]?.replace(',', '')}</span>
+                    </div>
+                  )}
                   
                   <div className="flex-1 space-y-4">
                     <div className="flex flex-wrap items-center gap-3">

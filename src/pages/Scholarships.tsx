@@ -21,6 +21,14 @@ export default function ScholarshipsPage() {
         breadcrumbs={[{ label: "Admissions", href: "/admissions" }, { label: "Scholarships" }]}
       />
 
+      {data?.scholarshipBanner && (
+        <div className="container-wide mt-12">
+          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+            <img src={data.scholarshipBanner} alt="Scholarships Banner" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      )}
+
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-4xl mx-auto">
@@ -45,6 +53,19 @@ export default function ScholarshipsPage() {
                 </div>
               ))}
             </div>
+
+            {data?.scholarshipRecipientPhoto && (
+              <div className="reveal mt-12 pt-10 border-t flex flex-col items-center">
+                <h3 className="text-2xl font-display font-bold text-navy mb-6 text-center">Scholarship Award Ceremony</h3>
+                <div className="rounded-3xl overflow-hidden border border-slate-100 shadow-md bg-white p-2 max-w-2xl">
+                  <img 
+                    src={data.scholarshipRecipientPhoto} 
+                    alt="Scholarship Recipient Ceremony" 
+                    className="w-full h-auto object-cover rounded-2xl" 
+                  />
+                </div>
+              </div>
+            )}
 
             <div className="mt-12 p-6 rounded-xl bg-section-alt border text-center">
               <p className="text-sm text-foreground/70 mb-3">Government Scholarships (SC/ST/OBC) are processed through:</p>

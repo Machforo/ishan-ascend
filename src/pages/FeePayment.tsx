@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import ImageWithFallback from "@/components/ImageWithFallback";
 
 export default function FeePaymentPage() {
   const ref = useScrollReveal();
@@ -14,6 +15,15 @@ export default function FeePaymentPage() {
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-2xl mx-auto text-center">
+            {content?.bannerImage && (
+              <div className="reveal mb-10 rounded-2xl overflow-hidden aspect-[21/9]">
+                <ImageWithFallback
+                  src={content.bannerImage}
+                  alt="Fee Payment Banner"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
             <div className="reveal space-y-4 mb-10">
               <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">{content?.description || "Pay tuition fees, hostel charges, and examination fees online through the Ishan Fee Payment Portal. Select IIMT as your institution, choose your program, and complete payment via net banking, UPI, or card. Download your receipt immediately after payment."}</p>
               <p className="text-sm text-muted-foreground">For payment issues, contact the accounts office at <a href="tel:+918448797700" className="text-navy font-semibold">8448797700</a></p>

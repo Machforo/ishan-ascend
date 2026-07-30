@@ -30,6 +30,14 @@ export default function MandatoryDisclosurePage() {
         breadcrumbs={[{ label: "Mandatory Disclosure" }]}
       />
 
+      {content?.bannerImage && (
+        <div className="container-wide mt-12">
+          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+            <img src={content.bannerImage} alt="Mandatory Disclosure Banner" className="w-full h-full object-cover" />
+          </div>
+        </div>
+      )}
+
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-4xl mx-auto">
