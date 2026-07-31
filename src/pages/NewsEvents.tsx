@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { Calendar, ArrowRight, Search, X } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import PageGallery from "@/components/PageGallery";
 
 const defaultEvents = [
   {
@@ -130,6 +131,7 @@ export default function NewsEventsPage() {
           </div>
         </div>
       </section>
+    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

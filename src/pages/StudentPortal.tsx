@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import PageGallery from "@/components/PageGallery";
 
 export default function StudentPortalPage() {
   const ref = useScrollReveal();
@@ -41,6 +42,7 @@ export default function StudentPortalPage() {
           </div>
         </div>
       </section>
+    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

@@ -11,6 +11,7 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import FAQSection from "@/components/FAQSection";
 import FacultySection from "@/components/FacultySection";
 import CTASection from "@/components/CTASection";
+import PageGallery from "@/components/PageGallery";
 
 const Index = () => {
   return (
@@ -27,7 +28,8 @@ const Index = () => {
       <TestimonialsSection />
       <FAQSection />
       <CTASection />
-    </Layout>
+    <PageGallery />
+      </Layout>
   );
 };
 

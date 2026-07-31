@@ -113,8 +113,9 @@ Over the decades, we have evolved into a multi-disciplinary hub offering six dis
         pageSubtitle={data?.pageSubheading || "Transforming potential into performance through academic excellence since 1994."}
         breadcrumbs={[{ label: "About IIMT" }]}
         sections={sections}
-      />
-      <EnquiryCTA />
+      >
+        <EnquiryCTA />
+      </StandardPage>
     </>
   );
 }

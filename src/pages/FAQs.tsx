@@ -4,6 +4,7 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import PageGallery from "@/components/PageGallery";
 
 const defaultFaqCategories = [
   {
@@ -92,6 +93,7 @@ export default function FAQsPage() {
         </div>
       </section>
 
+      <PageGallery images={data?.pageGallery} />
       <EnquiryCTA />
     </Layout>
   );

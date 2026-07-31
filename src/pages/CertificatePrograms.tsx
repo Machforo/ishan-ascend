@@ -5,6 +5,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import PageGallery from "@/components/PageGallery";
 
 const defaultPrograms = [
   { name: "Tally ERP 9 / Prime", duration: "3 Months", fee: "₹5,000", eligibility: "Any student / graduate", desc: "Complete accounting software training covering voucher entries, GST reports, balance sheets, and payroll management." },
@@ -53,6 +54,7 @@ export default function CertificateProgramsPage() {
         </div>
       </section>
 
+      <PageGallery images={data?.pageGallery} />
       <EnquiryCTA />
     </Layout>
   );

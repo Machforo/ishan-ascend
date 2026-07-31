@@ -4,6 +4,7 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Target, Eye, Compass } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import PageGallery from "@/components/PageGallery";
 
 export default function MissionVisionPage() {
   const { data } = useIIMTData("aboutus");
@@ -133,6 +134,7 @@ export default function MissionVisionPage() {
         </div>
       </section>
 
+      <PageGallery images={data?.pageGallery} />
       <EnquiryCTA />
     </Layout>
   );

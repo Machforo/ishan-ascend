@@ -5,6 +5,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { FileText, Calendar, Phone, CheckCircle2, ArrowRight } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import PageGallery from "@/components/PageGallery";
 
 const steps = [
   { num: "01", title: "CCS University Registration", desc: "Begin by registering on the official CCS University web-portal. This is mandatory for all students seeking admission to B.Com, BBA, BCA, M.Com, B.Ed, and M.Ed programmes at IIMT." },
@@ -131,6 +132,7 @@ export default function AdmissionsPage() {
         </div>
       </section>
 
+      <PageGallery images={data?.pageGallery} />
       <EnquiryCTA />
     </Layout>
   );

@@ -4,6 +4,7 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 import { useIIMTData } from "@/hooks/useIIMTData";
+import PageGallery from "@/components/PageGallery";
 
 export default function SportsPage() {
   const { data } = useIIMTData("campuslife");
@@ -75,6 +76,7 @@ export default function SportsPage() {
         </div>
       </section>
 
+      <PageGallery images={data?.pageGallery} />
       <EnquiryCTA />
     </Layout>
   );

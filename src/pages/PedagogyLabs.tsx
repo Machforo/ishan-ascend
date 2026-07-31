@@ -3,6 +3,7 @@ import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { CheckCircle2, Beaker, Video, Monitor, BookOpen, GraduationCap } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import PageGallery from "@/components/PageGallery";
 
 export default function PedagogyLabsPage() {
   const ref = useScrollReveal();
@@ -190,6 +191,7 @@ export default function PedagogyLabsPage() {
           </div>
         </div>
       </section>
+    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

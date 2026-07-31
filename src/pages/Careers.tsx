@@ -3,6 +3,7 @@ import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import PageGallery from "@/components/PageGallery";
 
 export default function CareersPage() {
   const ref = useScrollReveal();
@@ -51,6 +52,7 @@ export default function CareersPage() {
           <p className="text-sm text-muted-foreground mt-8 text-center">Send your CV to <a href={`mailto:${email}`} className="text-navy font-semibold">{email}</a></p>
         </div></div>
       </section>
+    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

@@ -3,6 +3,7 @@ import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useState } from "react";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import PageGallery from "@/components/PageGallery";
 
 type Photo = { title: string; url: string };
 
@@ -126,6 +127,7 @@ export default function PhotoGalleryPage() {
           )}
         </div>
       </section>
+    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

@@ -3,6 +3,7 @@ import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { FileText, Download } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import PageGallery from "@/components/PageGallery";
 
 export default function MandatoryDisclosurePage() {
   const { data, loading } = useIIMTData("aboutus");
@@ -78,6 +79,7 @@ export default function MandatoryDisclosurePage() {
           </div>
         </div>
       </section>
+    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

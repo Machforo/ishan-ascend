@@ -4,6 +4,7 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { ExternalLink } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import PageGallery from "@/components/PageGallery";
 
 export default function ResearchJournalPage() {
   const { data, loading } = useIIMTData("aboutus");
@@ -45,6 +46,7 @@ export default function ResearchJournalPage() {
           </a>
         </div></div>
       </section>
+      <PageGallery images={data?.pageGallery} />
       <EnquiryCTA />
     </Layout>
   );

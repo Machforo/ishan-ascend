@@ -3,6 +3,7 @@ import PageHeader from "@/components/PageHeader";
 import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import PageGallery from "@/components/PageGallery";
 
 export default function BestPracticesPage() {
   const { data } = useIIMTData("aboutus");
@@ -80,6 +81,7 @@ export default function BestPracticesPage() {
         </div>
       </section>
 
+      <PageGallery images={data?.pageGallery} />
       <EnquiryCTA />
     </Layout>
   );

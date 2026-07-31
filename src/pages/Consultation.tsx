@@ -2,6 +2,7 @@ import { useState } from "react";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { User, Phone, BookOpen, Send, Calendar, Clock, CheckCircle } from "lucide-react";
+import PageGallery from "@/components/PageGallery";
 
 export default function Consultation() {
   const [formData, setFormData] = useState({
@@ -189,6 +190,7 @@ export default function Consultation() {
           
         </div>
       </div>
-    </Layout>
+    <PageGallery />
+      </Layout>
   );
 }

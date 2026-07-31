@@ -4,6 +4,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import { Mic2, Calendar, User, Info } from "lucide-react";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import PageGallery from "@/components/PageGallery";
 
 export default function GuestLecturesPage() {
   const { data } = useIIMTData("learning");
@@ -124,6 +125,7 @@ export default function GuestLecturesPage() {
           </div>
         </div>
       </section>
+    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

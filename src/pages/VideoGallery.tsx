@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import PageGallery from "@/components/PageGallery";
 
 const videos = [
   { title: "Campus Tour — IIMT Greater Noida", category: "Campus", ytId: "" },
@@ -67,6 +68,7 @@ export default function VideoGalleryPage() {
           <p className="text-center text-sm text-muted-foreground mt-8">Video placeholders shown — embed YouTube videos via CMS.</p>
         </div>
       </section>
+    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

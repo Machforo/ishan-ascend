@@ -4,6 +4,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import { Factory, Landmark, Cpu, Building2, ExternalLink } from "lucide-react";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import PageGallery from "@/components/PageGallery";
 
 export default function IndustrialVisitsPage() {
   const ref = useScrollReveal();
@@ -149,6 +150,7 @@ export default function IndustrialVisitsPage() {
           </div>
         </div>
       </section>
+    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

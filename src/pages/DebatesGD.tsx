@@ -4,6 +4,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import { MessageSquare, Users, Mic2, Briefcase, Trophy } from "lucide-react";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import PageGallery from "@/components/PageGallery";
 
 // Helper to map icon string to Lucide component
 const getIcon = (name: string) => {
@@ -151,6 +152,7 @@ export default function DebatesGDPage() {
           </div>
         </div>
       </section>
+    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

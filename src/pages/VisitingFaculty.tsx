@@ -2,6 +2,7 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import PageGallery from "@/components/PageGallery";
 
 const defaultFaculty = [
   { name: "CA Rakesh Mehta", org: "Mehta & Associates", specialisation: "Advanced Accounting & Taxation", dept: "Commerce" },
@@ -56,6 +57,7 @@ export default function VisitingFacultyPage() {
           </div>
         </div>
       </section>
+    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

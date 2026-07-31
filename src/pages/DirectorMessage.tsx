@@ -3,6 +3,7 @@ import PageHeader from "@/components/PageHeader";
 import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import PageGallery from "@/components/PageGallery";
 
 export default function DirectorMessagePage() {
   const ref = useScrollReveal();
@@ -74,6 +75,7 @@ I warmly invite you to join the IIMT community and experience an education that 
         </div>
       </section>
 
+      <PageGallery images={data?.pageGallery} />
       <EnquiryCTA />
     </Layout>
   );

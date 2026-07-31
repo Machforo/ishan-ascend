@@ -3,6 +3,7 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { cn } from "@/lib/utils";
+import PageGallery from "@/components/PageGallery";
 
 export interface PageSection {
   id: string;
@@ -20,9 +21,10 @@ export interface StandardPageProps {
   pageSubtitle?: string;
   breadcrumbs?: { label: string; href?: string }[];
   sections: PageSection[];
+  children?: React.ReactNode;
 }
 
-export default function StandardPage({ pageTitle, pageSubtitle, breadcrumbs, sections }: StandardPageProps) {
+export default function StandardPage({ pageTitle, pageSubtitle, breadcrumbs, sections, children }: StandardPageProps) {
   const ref = useScrollReveal([sections]);
 
   const renderSection = (section: PageSection, index: number) => {
@@ -111,6 +113,8 @@ export default function StandardPage({ pageTitle, pageSubtitle, breadcrumbs, sec
       <div ref={ref}>
         {sections.map((section, index) => renderSection(section, index))}
       </div>
-    </Layout>
+    {children}
+    <PageGallery />
+      </Layout>
   );
 }

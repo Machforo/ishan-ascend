@@ -4,6 +4,7 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import libraryImg from "@/assets/students-library.jpg";
+import PageGallery from "@/components/PageGallery";
 
 export default function LibraryPage() {
   const { data } = useIIMTData("campuslife");
@@ -110,6 +111,7 @@ export default function LibraryPage() {
           </div>
         </div>
       </section>
+      <PageGallery images={data?.pageGallery} />
       <EnquiryCTA />
     </Layout>
   );

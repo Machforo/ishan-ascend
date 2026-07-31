@@ -5,6 +5,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Link } from "react-router-dom";
 import { GraduationCap, Users, ArrowRight, CheckCircle2 } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import PageGallery from "@/components/PageGallery";
 
 export default function EducationOverviewPage() {
   const { data, isLoading } = useIIMTData("academics");
@@ -116,6 +117,7 @@ export default function EducationOverviewPage() {
         </div>
       </section>
 
+      <PageGallery images={data?.pageGallery} />
       <EnquiryCTA />
     </Layout>
   );

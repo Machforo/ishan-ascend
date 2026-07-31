@@ -4,6 +4,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Lightbulb, Rocket, Users, Briefcase, Trophy, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import PageGallery from "@/components/PageGallery";
 
 export default function ECellPage() {
   const { data, loading } = useIIMTData("placements");
@@ -107,6 +108,7 @@ export default function ECellPage() {
           </div>
         </div>
       </section>
+    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

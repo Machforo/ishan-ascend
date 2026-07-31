@@ -4,6 +4,7 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { CheckCircle2 } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import PageGallery from "@/components/PageGallery";
 
 const fallbackAmenities = [
   "Separate boys and girls blocks", "Furnished rooms (2/3 sharing)", "Attached washrooms",
@@ -100,6 +101,7 @@ export default function HostelPage() {
         </div>
       </section>
 
+      <PageGallery images={data?.pageGallery} />
       <EnquiryCTA />
     </Layout>
   );

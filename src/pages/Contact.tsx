@@ -4,9 +4,19 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import { useState } from "react";
+import { z } from 'zod';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from "sonner";
 import ImageWithFallback from "@/components/ImageWithFallback";
+import PageGallery from "@/components/PageGallery";
 
+
+const contactSchema = z.object({
+  name: z.string().min(2, 'Name must be at least 2 characters').max(50, 'Name is too long').regex(/^[a-zA-Z\s]*$/, 'Name can only contain letters and spaces'),
+  phone: z.string().regex(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
+  email: z.string().email('Invalid email address').or(z.literal(''))
+});
 export default function ContactPage() {
   const ref = useScrollReveal();
   const { data } = useIIMTData("contact");
@@ -18,40 +28,21 @@ export default function ContactPage() {
   };
   const collegeContacts = data?.collegeContacts || [];
 
-  const [form, setForm] = useState({ name: "", phone: "", email: "", program: "", message: "" });
-  const [submitting, setSubmitting] = useState(false);
+    const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<z.infer<typeof contactSchema>>({ resolver: zodResolver(contactSchema), defaultValues: { name: '', phone: '', email: '' } });
   const [submitted, setSubmitted] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.name || !form.phone) return;
-
-    // Basic phone validation
-    const phoneRegex = /^\d{10}$/;
-    if (!phoneRegex.test(form.phone)) {
-      toast.error("Please enter a valid 10-digit phone number.");
-      return;
-    }
-
+  const onSubmit = async (data: z.infer<typeof contactSchema>) => {
     try {
       const apiBase = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
-      const response = await fetch(`${apiBase}/iimt/leads`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, source: "Contact Page" }),
+      const response = await fetch(`${apiBase}/${"iimt/leads"}`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, source: "Contact Page" })
       });
-      if (!response.ok) {
-        throw new Error("Failed to submit");
-      }
+      if (!response.ok) throw new Error("Failed to submit form");
       toast.success("Your message has been sent successfully!");
       setSubmitted(true);
-      setForm({ name: "", phone: "", email: "", program: "", message: "" });
-    } catch (err) {
-      toast.error("Unable to send message. Please try again.");
-      console.error(err);
-    } finally {
-      setSubmitting(false);
-    }
+      reset();
+    } catch (err) { toast.error("Unable to send message."); }
   };
 
   return (
@@ -122,19 +113,23 @@ export default function ContactPage() {
                     <button onClick={() => setSubmitted(false)} className="mt-5 text-sm text-navy underline">Submit another enquiry</button>
                   </div>
                 ) : (
-                  <form className="space-y-4" onSubmit={handleSubmit}>
+                  <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
                     <div className="grid sm:grid-cols-2 gap-4">
-                      <input type="text" placeholder="Full Name*" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required className="w-full px-4 py-3 text-sm rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow" />
-                      <input type="tel" placeholder="Phone Number*" value={form.phone} onChange={e => setForm(p => ({ ...p, phone: e.target.value }))} required className="w-full px-4 py-3 text-sm rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow" />
+                      <div>
+                        <input {...register("name")} placeholder="Full Name*" className={`w-full px-4 py-3 text-sm rounded-lg border ${errors.name ? 'border-red-500' : 'border-border/50'} bg-background/50 focus:bg-background focus:outline-none focus:ring-2 transition-all`} />
+                        {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
+                      </div>
+                      <div>
+                        <input {...register("phone")} type="tel" placeholder="Phone Number*" className={`w-full px-4 py-3 text-sm rounded-lg border ${errors.phone ? 'border-red-500' : 'border-border/50'} bg-background/50 focus:bg-background focus:outline-none focus:ring-2 transition-all`} />
+                        {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
+                      </div>
                     </div>
-                    <input type="email" placeholder="Email Address" value={form.email} onChange={e => setForm(p => ({ ...p, email: e.target.value }))} className="w-full px-4 py-3 text-sm rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow" />
-                    <select value={form.program} onChange={e => setForm(p => ({ ...p, program: e.target.value }))} className="w-full px-4 py-3 text-sm rounded-lg border bg-background text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow">
-                      <option value="">Select Program</option>
-                      <option>BBA</option><option>B.Com</option><option>BCA</option><option>M.Com</option><option>B.Ed</option><option>M.Ed</option>
-                    </select>
-                    <textarea placeholder="Your Message (optional)" rows={4} value={form.message} onChange={e => setForm(p => ({ ...p, message: e.target.value }))} className="w-full px-4 py-3 text-sm rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow resize-none" />
-                    <button type="submit" disabled={submitting} className="w-full py-3.5 text-sm font-semibold bg-navy text-primary-foreground rounded-lg shadow-lg hover:bg-navy/90 transition-all active:scale-[0.97] disabled:opacity-60">
-                      {submitting ? "Submitting..." : "Submit Enquiry"}
+                    <div>
+                      <input {...register("email")} type="email" placeholder="Email Address" className={`w-full px-4 py-3 text-sm rounded-lg border ${errors.email ? 'border-red-500' : 'border-border/50'} bg-background/50 focus:bg-background focus:outline-none focus:ring-2 transition-all`} />
+                      {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+                    </div>
+                    <button type="submit" disabled={isSubmitting} className="w-full py-3.5 text-sm font-semibold bg-navy text-primary-foreground rounded-lg shadow-lg hover:bg-navy/90 transition-all">
+                      {isSubmitting ? "Submitting..." : "Submit Enquiry"}
                     </button>
                   </form>
                 )}
@@ -172,6 +167,7 @@ export default function ContactPage() {
           )}
         </div>
       </section>
+    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }
