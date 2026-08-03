@@ -28,13 +28,25 @@ export default function AdmissionsEnquiryPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Basic phone validation
+    const nameRegex = /^[a-zA-Z\s.'-]+$/;
+    if (!nameRegex.test(form.name.trim())) {
+      toast.error("Name should only contain alphabets and spaces.");
+      return;
+    }
+
     const phoneRegex = /^\d{10}$/;
     if (!phoneRegex.test(form.phone)) {
       toast.error("Please enter a valid 10-digit phone number.");
       return;
     }
 
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (form.email && !emailRegex.test(form.email.trim())) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
+    setSubmitting(true);
     try {
       const apiBase = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
       const response = await fetch(`${apiBase}/iimt/leads`, {
@@ -119,7 +131,7 @@ export default function AdmissionsEnquiryPage() {
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
                         <label className="text-xs font-bold text-foreground/50 uppercase tracking-wider ml-1">Full Name</label>
-                        <input type="text" placeholder="e.g. Rahul Sharma" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value }))} required className="w-full px-4 py-3 rounded-xl border bg-background focus:outline-none focus:ring-2 focus:ring-gold/50 transition-all" />
+                        <input type="text" placeholder="e.g. Rahul Sharma" value={form.name} onChange={e => setForm(p => ({ ...p, name: e.target.value.replace(/[^a-zA-Z\s.'-]/g, '') }))} required className="w-full px-4 py-3 rounded-xl border bg-background focus:outline-none focus:ring-2 focus:ring-gold/50 transition-all" />
                       </div>
                       <div className="space-y-1.5">
                         <label className="text-xs font-bold text-foreground/50 uppercase tracking-wider ml-1">Phone Number</label>

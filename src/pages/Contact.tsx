@@ -116,7 +116,7 @@ export default function ContactPage() {
                   <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div>
-                        <input {...register("name")} placeholder="Full Name*" className={`w-full px-4 py-3 text-sm rounded-lg border ${errors.name ? 'border-red-500' : 'border-border/50'} bg-background/50 focus:bg-background focus:outline-none focus:ring-2 transition-all`} />
+                        <input {...register("name")} onInput={(e) => { e.currentTarget.value = e.currentTarget.value.replace(/[^a-zA-Z\s.'-]/g, ''); }} placeholder="Full Name*" className={`w-full px-4 py-3 text-sm rounded-lg border ${errors.name ? 'border-red-500' : 'border-border/50'} bg-background/50 focus:bg-background focus:outline-none focus:ring-2 transition-all`} />
                         {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name.message}</p>}
                       </div>
                       <div>

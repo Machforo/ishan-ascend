@@ -56,6 +56,12 @@ export function QuickEnquiry() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const nameRegex = /^[a-zA-Z\s.'-]+$/;
+    if (!formData.name || !nameRegex.test(formData.name.trim())) {
+      toast.error("Name should only contain alphabets and spaces.");
+      return;
+    }
+
     // Basic phone validation
     const phoneRegex = /^\d{10}$/;
     if (!phoneRegex.test(formData.phone)) {
@@ -131,7 +137,7 @@ export function QuickEnquiry() {
                 placeholder="Full Name"
                 required
                 value={formData.name}
-                onChange={(e) => setFormData(p => ({ ...p, name: e.target.value }))}
+                onChange={(e) => setFormData(p => ({ ...p, name: e.target.value.replace(/[^a-zA-Z\s.'-]/g, '') }))}
                 className="w-full px-4 py-2.5 text-sm rounded-lg border bg-muted outline-none focus:ring-2 focus:ring-gold/50 transition-all"
               />
               <input

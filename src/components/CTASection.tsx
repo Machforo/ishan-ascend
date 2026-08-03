@@ -14,8 +14,22 @@ export default function CTASection() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.phone || !formData.email) {
-      toast.error("Please fill in all required fields.");
+
+    const nameRegex = /^[a-zA-Z\s.'-]+$/;
+    if (!nameRegex.test(formData.name.trim())) {
+      toast.error("Name should only contain alphabets and spaces.");
+      return;
+    }
+
+    const phoneRegex = /^\d{10}$/;
+    if (!phoneRegex.test(formData.phone.trim())) {
+      toast.error("Phone number must be 10 digits.");
+      return;
+    }
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(formData.email.trim())) {
+      toast.error("Please enter a valid email address.");
       return;
     }
 
@@ -93,7 +107,7 @@ export default function CTASection() {
                     required
                     placeholder="Full Name *"
                     value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value.replace(/[^a-zA-Z\s.'-]/g, '') })}
                     className="w-full px-4 py-3 text-sm rounded-lg border bg-background focus:outline-none focus:ring-2 focus:ring-[hsl(var(--gold)/0.5)] transition-shadow"
                   />
                   <input

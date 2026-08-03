@@ -139,6 +139,12 @@ export default function HeroSection() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    const nameRegex = /^[a-zA-Z\s.'-]+$/;
+    if (!formData.name || !nameRegex.test(formData.name.trim())) {
+      toast.error("Name should only contain alphabets and spaces.");
+      return;
+    }
+
     // Basic phone validation
     const phoneRegex = /^\d{10}$/;
     if (!phoneRegex.test(formData.phone)) {
@@ -328,7 +334,7 @@ export default function HeroSection() {
                       <form className="space-y-4" onSubmit={handleSubmit}>
                         <div className="relative">
                           <User size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/40" />
-                          <input type="text" placeholder="Full Name *" value={formData.name} onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value }))} required className="w-full pl-10 pr-4 py-3.5 bg-muted/60 border rounded-xl outline-none focus:ring-2 focus:ring-gold/60 focus:bg-white transition-all text-sm" />
+                          <input type="text" placeholder="Full Name *" value={formData.name} onChange={(e) => setFormData((p) => ({ ...p, name: e.target.value.replace(/[^a-zA-Z\s.'-]/g, "") }))} required className="w-full pl-10 pr-4 py-3.5 bg-muted/60 border rounded-xl outline-none focus:ring-2 focus:ring-gold/60 focus:bg-white transition-all text-sm" />
                         </div>
                         <div className="relative">
                           <PhoneIcon size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/40" />
