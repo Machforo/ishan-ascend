@@ -22,10 +22,10 @@ export default function SportsPage() {
   return (
     <Layout>
       <PageHeader title="Sports" subtitle="Inter-college competitions, annual sports meet, and campus recreational facilities" breadcrumbs={[{ label: "Campus", href: "/infrastructure" }, { label: "Sports" }]} />
-      {sports?.bannerImage && (
+      {(sports?.bannerImage || sports?.image || sports?.heroWideAngle || sports?.imageUrl) && (
         <div className="container-wide mt-12">
           <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
-            <img src={sports.bannerImage} alt="Sports Banner" className="w-full h-full object-cover" />
+            <img src={sports.bannerImage || sports.image || sports.heroWideAngle || sports.imageUrl} alt="Sports Banner" className="w-full h-full object-cover" />
           </div>
         </div>
       )}

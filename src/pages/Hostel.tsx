@@ -28,10 +28,10 @@ export default function HostelPage() {
   return (
     <Layout>
       <PageHeader title="Hostel" subtitle="Safe, comfortable residential facilities for outstation students" breadcrumbs={[{ label: "Campus", href: "/infrastructure" }, { label: "Hostel" }]} />
-      {hostel?.bannerImage && (
+      {(hostel?.bannerImage || hostel?.image || hostel?.heroWideAngle) && (
         <div className="container-wide mt-12">
           <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
-            <img src={hostel.bannerImage} alt="Hostel Banner" className="w-full h-full object-cover" />
+            <img src={hostel.bannerImage || hostel.image || hostel.heroWideAngle} alt="Hostel Banner" className="w-full h-full object-cover" />
           </div>
         </div>
       )}

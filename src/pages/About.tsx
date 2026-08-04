@@ -77,18 +77,31 @@ Over the decades, we have evolved into a multi-disciplinary hub offering six dis
             </div>
           )}
 
-          {(data?.ourStory?.timelineInfographic) && (
-            <div className="pt-6">
-              <h4 className="text-base font-bold text-navy uppercase tracking-wider mb-4">Milestones & Journey</h4>
-              <div className="rounded-2xl overflow-hidden border border-slate-100 shadow-sm bg-white p-2">
-                <img 
-                  src={data.ourStory.timelineInfographic} 
-                  alt="IIMT Timeline Infographic" 
-                  className="w-full max-h-[300px] object-contain mx-auto" 
-                />
+          {(() => {
+            const timelineList = [
+              ...(data?.ourStory?.timelineImages || []).map((t: any) => t?.url || t?.image || t),
+              ...(data?.ourStory?.timelineInfographic ? [data.ourStory.timelineInfographic] : [])
+            ].filter(Boolean);
+
+            if (timelineList.length === 0) return null;
+
+            return (
+              <div className="pt-6">
+                <h4 className="text-base font-bold text-navy uppercase tracking-wider mb-4">Milestones & Journey</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {timelineList.map((imgUrl: string, idx: number) => (
+                    <div key={idx} className="rounded-2xl overflow-hidden border border-slate-100 shadow-sm bg-white p-2">
+                      <img 
+                        src={imgUrl} 
+                        alt={`IIMT Timeline Infographic ${idx + 1}`} 
+                        className="w-full max-h-[400px] object-contain mx-auto" 
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            );
+          })()}
         </div>
       ),
     },

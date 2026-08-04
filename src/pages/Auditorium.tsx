@@ -22,10 +22,10 @@ export default function AuditoriumPage() {
   return (
     <Layout>
       <PageHeader title="Auditorium" subtitle="A modern venue for convocations, seminars, and cultural events" breadcrumbs={[{ label: "Campus", href: "/infrastructure" }, { label: "Auditorium" }]} />
-      {auditorium?.equipmentWideImage && (
+      {(auditorium?.equipmentWideImage || auditorium?.image || auditorium?.bannerImage || auditorium?.imageUrl) && (
         <div className="container-wide mt-12">
           <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
-            <img src={auditorium.equipmentWideImage} alt="Auditorium Wide Angle" className="w-full h-full object-cover" />
+            <img src={auditorium.equipmentWideImage || auditorium.image || auditorium.bannerImage || auditorium.imageUrl} alt="Auditorium Wide Angle" className="w-full h-full object-cover" />
           </div>
         </div>
       )}
@@ -35,7 +35,7 @@ export default function AuditoriumPage() {
           <div className="max-w-4xl mx-auto">
             {!auditorium?.equipmentWideImage && (
               <div className="reveal rounded-2xl overflow-hidden shadow-[0_8px_40px_hsl(var(--navy)/0.1)] mb-10">
-                <img src={auditorium?.imageUrl || defaultImage} alt="IIMT Auditorium" className="w-full h-[350px] object-cover" />
+                <img src={auditorium?.image || auditorium?.imageUrl || auditorium?.bannerImage || defaultImage} alt="IIMT Auditorium" className="w-full h-[350px] object-cover" />
               </div>
             )}
             <div className="reveal delay-100 space-y-5 mb-12">

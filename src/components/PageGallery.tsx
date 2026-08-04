@@ -8,7 +8,7 @@ export default function PageGallery({ images: propImages, title: propTitle }: { 
   useEffect(() => {
     const fetchGlobalGallery = async () => {
       try {
-        const apiBase = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+        const apiBase = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || "https://ishan-backend-g096.onrender.com/api";
         const fetchUrl = `${apiBase}/iimt/page-galleries/by-url?url=${location.pathname}`;
         console.log("PageGallery fetching:", fetchUrl);
         const res = await fetch(fetchUrl);

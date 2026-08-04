@@ -30,10 +30,10 @@ export default function LibraryPage() {
         subtitle="A comprehensive knowledge resource centre supporting academic excellence"
         breadcrumbs={[{ label: "Campus", href: "/infrastructure" }, { label: "Library" }]}
       />
-      {library?.equipmentWideImage && (
+      {(library?.equipmentWideImage || library?.image || library?.bannerImage || library?.imageUrl) && (
         <div className="container-wide mt-12">
           <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
-            <img src={library.equipmentWideImage} alt="Library Wide Angle" className="w-full h-full object-cover" />
+            <img src={library.equipmentWideImage || library.image || library.bannerImage || library.imageUrl} alt="Library Wide Angle" className="w-full h-full object-cover" />
           </div>
         </div>
       )}
@@ -43,7 +43,7 @@ export default function LibraryPage() {
           <div className="max-w-4xl mx-auto">
             {!library?.equipmentWideImage && (
               <div className="reveal rounded-2xl overflow-hidden shadow-[0_8px_40px_hsl(var(--navy)/0.1)] mb-10">
-                <img src={library?.imageUrl || defaultImage} alt="IIMT Library" className="w-full h-[350px] object-cover" />
+                <img src={library?.image || library?.imageUrl || library?.bannerImage || defaultImage} alt="IIMT Library" className="w-full h-[350px] object-cover" />
               </div>
             )}
             <div className="reveal space-y-5 mb-12">

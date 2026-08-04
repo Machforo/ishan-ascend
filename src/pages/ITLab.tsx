@@ -41,10 +41,10 @@ export default function ITLabPage() {
         breadcrumbs={[{ label: "Campus", href: "/infrastructure" }, { label: "IT Lab" }]}
       />
 
-      {itLabs?.equipmentWideImage && (
+      {(itLabs?.equipmentWideImage || itLabs?.bannerImage || itLabs?.image) && (
         <div className="container-wide mt-12">
           <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
-            <img src={itLabs.equipmentWideImage} alt="IT Lab Equipment Wide" className="w-full h-full object-cover" />
+            <img src={itLabs.equipmentWideImage || itLabs.bannerImage || itLabs.image} alt="IT Lab Equipment Wide" className="w-full h-full object-cover" />
           </div>
         </div>
       )}
