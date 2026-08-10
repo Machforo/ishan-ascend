@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Calendar, ArrowRight, X, MapPin, Tag, Share2 } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
@@ -55,10 +56,10 @@ export default function NewsSection() {
               News &amp; Events
             </h2>
           </div>
-          <a href="/news" className="reveal delay-200 inline-flex items-center gap-2 text-sm font-semibold text-navy hover:text-gold transition-colors group">
+          <Link to="/news-events" className="reveal delay-200 inline-flex items-center gap-2 text-sm font-semibold text-navy hover:text-gold transition-colors group">
             View All News
             <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </a>
+          </Link>
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">

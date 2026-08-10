@@ -7,7 +7,7 @@ import NotFound from "./NotFound";
 
 export default function DynamicCourse() {
   const { courseId } = useParams();
-  const { data, isLoading } = useIIMTData("courses");
+  const { data = {}, isLoading } = useIIMTData("courses") || {};
 
   if (isLoading) return <div className="min-h-screen flex flex-col"><Navbar /><div className="flex-1 flex items-center justify-center font-display text-xl text-navy animate-pulse">Loading Academic Program...</div></div>;
   
@@ -110,11 +110,11 @@ export default function DynamicCourse() {
               <p className="text-base text-foreground/80 leading-relaxed whitespace-pre-wrap">{course.overview || course.description || "Program overview details will be updated shortly."}</p>
             </div>
 
-            {course.images?.length > 0 && (
+            {(course.images || course.studentActivityImages)?.length > 0 && (
               <div>
                 <h2 className="text-2xl font-display font-bold text-navy mb-5 text-gold-underline">Campus Experience & Learning</h2>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                  {course.images.map((photo: any, i: number) => {
+                  {(course.images || course.studentActivityImages || []).map((photo: any, i: number) => {
                     const url = photo?.url || photo;
                     if (!url) return null;
                     return (
