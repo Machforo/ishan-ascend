@@ -1,3 +1,5 @@
+import PageSections from './PageSections';
+import PageGallery from './PageGallery';
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import SubNav from "./SubNav";
@@ -11,6 +13,8 @@ export default function Layout({ children, isNotFound = false }: { children: Rea
       <Navbar isNotFound={isNotFound} />
       <SubNav />
       <main className="flex-1 w-full bg-background mt-0">{children}</main>
+      <PageSections />
+      <PageGallery />
       <Footer />
       
       {/* Global Elements */}

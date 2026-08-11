@@ -67,9 +67,10 @@ export default function MissionVisionPage() {
               </div>
               <div>
                 <h2 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-4">Our Vision</h2>
-                <p className="text-lg text-foreground/70 leading-relaxed whitespace-pre-wrap">
-                  {vision}
-                </p>
+                <div 
+                  className="text-lg text-foreground/70 leading-relaxed whitespace-pre-wrap" 
+                  dangerouslySetInnerHTML={{ __html: vision }} 
+                />
               </div>
             </div>
 
@@ -80,14 +81,21 @@ export default function MissionVisionPage() {
               </div>
               <div>
                 <h2 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-4">Our Mission</h2>
-                <ul className="space-y-3">
-                  {missionList.map((item: string, i: number) => (
-                    <li key={i} className="flex items-start gap-3">
-                      <div className="w-2 h-2 rounded-full bg-gold shrink-0 mt-2" />
-                      <p className="text-foreground/70 leading-relaxed">{item}</p>
-                    </li>
-                  ))}
-                </ul>
+                {missionStr && /<\/?[a-z][\s\S]*>/i.test(missionStr) ? (
+                  <div 
+                    className="text-foreground/70 leading-relaxed space-y-4 prose prose-slate max-w-none" 
+                    dangerouslySetInnerHTML={{ __html: missionStr }} 
+                  />
+                ) : (
+                  <ul className="space-y-3">
+                    {missionList.map((item: string, i: number) => (
+                      <li key={i} className="flex items-start gap-3">
+                        <div className="w-2 h-2 rounded-full bg-gold shrink-0 mt-2" />
+                        <p className="text-foreground/70 leading-relaxed">{item}</p>
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </div>
             </div>
 

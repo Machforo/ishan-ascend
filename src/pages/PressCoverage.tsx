@@ -2,7 +2,7 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
-import PageGallery from "@/components/PageGallery";
+
 
 export default function PressCoveragePage() {
   const { data } = useIIMTData("gallery");
@@ -26,7 +26,11 @@ export default function PressCoveragePage() {
           <div className="max-w-3xl mx-auto space-y-4">
             {pressItems.map((item, i) => (
               <div key={i} className={`reveal delay-${Math.min(i, 5)}00 flex items-center gap-5 p-5 rounded-xl border bg-card hover:shadow-sm transition-shadow`}>
-                <div className="w-20 h-20 rounded-lg bg-muted flex items-center justify-center shrink-0"><span className="text-xs font-bold text-muted-foreground/30">CLIP</span></div>
+                {item.url ? (
+  <img src={item.url} alt={item.headline} className="w-20 h-20 rounded-lg object-cover" />
+) : (
+  <div className="w-20 h-20 rounded-lg bg-muted flex items-center justify-center shrink-0"><span className="text-xs font-bold text-muted-foreground/30">CLIP</span></div>
+)}
                 <div>
                   <div className="flex items-center gap-3 mb-1">
                     <span className="text-xs font-semibold text-navy">{item.publication}</span>
@@ -39,7 +43,6 @@ export default function PressCoveragePage() {
           </div>
         </div>
       </section>
-    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

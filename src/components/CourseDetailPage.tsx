@@ -4,7 +4,8 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Link } from "react-router-dom";
 import { Clock, IndianRupee, Users, GraduationCap, CheckCircle2, ArrowRight } from "lucide-react";
-import PageGallery from "@/components/PageGallery";
+import PageSections from "@/components/PageSections";
+import RichTextRenderer from "@/components/RichTextRenderer";
 
 interface CoursePageProps {
   name: string;
@@ -43,7 +44,7 @@ export default function CourseDetailPage(props: CoursePageProps) {
               {/* Overview */}
               <div className="reveal">
                 <h2 className="text-2xl font-display font-bold text-foreground mb-4">Program Overview</h2>
-                <p className="text-foreground/70 leading-relaxed">{props.overview}</p>
+                <RichTextRenderer content={props.overview} className="text-foreground/70 leading-relaxed" />
               </div>
 
               {/* Subjects */}
@@ -69,7 +70,7 @@ export default function CourseDetailPage(props: CoursePageProps) {
               {/* Career Scope */}
               <div className="reveal delay-200">
                 <h2 className="text-2xl font-display font-bold text-foreground mb-4">Career Scope</h2>
-                <p className="text-foreground/70 leading-relaxed mb-6">{props.careerScope}</p>
+                <RichTextRenderer content={props.careerScope} className="text-foreground/70 leading-relaxed mb-6" />
                 <div className="grid sm:grid-cols-2 gap-3">
                   {props.careers.map((c) => (
                     <div key={c} className="flex items-center gap-2.5 px-4 py-3 rounded-lg border bg-card text-sm text-foreground/80 font-medium">
@@ -118,7 +119,7 @@ export default function CourseDetailPage(props: CoursePageProps) {
       </section>
 
       <EnquiryCTA />
-    <PageGallery />
+    <PageSections />
       </Layout>
   );
 }

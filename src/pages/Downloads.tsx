@@ -4,7 +4,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { FileText, Download } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import PageGallery from "@/components/PageGallery";
+
 
 export default function DownloadsPage() {
   const ref = useScrollReveal();
@@ -58,7 +58,6 @@ export default function DownloadsPage() {
           </div>
         </div>
       </section>
-    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

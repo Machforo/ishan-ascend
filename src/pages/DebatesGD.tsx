@@ -4,7 +4,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import { MessageSquare, Users, Mic2, Briefcase, Trophy } from "lucide-react";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import PageGallery from "@/components/PageGallery";
+
 
 // Helper to map icon string to Lucide component
 const getIcon = (name: string) => {
@@ -61,7 +61,7 @@ export default function DebatesGDPage() {
     <Layout>
       <PageHeader
         title={debates?.pageTitle || "Debates & Group Discussions"}
-        subtitle="Articulating ideas, defending perspectives, and building leadership communication."
+        subtitle={debates?.pageSubtitle || "Articulating ideas, defending perspectives, and building leadership communication."}
         breadcrumbs={[{ label: "Debates & GD" }]}
       />
 
@@ -79,9 +79,9 @@ export default function DebatesGDPage() {
 
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-20">
             <div className="reveal-left space-y-6">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Communication Culture</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">{debates?.subheading || "Communication Culture"}</p>
               <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground leading-tight">
-                Preparing Students for Corporate Leadership
+                {debates?.heading || "Preparing Students for Corporate Leadership"}
               </h2>
               {debates?.description ? (
                 <div 
@@ -142,17 +142,16 @@ export default function DebatesGDPage() {
       <section className="py-16 md:py-24 bg-navy text-white">
         <div className="container-wide">
           <div className="max-w-3xl mx-auto text-center space-y-8">
-            <h2 className="text-3xl md:text-4xl font-display font-bold">Past Event Highlights</h2>
+            <h2 className="text-3xl md:text-4xl font-display font-bold">{debates?.highlightsHeading || "Past Event Highlights"}</h2>
             <p className="text-white/70 leading-relaxed">
               {highlights}
             </p>
             <div className="pt-4">
-              <p className="text-gold font-bold">Open to all students. Check the Events Calendar for the next session.</p>
+              <p className="text-gold font-bold">{debates?.highlightsFooter || "Open to all students. Check the Events Calendar for the next session."}</p>
             </div>
           </div>
         </div>
       </section>
-    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

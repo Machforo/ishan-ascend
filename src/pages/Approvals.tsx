@@ -3,7 +3,7 @@ import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { FileText, ExternalLink } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
-import PageGallery from "@/components/PageGallery";
+
 
 const defaultAccreditations = [
   { title: "UGC", description: "Recognition under Section 2(f) of UGC Act. University Grants Commission.", logo: "https://iimt.ishan.ac/images/accreditation/ugc-logo.gif" },
@@ -88,7 +88,6 @@ export default function ApprovalsPage() {
           </div>
         </div>
       </section>
-    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

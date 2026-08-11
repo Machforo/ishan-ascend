@@ -30,11 +30,20 @@ export default function CampusExperience() {
 
   // Subtle rotation of images in specific tiles to keep it "dynamic"
   useEffect(() => {
-    if (galleryImages.length === 0) return;
+    if (galleryImages.length <= 1) return;
     const interval = setInterval(() => {
       const tileToChange = Math.floor(Math.random() * 10);
-      const nextImage = Math.floor(Math.random() * galleryImages.length);
+      let nextImage = Math.floor(Math.random() * galleryImages.length);
+
       setActiveIndices(prev => {
+        // Only avoid duplicates if we have more images than tiles
+        if (galleryImages.length > 10) {
+          let attempts = 0;
+          while (prev.includes(nextImage) && attempts < 20) {
+            nextImage = Math.floor(Math.random() * galleryImages.length);
+            attempts++;
+          }
+        }
         const next = [...prev];
         next[tileToChange] = nextImage;
         return next;

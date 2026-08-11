@@ -119,6 +119,49 @@ Over the decades, we have evolved into a multi-disciplinary hub offering six dis
     }
   );
 
+  if (data?.ourJourney?.length > 0) {
+    sections.splice(2, 0, {
+      id: "our-journey",
+      type: "content",
+      subtitle: "Milestones",
+      title: "Our Journey",
+      className: "bg-white",
+      content: (
+        <div className="relative mt-12 max-w-3xl mx-auto">
+          {/* Vertical Line */}
+          <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-0.5 bg-slate-200 -translate-x-1/2"></div>
+          
+          <div className="space-y-12">
+            {data.ourJourney.map((j: any, i: number) => (
+              <div key={i} className={`relative flex items-center justify-between md:justify-normal w-full ${i % 2 === 0 ? 'md:flex-row-reverse' : ''}`}>
+                {/* Center dot */}
+                <div className="absolute left-8 md:left-1/2 w-4 h-4 rounded-full bg-gold border-4 border-white shadow-sm -translate-x-1/2 z-10"></div>
+                
+                {/* Empty space for the other side */}
+                <div className="hidden md:block w-[45%]"></div>
+                
+                {/* Content Card */}
+                <div className="w-full pl-20 md:pl-0 md:w-[45%]">
+                  <div className={`bg-slate-50 p-6 rounded-2xl shadow-sm border border-slate-100 relative ${i % 2 === 0 ? 'md:text-right md:mr-6' : 'md:text-left md:ml-6'}`}>
+                    {/* Tiny connector arrow (desktop only) */}
+                    <div className={`hidden md:block absolute top-1/2 -translate-y-1/2 w-0 h-0 border-y-8 border-y-transparent border-slate-50 ${i % 2 === 0 ? 'border-l-[12px] -right-3' : 'border-r-[12px] -left-3'}`}></div>
+                    
+                    <span className="inline-block px-3 py-1 bg-gold/10 text-gold font-bold rounded-lg text-sm mb-3">
+                      {j.year}
+                    </span>
+                    <p className="text-slate-700 leading-relaxed font-medium">
+                      {j.event}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      )
+    });
+  }
+
   return (
     <>
       <StandardPage

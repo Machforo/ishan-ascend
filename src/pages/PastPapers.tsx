@@ -5,7 +5,7 @@ import { Download, FileText, Search } from "lucide-react";
 import { useState } from "react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import PageGallery from "@/components/PageGallery";
+
 
 export default function PastPapersPage() {
   const ref = useScrollReveal();
@@ -126,7 +126,6 @@ export default function PastPapersPage() {
           </div>
         </div>
       </section>
-    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

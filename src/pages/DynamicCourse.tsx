@@ -107,7 +107,7 @@ export default function DynamicCourse() {
           <div className="lg:col-span-2 space-y-12">
             <div>
               <h2 className="text-2xl font-display font-bold text-navy mb-5 text-gold-underline">Program Overview</h2>
-              <p className="text-base text-foreground/80 leading-relaxed whitespace-pre-wrap">{course.overview || course.description || "Program overview details will be updated shortly."}</p>
+              <div className="text-base text-foreground/80 leading-relaxed whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: course.overview || course.description || "Program overview details will be updated shortly." }} />
             </div>
 
             {(course.images || course.studentActivityImages)?.length > 0 && (

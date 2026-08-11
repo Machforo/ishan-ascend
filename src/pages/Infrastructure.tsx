@@ -5,7 +5,6 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Link } from "react-router-dom";
 import { Wifi, Monitor, BookOpen, Building2, Cctv, MapPin, ArrowRight } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
-import PageGallery from "@/components/PageGallery";
 
 const fallbackFacilities = [
   { icon: "Monitor", title: "Smart Classrooms", desc: "Air-conditioned classrooms equipped with projectors, interactive whiteboards, and modern AV systems for engaging lectures.", link: "/infrastructure" },
@@ -77,7 +76,6 @@ export default function InfrastructurePage() {
         </div>
       </section>
 
-      <PageGallery images={data?.pageGallery} />
       <EnquiryCTA />
     </Layout>
   );

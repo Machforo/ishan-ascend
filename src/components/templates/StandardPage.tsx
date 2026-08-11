@@ -3,6 +3,7 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { cn } from "@/lib/utils";
+import PageSections from "@/components/PageSections";
 import PageGallery from "@/components/PageGallery";
 
 export interface PageSection {
@@ -114,7 +115,7 @@ export default function StandardPage({ pageTitle, pageSubtitle, breadcrumbs, sec
         {sections.map((section, index) => renderSection(section, index))}
       </div>
     {children}
-    <PageGallery />
+    <PageSections />
       </Layout>
   );
 }

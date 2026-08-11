@@ -21,9 +21,16 @@ export default function PageHeader({ title, subtitle, breadcrumbs }: PageHeaderP
           {title}
         </h1>
         {subtitle && (
-          <p className="reveal delay-200 mt-4 text-lg text-primary-foreground/60 max-w-2xl leading-relaxed">
-            {subtitle}
-          </p>
+          /<\/?[a-z][\s\S]*>/i.test(subtitle) ? (
+            <div 
+              className="reveal delay-200 mt-4 text-lg text-primary-foreground/60 max-w-2xl leading-relaxed"
+              dangerouslySetInnerHTML={{ __html: subtitle }}
+            />
+          ) : (
+            <p className="reveal delay-200 mt-4 text-lg text-primary-foreground/60 max-w-2xl leading-relaxed">
+              {subtitle}
+            </p>
+          )
         )}
       </div>
     </section>

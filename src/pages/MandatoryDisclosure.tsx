@@ -46,11 +46,18 @@ export default function MandatoryDisclosurePage() {
               <FileText className="w-6 h-6 text-navy shrink-0 mt-0.5" />
               <div>
                 <p className="font-semibold text-foreground mb-1">Compliance Statement</p>
-                <div className="text-sm text-foreground/70 leading-relaxed space-y-4">
-                  {content.complianceStatement?.split('\n\n').map((para: string, i: number) => (
-                    <p key={i}>{para}</p>
-                  ))}
-                </div>
+                {content.complianceStatement && /<\/?[a-z][\s\S]*>/i.test(content.complianceStatement) ? (
+                  <div 
+                    className="text-sm text-foreground/70 leading-relaxed space-y-4 prose prose-sm prose-slate max-w-none"
+                    dangerouslySetInnerHTML={{ __html: content.complianceStatement }}
+                  />
+                ) : (
+                  <div className="text-sm text-foreground/70 leading-relaxed space-y-4 whitespace-pre-wrap">
+                    {content.complianceStatement?.split('\n\n').map((para: string, i: number) => (
+                      <p key={i}>{para}</p>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
 

@@ -175,9 +175,10 @@ export default function ProgramsSection() {
                 <div className="space-y-6">
                   <div>
                     <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">Overview</p>
-                    <p className="text-sm text-foreground/70 leading-relaxed italic">
-                      "{program.homepageSummary || program.overview || program.description}"
-                    </p>
+                    <div 
+                      className="text-sm text-foreground/70 leading-relaxed italic line-clamp-4"
+                      dangerouslySetInnerHTML={{ __html: program.homepageSummary || program.overview || program.description }}
+                    />
                   </div>
 
                   <AnimatePresence>

@@ -4,6 +4,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Calendar, ArrowRight, X, MapPin, Tag, Share2 } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import { motion, AnimatePresence } from "framer-motion";
+import RichTextRenderer from "@/components/RichTextRenderer";
 
 const defaultNews = [
   {
@@ -162,10 +163,8 @@ export default function NewsSection() {
                   </div>
 
                   <div className="space-y-6 flex-grow">
-                    <div className="prose prose-sm prose-navy max-w-none">
-                      <p className="text-foreground/70 leading-relaxed text-base md:text-lg">
-                        {selectedNews.description || "Stay tuned for more updates regarding this event. Detailed coverage and media highlights will be shared soon."}
-                      </p>
+                    <div className="prose prose-sm prose-navy max-w-none text-foreground/70 leading-relaxed text-base md:text-lg">
+                      <RichTextRenderer content={selectedNews.description || "Stay tuned for more updates regarding this event. Detailed coverage and media highlights will be shared soon."} />
                     </div>
                     
                     <div className="pt-8 mt-auto border-t border-muted flex flex-wrap gap-4 items-center justify-between">

@@ -33,7 +33,7 @@ const faqs = [
 
 export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
-  const { data } = useIIMTData("admissions");
+  const { data } = useIIMTData("homepage");
   const faqList = data?.faqs?.length > 0 ? data.faqs : faqs;
   const ref = useScrollReveal([faqList]);
 
@@ -82,9 +82,9 @@ export default function FAQSection() {
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                     >
                       <div className="p-6 pt-0 text-foreground/70 leading-relaxed bg-card">
-                        <div className="pl-14 border-l-2 border-gold/20 ml-5 py-2">
+                        <p className="pl-14 border-l-2 border-gold/20 ml-5 py-2 whitespace-pre-wrap">
                           {faq.answer}
-                        </div>
+                        </p>
                       </div>
                     </motion.div>
                   )}

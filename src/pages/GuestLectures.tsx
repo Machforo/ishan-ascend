@@ -4,7 +4,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import { Mic2, Calendar, User, Info } from "lucide-react";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import PageGallery from "@/components/PageGallery";
+
 
 export default function GuestLecturesPage() {
   const { data } = useIIMTData("learning");
@@ -71,16 +71,23 @@ export default function GuestLecturesPage() {
                   <Info className="w-5 h-5 text-gold shrink-0 mt-0.5" />
                   <div className="space-y-1">
                     <h3 className="font-bold text-foreground mb-2">{lectures?.whatToExpectTitle || "What to Expect"}</h3>
-                    <p className="text-sm text-foreground/70 leading-relaxed">
-                      {lectures?.whatToExpectDesc || "Sessions are open to all students across programmes. Topics and schedules are posted in advance on the Events Calendar. We also provide session recordings for student review where possible."}
-                    </p>
+                    {lectures?.whatToExpectDesc ? (
+                      <div 
+                        className="text-sm text-foreground/70 leading-relaxed [&>p]:mb-2"
+                        dangerouslySetInnerHTML={{ __html: lectures.whatToExpectDesc }}
+                      />
+                    ) : (
+                      <p className="text-sm text-foreground/70 leading-relaxed">
+                        Sessions are open to all students across programmes. Topics and schedules are posted in advance on the Events Calendar. We also provide session recordings for student review where possible.
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="reveal-right grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {events.map((e, i) => (
+              {events.map((e: any, i: number) => (
                 <div key={i} className="group flex flex-col p-6 rounded-2xl border bg-card hover:bg-muted transition-all duration-300">
                   {e.image && (
                     <div className="w-full h-40 rounded-xl overflow-hidden mb-4 shrink-0">
@@ -119,13 +126,19 @@ export default function GuestLecturesPage() {
         <div className="container-wide text-center">
           <div className="max-w-2xl mx-auto space-y-4">
             <h2 className="text-3xl font-display font-bold text-foreground">{lectures?.nationalSeminarsHeading || "National Seminars & Conferences"}</h2>
-            <p className="text-foreground/70">
-              {nationalSeminars}
-            </p>
+            {lectures?.nationalSeminars ? (
+              <div 
+                className="text-foreground/70 [&>p]:mb-4"
+                dangerouslySetInnerHTML={{ __html: lectures.nationalSeminars }}
+              />
+            ) : (
+              <p className="text-foreground/70">
+                {nationalSeminars}
+              </p>
+            )}
           </div>
         </div>
       </section>
-    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

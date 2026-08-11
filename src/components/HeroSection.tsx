@@ -54,18 +54,7 @@ const SLIDES = [
   },
 ];
 
-// Pick a random start index once per browser session
-const SESSION_START = (() => {
-  try {
-    const key = "iimt_hero_start";
-    const s = sessionStorage.getItem(key);
-    if (s !== null) return parseInt(s, 10) % SLIDES.length;
-    const r = Math.floor(Math.random() * SLIDES.length);
-    sessionStorage.setItem(key, String(r));
-    return r;
-  } catch { return 0; }
-})();
-
+// Start index is calculated dynamically inside the component now
 const DELAY = 5500;
 
 export default function HeroSection() {
@@ -79,7 +68,16 @@ export default function HeroSection() {
     cta1: { label: b.cta1 || "Explore Programs", href: "/education-overview" },
     cta2: { label: b.cta2 || "Virtual Tour", href: "/infrastructure" },
   })) : SLIDES;
-  const [current, setCurrent] = useState(SESSION_START);
+  const [current, setCurrent] = useState(() => {
+    try {
+      const key = "iimt_hero_start";
+      const s = sessionStorage.getItem(key);
+      if (s !== null) return parseInt(s, 10) % backendSlides.length;
+      const r = Math.floor(Math.random() * backendSlides.length);
+      sessionStorage.setItem(key, String(r));
+      return r;
+    } catch { return 0; }
+  });
   const [formData, setFormData] = useState({ name: "", phone: "", course: "" });
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [heroActiveTab, setHeroActiveTab] = useState<'enquiry' | 'campus'>('enquiry');
@@ -100,7 +98,7 @@ export default function HeroSection() {
       title: 'Top Placements at Fortis Healthcare',
       date: 'FEB 24',
       action: 'link',
-      url: '/news'
+      url: '/news-events'
     },
     {
       type: 'FEATURED',
@@ -130,7 +128,7 @@ export default function HeroSection() {
     if (item.action === 'popup') {
       setSelectedNews(item);
     } else if (item.action === 'link') {
-      window.location.href = item.url || '/news';
+      window.location.href = item.url || '/news-events';
     } else {
       toast.info("Notification: " + item.title);
     }
@@ -179,17 +177,17 @@ export default function HeroSection() {
   };
 
   const go = useCallback((idx: number) => {
-    setCurrent((idx + SLIDES.length) % SLIDES.length);
-  }, []);
+    setCurrent((idx + backendSlides.length) % backendSlides.length);
+  }, [backendSlides.length]);
 
   const resetTimer = useCallback((idx?: number) => {
     if (timerRef.current) clearInterval(timerRef.current);
     const start = idx ?? current;
     timerRef.current = setInterval(() => {
-      setCurrent((c) => (c + 1) % SLIDES.length);
+      setCurrent((c) => (c + 1) % backendSlides.length);
     }, DELAY);
     return start;
-  }, [current]);
+  }, [current, backendSlides.length]);
 
   useEffect(() => {
     resetTimer();
@@ -374,7 +372,7 @@ export default function HeroSection() {
                         </h3>
                         <p className="text-[10px] uppercase tracking-widest text-muted-foreground font-bold mt-1">What's going on at Ishan</p>
                       </div>
-                      <Link to="/news" className="text-[10px] font-bold text-gold hover:text-navy transition-colors flex items-center gap-1">
+                      <Link to="/news-events" className="text-[10px] font-bold text-gold hover:text-navy transition-colors flex items-center gap-1">
                         View All <ArrowRight size={12} />
                       </Link>
                     </div>

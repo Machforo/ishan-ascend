@@ -3,7 +3,7 @@ import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { CheckCircle2, Beaker, Video, Monitor, BookOpen, GraduationCap } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
-import PageGallery from "@/components/PageGallery";
+
 
 export default function PedagogyLabsPage() {
   const ref = useScrollReveal();
@@ -17,7 +17,7 @@ export default function PedagogyLabsPage() {
     "Systematic lesson plan development and testing",
     "Culture of peer feedback and reflective practice"
   ];
-  
+
   const getIcon = (iconName: string) => {
     switch (iconName) {
       case "Video": return <Video className="w-6 h-6 text-gold" />;
@@ -115,16 +115,16 @@ export default function PedagogyLabsPage() {
             {labsData?.equipmentCloseups?.length > 0 && (
               <div className="reveal">
                 <h3 className="text-xl font-bold text-navy mb-6">Lab Equipment Closeups</h3>
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {labsData.equipmentCloseups.map((photo: any, i: number) => {
                     const url = photo?.url || photo;
                     if (!url) return null;
                     return (
-                      <div key={i} className="rounded-2xl overflow-hidden shadow-sm h-28 bg-slate-100 group">
-                        <img 
-                          src={url} 
-                          alt={`Equipment Closeup ${i + 1}`} 
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                      <div key={i} className="rounded-2xl overflow-hidden shadow-sm aspect-[4/3] bg-slate-100 group">
+                        <img
+                          src={url}
+                          alt={`Equipment Closeup ${i + 1}`}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                       </div>
                     );
@@ -136,16 +136,16 @@ export default function PedagogyLabsPage() {
             {labsData?.studentsWorkingImages?.length > 0 && (
               <div className="reveal">
                 <h3 className="text-xl font-bold text-navy mb-6">Trainee Teachers in Practice</h3>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {labsData.studentsWorkingImages.map((photo: any, i: number) => {
                     const url = photo?.url || photo;
                     if (!url) return null;
                     return (
-                      <div key={i} className="rounded-2xl overflow-hidden shadow-sm h-28 bg-slate-100 group">
-                        <img 
-                          src={url} 
-                          alt={`Students Working ${i + 1}`} 
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                      <div key={i} className="rounded-2xl overflow-hidden shadow-sm aspect-[4/3] bg-slate-100 group">
+                        <img
+                          src={url}
+                          alt={`Students Working ${i + 1}`}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                       </div>
                     );
@@ -181,17 +181,16 @@ export default function PedagogyLabsPage() {
             </div>
             {labsData?.practiceTeachingImage && (
               <div className="rounded-3xl overflow-hidden shadow-md h-64 border border-slate-100 bg-white p-2">
-                <img 
-                  src={labsData.practiceTeachingImage} 
-                  alt="Practice Teaching" 
-                  className="w-full h-full object-cover rounded-2xl" 
+                <img
+                  src={labsData.practiceTeachingImage}
+                  alt="Practice Teaching"
+                  className="w-full h-full object-cover rounded-2xl"
                 />
               </div>
             )}
           </div>
         </div>
       </section>
-    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

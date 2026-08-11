@@ -4,7 +4,7 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { TrendingUp, Building2, Users2, Star, CheckCircle2 } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
-import PageGallery from "@/components/PageGallery";
+
 
 const defaultStats = [];
 
@@ -133,7 +133,6 @@ export default function PlacementsPage() {
         </div>
       </section>
 
-      <PageGallery images={data?.pageGallery} />
       <EnquiryCTA />
     </Layout>
   );

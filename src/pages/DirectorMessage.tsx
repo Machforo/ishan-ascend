@@ -51,9 +51,16 @@ I warmly invite you to join the IIMT community and experience an education that 
               </div>
 
               <div className="reveal-right space-y-6">
-                <div className="text-foreground/70 leading-relaxed whitespace-pre-wrap">
-                   {msg.message}
-                </div>
+                {msg.message && /<\/?[a-z][\s\S]*>/i.test(msg.message) ? (
+                  <div 
+                    className="text-foreground/70 leading-relaxed space-y-4 prose prose-slate max-w-none"
+                    dangerouslySetInnerHTML={{ __html: msg.message }}
+                  />
+                ) : (
+                  <div className="text-foreground/70 leading-relaxed whitespace-pre-wrap">
+                     {msg.message}
+                  </div>
+                )}
 
                 {msg.candidImage && (
                   <div className="mt-8 rounded-2xl overflow-hidden shadow-md max-h-[350px]">

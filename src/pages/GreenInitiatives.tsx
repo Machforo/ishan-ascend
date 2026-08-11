@@ -4,7 +4,7 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Leaf, Sun, Recycle, Droplets, TreePine } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
-import PageGallery from "@/components/PageGallery";
+
 
 const initiatives = [
   { icon: Sun, title: "Energy Conservation", desc: "We prioritize energy efficiency through LED lighting across campus, sensor-based systems in common areas, and a commitment to reducing overall carbon footprint. Solar installations contribute significantly to our renewable energy goals.", stat: "20% Renewable energy" },
@@ -88,7 +88,6 @@ export default function GreenInitiativesPage() {
         </div>
       </section>
 
-      <PageGallery images={data?.pageGallery} />
       <EnquiryCTA />
     </Layout>
   );

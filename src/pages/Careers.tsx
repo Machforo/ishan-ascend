@@ -3,7 +3,7 @@ import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import PageGallery from "@/components/PageGallery";
+import RichTextRenderer from "@/components/RichTextRenderer";
 
 export default function CareersPage() {
   const ref = useScrollReveal();
@@ -31,7 +31,9 @@ export default function CareersPage() {
               />
             </div>
           )}
-          <p className="reveal text-foreground/70 leading-relaxed mb-10 whitespace-pre-wrap">{careersData.description || "Ishan Institute of Management & Technology is always looking for passionate educators and professionals to join our growing team. We offer competitive compensation, a supportive work environment, and opportunities for professional development."}</p>
+          <div className="reveal text-foreground/70 leading-relaxed mb-10">
+            <RichTextRenderer content={careersData.description || "Ishan Institute of Management & Technology is always looking for passionate educators and professionals to join our growing team. We offer competitive compensation, a supportive work environment, and opportunities for professional development."} />
+          </div>
           <div className="space-y-4">
             {jobs.map((j: any, i: number) => (
               <div key={i} className={`reveal delay-${Math.min(i, 3)}00 p-6 rounded-xl border bg-card`}>
@@ -52,7 +54,6 @@ export default function CareersPage() {
           <p className="text-sm text-muted-foreground mt-8 text-center">Send your CV to <a href={`mailto:${email}`} className="text-navy font-semibold">{email}</a></p>
         </div></div>
       </section>
-    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

@@ -4,7 +4,7 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 import { useIIMTData } from "@/hooks/useIIMTData";
-import PageGallery from "@/components/PageGallery";
+
 
 export default function SportsPage() {
   const { data } = useIIMTData("campuslife");
@@ -34,9 +34,9 @@ export default function SportsPage() {
         <div className="container-wide">
           <div className="max-w-3xl mx-auto reveal space-y-6">
             {content ? (
-              <div 
-                className="text-foreground/70 leading-relaxed [&>p]:mb-4" 
-                dangerouslySetInnerHTML={{ __html: content }} 
+              <div
+                className="text-foreground/70 leading-relaxed [&>p]:mb-4"
+                dangerouslySetInnerHTML={{ __html: content }}
               />
             ) : (
               <p className="text-foreground/70 leading-relaxed whitespace-pre-wrap">
@@ -52,6 +52,27 @@ export default function SportsPage() {
               ))}
             </div>
 
+            {sports?.interiorDetails?.length > 0 && (
+              <div className="reveal mt-12 pt-10 border-t">
+                <h3 className="text-2xl font-display font-bold text-navy mb-6 text-center">Sports Facilities & Details</h3>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                  {sports.interiorDetails.map((photo: any, i: number) => {
+                    const url = photo?.url || photo?.image || photo;
+                    if (!url) return null;
+                    return (
+                      <div key={i} className="rounded-2xl overflow-hidden shadow-sm h-32 md:h-40 bg-slate-100 group">
+                        <img 
+                          src={url} 
+                          alt={`Sports Detail ${i + 1}`} 
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
             {sports?.images?.length > 0 && (
               <div className="reveal mt-12 pt-10 border-t">
                 <h3 className="text-2xl font-display font-bold text-navy mb-6 text-center">Sports Facilities & Events</h3>
@@ -61,10 +82,10 @@ export default function SportsPage() {
                     if (!url) return null;
                     return (
                       <div key={i} className="rounded-2xl overflow-hidden shadow-md h-48 bg-slate-100 group">
-                        <img 
-                          src={url} 
-                          alt={`Sports Action ${i + 1}`} 
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                        <img
+                          src={url}
+                          alt={`Sports Action ${i + 1}`}
+                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                         />
                       </div>
                     );
@@ -76,7 +97,6 @@ export default function SportsPage() {
         </div>
       </section>
 
-      <PageGallery images={data?.pageGallery} />
       <EnquiryCTA />
     </Layout>
   );

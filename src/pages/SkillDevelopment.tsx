@@ -4,7 +4,7 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import PageGallery from "@/components/PageGallery";
+
 
 export default function SkillDevelopmentPage() {
   const { data } = useIIMTData("learning");
@@ -70,7 +70,6 @@ export default function SkillDevelopmentPage() {
           </div>
         </div>
       </section>
-      <PageGallery images={data?.pageGallery} />
       <EnquiryCTA />
     </Layout>
   );

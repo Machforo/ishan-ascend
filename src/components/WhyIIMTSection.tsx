@@ -33,8 +33,8 @@ export default function WhyIIMTSection() {
             <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground leading-tight">
               {data?.standApart?.heading || "What Makes IIMT Stand Apart"}
             </h2>
-            <p 
-              className="mt-4 text-foreground/60 leading-relaxed"
+            <div 
+              className="mt-4 text-foreground/60 leading-relaxed whitespace-pre-wrap prose prose-slate max-w-none"
               dangerouslySetInnerHTML={{ 
                 __html: data?.standApart?.description || "For over three decades, IIMT has maintained its commitment to academic excellence, holistic development, and career-focused education in the Delhi NCR region." 
               }}
@@ -60,8 +60,10 @@ export default function WhyIIMTSection() {
                     <Icon className="w-5 h-5 text-navy" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-foreground text-sm">{r.title}</h3>
-                    <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{r.desc || r.description}</p>
+                    <h3 className="font-semibold text-foreground text-sm">{r.title || r.text}</h3>
+                    {(r.desc || r.description || (r.title && r.text)) && (
+                      <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{r.desc || r.description || (r.title ? r.text : null)}</p>
+                    )}
                   </div>
                 </div>
               );

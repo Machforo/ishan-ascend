@@ -4,7 +4,7 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { ExternalLink } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
-import PageGallery from "@/components/PageGallery";
+
 
 export default function ResearchJournalPage() {
   const { data, loading } = useIIMTData("aboutus");
@@ -32,7 +32,16 @@ export default function ResearchJournalPage() {
       )}
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide"><div className="max-w-3xl mx-auto reveal space-y-6">
-          <p className="text-foreground/70 leading-relaxed">{content.description}</p>
+          {content.description && /<\/?[a-z][\s\S]*>/i.test(content.description) ? (
+            <div 
+              className="text-foreground/70 leading-relaxed space-y-4 prose prose-sm prose-slate max-w-none"
+              dangerouslySetInnerHTML={{ __html: content.description }}
+            />
+          ) : (
+            <div className="text-foreground/70 leading-relaxed space-y-4 whitespace-pre-wrap">
+              {content.description}
+            </div>
+          )}
           <div className="grid sm:grid-cols-2 gap-4">
             {[{ label: "ISSN", value: content.issn }, { label: "Frequency", value: content.frequency }, { label: "UGC CARE", value: content.ugcCare }, { label: "Peer Reviewed", value: content.peerReviewed }].map((s) => (
               <div key={s.label} className="p-4 rounded-xl border bg-card">
@@ -46,7 +55,6 @@ export default function ResearchJournalPage() {
           </a>
         </div></div>
       </section>
-      <PageGallery images={data?.pageGallery} />
       <EnquiryCTA />
     </Layout>
   );

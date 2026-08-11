@@ -2,7 +2,6 @@ import { useLocation, Link } from "react-router-dom";
 import { useEffect } from "react";
 import Layout from "@/components/Layout";
 import { Search, Home, ArrowLeft } from "lucide-react";
-import PageGallery from "@/components/PageGallery";
 
 const NotFound = () => {
   const location = useLocation();
@@ -53,8 +52,7 @@ const NotFound = () => {
           </div>
         </div>
       </div>
-    <PageGallery />
-      </Layout>
+    </Layout>
   );
 };
 

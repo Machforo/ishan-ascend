@@ -4,7 +4,8 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Lightbulb, Rocket, Users, Briefcase, Trophy, ArrowRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useIIMTData } from "@/hooks/useIIMTData";
-import PageGallery from "@/components/PageGallery";
+import RichTextRenderer from "@/components/RichTextRenderer";
+
 
 export default function ECellPage() {
   const { data, loading } = useIIMTData("placements");
@@ -59,9 +60,9 @@ export default function ECellPage() {
               <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground leading-tight">
                 {content.aboutTitle}
               </h2>
-              <p className="text-foreground/70 leading-relaxed">
-                {content.aboutDescription}
-              </p>
+              <div className="text-foreground/70 leading-relaxed">
+                <RichTextRenderer content={content.aboutDescription} />
+              </div>
               <div className="grid sm:grid-cols-2 gap-6 pt-4">
                 {content.offerings?.map((o: any, i: number) => (
                   <div key={i} className="flex gap-4">
@@ -80,9 +81,9 @@ export default function ECellPage() {
               <div className="relative z-10 space-y-6">
                 <Briefcase className="w-12 h-12 text-gold" />
                 <h3 className="text-2xl md:text-3xl font-display font-bold leading-tight">{content.internshipTitle}</h3>
-                <p className="text-white/70 leading-relaxed">
-                  {content.internshipDescription}
-                </p>
+                <div className="text-white/70 leading-relaxed">
+                  <RichTextRenderer content={content.internshipDescription} />
+                </div>
                 <ul className="space-y-3 text-sm text-white/80">
                   {content.internshipPoints?.map((pt: any, i: number) => (
                     <li key={i} className="flex items-center gap-2">• {typeof pt === 'string' ? pt : pt.text}</li>
@@ -102,13 +103,12 @@ export default function ECellPage() {
           <div className="max-w-2xl mx-auto space-y-4">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Alumni Spotlight</p>
             <h2 className="text-3xl font-display font-bold text-foreground">{content.alumniSpotlightTitle}</h2>
-            <p className="text-foreground/70">
-              {content.alumniSpotlightDescription}
-            </p>
+            <div className="text-foreground/70">
+              <RichTextRenderer content={content.alumniSpotlightDescription} />
+            </div>
           </div>
         </div>
       </section>
-    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }

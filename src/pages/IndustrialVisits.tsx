@@ -2,15 +2,40 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
-import { Factory, Landmark, Cpu, Building2, ExternalLink } from "lucide-react";
+import { Factory, Landmark, Cpu, Building2, ExternalLink, Cog, Briefcase, Globe, PenTool, FlaskConical, Stethoscope } from "lucide-react";
 import ImageWithFallback from "@/components/ImageWithFallback";
-import PageGallery from "@/components/PageGallery";
+
+const getIcon = (name: string) => {
+  switch (name?.toLowerCase()) {
+    case 'factory': return <Factory className="w-5 h-5 text-gold" />;
+    case 'landmark': return <Landmark className="w-5 h-5 text-gold" />;
+    case 'cpu': return <Cpu className="w-5 h-5 text-gold" />;
+    case 'building2': return <Building2 className="w-5 h-5 text-gold" />;
+    case 'cog': return <Cog className="w-5 h-5 text-gold" />;
+    case 'briefcase': return <Briefcase className="w-5 h-5 text-gold" />;
+    case 'globe': return <Globe className="w-5 h-5 text-gold" />;
+    case 'pentool': return <PenTool className="w-5 h-5 text-gold" />;
+    case 'flaskconical': return <FlaskConical className="w-5 h-5 text-gold" />;
+    case 'stethoscope': return <Stethoscope className="w-5 h-5 text-gold" />;
+    default: return <Building2 className="w-5 h-5 text-gold" />;
+  }
+};
+
 
 export default function IndustrialVisitsPage() {
   const ref = useScrollReveal();
   const { data } = useIIMTData("learning");
 
   const industrial = data?.industrialVisits;
+  
+  const defaultSectors = [
+    { label: "Manufacturing", icon: "Factory" },
+    { label: "Finance", icon: "Landmark" },
+    { label: "Technology", icon: "Cpu" },
+    { label: "Corporate", icon: "Building2" }
+  ];
+  
+  const sectors = industrial?.sectors?.length > 0 ? industrial.sectors : defaultSectors;
   
   const visits = industrial?.visits?.length > 0 ? industrial.visits : [
     {
@@ -55,7 +80,7 @@ export default function IndustrialVisitsPage() {
     <Layout>
       <PageHeader
         title={industrial?.pageTitle || "Industrial Visits"}
-        subtitle="Connecting classroom theory with real-world industrial operations."
+        subtitle={industrial?.pageSubtitle || "Connecting classroom theory with real-world industrial operations."}
         breadcrumbs={[{ label: "Industrial Visits" }]}
       />
 
@@ -63,9 +88,9 @@ export default function IndustrialVisitsPage() {
         <div className="container-wide">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <div className="reveal-left space-y-6">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Experiential Learning</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">{industrial?.subheading || "Experiential Learning"}</p>
               <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground leading-tight">
-                Beyond the Classroom Walls
+                {industrial?.heading || "Beyond the Classroom Walls"}
               </h2>
               {industrial?.description ? (
                 <div 
@@ -78,27 +103,17 @@ export default function IndustrialVisitsPage() {
                 </p>
               )}
               <div className="grid grid-cols-2 gap-4">
-                <div className="p-4 rounded-xl border bg-card flex items-center gap-3">
-                  <Factory className="w-5 h-5 text-gold" />
-                  <span className="text-xs font-bold text-foreground uppercase tracking-wider">Manufacturing</span>
-                </div>
-                <div className="p-4 rounded-xl border bg-card flex items-center gap-3">
-                  <Landmark className="w-5 h-5 text-gold" />
-                  <span className="text-xs font-bold text-foreground uppercase tracking-wider">Finance</span>
-                </div>
-                <div className="p-4 rounded-xl border bg-card flex items-center gap-3">
-                  <Cpu className="w-5 h-5 text-gold" />
-                  <span className="text-xs font-bold text-foreground uppercase tracking-wider">Technology</span>
-                </div>
-                <div className="p-4 rounded-xl border bg-card flex items-center gap-3">
-                  <Building2 className="w-5 h-5 text-gold" />
-                  <span className="text-xs font-bold text-foreground uppercase tracking-wider">Corporate</span>
-                </div>
+                {sectors.map((sector: any, idx: number) => (
+                  <div key={idx} className="p-4 rounded-xl border bg-card flex items-center gap-3">
+                    {getIcon(sector.icon)}
+                    <span className="text-xs font-bold text-foreground uppercase tracking-wider">{sector.label}</span>
+                  </div>
+                ))}
               </div>
             </div>
 
             <div className="reveal-right bg-section-alt rounded-3xl p-8 md:p-10 border shadow-sm">
-              <h3 className="text-2xl font-display font-bold text-foreground mb-6">Why Visits Matter</h3>
+              <h3 className="text-2xl font-display font-bold text-foreground mb-6">{industrial?.whyVisitsMatterHeading || "Why Visits Matter"}</h3>
               <ul className="space-y-6">
                 {whyMatters.map((m: any, i: number) => {
                   const text = typeof m === 'string' ? m : m.text || '';
@@ -119,9 +134,9 @@ export default function IndustrialVisitsPage() {
 
       <section className="py-16 md:py-24 bg-card">
         <div className="container-wide">
-          <h2 className="text-3xl font-display font-bold text-foreground mb-12 text-center">Recent Industrial Visits</h2>
+          <h2 className="text-3xl font-display font-bold text-foreground mb-12 text-center">{industrial?.recentVisitsHeading || "Recent Industrial Visits"}</h2>
           <div className="grid md:grid-cols-2 gap-6">
-            {visits.map((v, i) => (
+            {visits.map((v: any, i: number) => (
               <div key={i} className="group flex flex-col p-6 rounded-2xl border bg-background hover:border-gold transition-all duration-300">
                 {v.image && (
                   <div className="w-full h-48 rounded-xl overflow-hidden mb-6">
@@ -150,7 +165,6 @@ export default function IndustrialVisitsPage() {
           </div>
         </div>
       </section>
-    <PageGallery images={data?.pageGallery} />
     </Layout>
   );
 }
