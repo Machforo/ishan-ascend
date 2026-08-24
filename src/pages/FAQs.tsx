@@ -82,7 +82,7 @@ export default function FAQsPage() {
                         {faq.q}
                       </AccordionTrigger>
                       <AccordionContent className="text-sm text-foreground/70 leading-relaxed pb-4">
-                        {faq.a}
+                        <div dangerouslySetInnerHTML={{ __html: faq.a }} />
                       </AccordionContent>
                     </AccordionItem>
                   ))}

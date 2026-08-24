@@ -82,9 +82,10 @@ export default function FAQSection() {
                       transition={{ duration: 0.3, ease: "easeInOut" }}
                     >
                       <div className="p-6 pt-0 text-foreground/70 leading-relaxed bg-card">
-                        <p className="pl-14 border-l-2 border-gold/20 ml-5 py-2 whitespace-pre-wrap">
-                          {faq.answer}
-                        </p>
+                        <div 
+                          className="pl-14 border-l-2 border-gold/20 ml-5 py-2 whitespace-pre-wrap"
+                          dangerouslySetInnerHTML={{ __html: faq.answer }} 
+                        />
                       </div>
                     </motion.div>
                   )}

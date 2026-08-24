@@ -134,13 +134,13 @@ export default function DynamicCourse() {
             <div>
               <h2 className="text-2xl font-display font-bold text-navy mb-5 text-gold-underline">Curriculum Structure</h2>
               <div className="bg-card border rounded-2xl p-6 shadow-sm">
-                 <p className="text-base text-foreground/80 leading-relaxed whitespace-pre-wrap">{course.curriculumStructure || "Curriculum structure will be updated shortly."}</p>
+                 <div className="text-base text-foreground/80 leading-relaxed whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: course.curriculumStructure || "Curriculum structure will be updated shortly." }} />
               </div>
             </div>
 
             <div>
               <h2 className="text-2xl font-display font-bold text-navy mb-5 text-gold-underline">Career Scope</h2>
-              <p className="text-base text-foreground/80 leading-relaxed whitespace-pre-wrap">{course.careerScope || "Career scope will be updated shortly."}</p>
+              <div className="text-base text-foreground/80 leading-relaxed whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: course.careerScope || "Career scope will be updated shortly." }} />
             </div>
           </div>
 
