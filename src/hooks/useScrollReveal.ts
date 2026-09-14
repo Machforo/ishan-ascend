@@ -4,7 +4,7 @@ export function useScrollReveal<T extends HTMLElement = HTMLDivElement>(deps: an
   const ref = useRef<T>(null);
 
   useEffect(() => {
-    const el = ref.current;
+    const el = ref.current || (typeof document !== "undefined" ? document.body : null);
     if (!el) return;
 
     const observedElements = new Set<Element>();

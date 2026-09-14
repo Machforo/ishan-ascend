@@ -4,7 +4,7 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useIIMTData } from "@/hooks/useIIMTData";
-
+import DynamicPageSections from "@/components/DynamicPageSections";
 
 const defaultFaqCategories = [
   {
@@ -53,47 +53,62 @@ export default function FAQsPage() {
 
   const ref = useScrollReveal([faqCategories]);
 
-  return (
-    <Layout>
+  const defaultSections: Record<string, React.ReactNode> = {
+    header: (
       <PageHeader
+        key="header"
         title="Frequently Asked Questions"
         subtitle="Find answers to common queries about admissions, fees, campus life, and career outcomes"
         breadcrumbs={[{ label: "Admissions", href: "/admissions" }, { label: "FAQs" }]}
       />
-
-      {data?.faqsBanner && (
-        <div className="container-wide mt-12">
-          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
-            <img src={data.faqsBanner} alt="FAQs Banner" className="w-full h-full object-cover" />
+    ),
+    faq_accordion: (
+      <div key="faq_accordion">
+        {data?.faqsBanner && (
+          <div className="container-wide mt-12">
+            <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+              <img src={data.faqsBanner} alt="FAQs Banner" className="w-full h-full object-cover" />
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      <section className="py-20 md:py-28" ref={ref}>
-        <div className="container-wide">
-          <div className="max-w-3xl mx-auto space-y-10">
-            {faqCategories.map((cat, ci) => (
-              <div key={cat.category} className={`reveal delay-${Math.min(ci, 4)}00`}>
-                <h2 className="text-xl font-display font-bold text-foreground mb-4">{cat.category}</h2>
-                <Accordion type="single" collapsible className="space-y-2">
-                  {cat.faqs.map((faq, i) => (
-                    <AccordionItem key={i} value={`${ci}-${i}`} className="border rounded-lg bg-card px-5">
-                      <AccordionTrigger className="text-sm font-semibold text-foreground text-left py-4 hover:no-underline">
-                        {faq.q}
-                      </AccordionTrigger>
-                      <AccordionContent className="text-sm text-foreground/70 leading-relaxed pb-4">
-                        <div dangerouslySetInnerHTML={{ __html: faq.a }} />
-                      </AccordionContent>
-                    </AccordionItem>
-                  ))}
-                </Accordion>
-              </div>
-            ))}
+        <section className="py-20 md:py-28" ref={ref}>
+          <div className="container-wide">
+            <div className="max-w-3xl mx-auto space-y-10">
+              {faqCategories.map((cat, ci) => (
+                <div key={cat.category} className={`reveal delay-${Math.min(ci, 4)}00`}>
+                  <h2 className="text-xl font-display font-bold text-foreground mb-4">{cat.category}</h2>
+                  <Accordion type="single" collapsible className="space-y-2">
+                    {cat.faqs.map((faq, i) => (
+                      <AccordionItem key={i} value={`${ci}-${i}`} className="border rounded-lg bg-card px-5">
+                        <AccordionTrigger className="text-sm font-semibold text-foreground text-left py-4 hover:no-underline">
+                          {faq.q}
+                        </AccordionTrigger>
+                        <AccordionContent className="text-sm text-foreground/70 leading-relaxed pb-4">
+                          <div dangerouslySetInnerHTML={{ __html: faq.a }} />
+                        </AccordionContent>
+                      </AccordionItem>
+                    ))}
+                  </Accordion>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </div>
+    ),
+    cta: <EnquiryCTA key="cta" />,
+  };
 
-      <EnquiryCTA />
+  const defaultOrder = ["header", "faq_accordion", "cta"];
+
+  return (
+    <Layout>
+      <DynamicPageSections
+        pageId="faqs"
+        defaultOrder={defaultOrder}
+        defaultSections={defaultSections}
+      />
     </Layout>
   );
 }

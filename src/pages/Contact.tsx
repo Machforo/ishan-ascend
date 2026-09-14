@@ -9,14 +9,14 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from "sonner";
 import ImageWithFallback from "@/components/ImageWithFallback";
-
-
+import DynamicPageSections from "@/components/DynamicPageSections";
 
 const contactSchema = z.object({
   name: z.string().min(2, 'Name must be at least 2 characters').max(50, 'Name is too long').regex(/^[a-zA-Z\s]*$/, 'Name can only contain letters and spaces'),
   phone: z.string().regex(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
   email: z.string().email('Invalid email address').or(z.literal(''))
 });
+
 export default function ContactPage() {
   const ref = useScrollReveal();
   const { data } = useIIMTData("contact");
@@ -28,7 +28,7 @@ export default function ContactPage() {
   };
   const collegeContacts = data?.collegeContacts || [];
 
-    const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<z.infer<typeof contactSchema>>({ resolver: zodResolver(contactSchema), defaultValues: { name: '', phone: '', email: '' } });
+  const { register, handleSubmit, formState: { errors, isSubmitting }, reset } = useForm<z.infer<typeof contactSchema>>({ resolver: zodResolver(contactSchema), defaultValues: { name: '', phone: '', email: '' } });
   const [submitted, setSubmitted] = useState(false);
 
   const onSubmit = async (data: z.infer<typeof contactSchema>) => {
@@ -45,11 +45,17 @@ export default function ContactPage() {
     } catch (err) { toast.error("Unable to send message."); }
   };
 
-  return (
-    <Layout>
-      <PageHeader title="Contact Us" subtitle="Reach out for admissions enquiries, campus visits, and general information" breadcrumbs={[{ label: "Contact" }]} />
-
-      <section className="py-20 md:py-28" ref={ref}>
+  const defaultSections: Record<string, React.ReactNode> = {
+    header: (
+      <PageHeader
+        key="header"
+        title="Contact Us"
+        subtitle="Reach out for admissions enquiries, campus visits, and general information"
+        breadcrumbs={[{ label: "Contact" }]}
+      />
+    ),
+    contact_cards: (
+      <section key="contact_cards" className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20">
             <div className="reveal-left space-y-8">
@@ -167,6 +173,18 @@ export default function ContactPage() {
           )}
         </div>
       </section>
+    ),
+  };
+
+  const defaultOrder = ["header", "contact_cards", "contact_form", "campus_map"];
+
+  return (
+    <Layout>
+      <DynamicPageSections
+        pageId="contact"
+        defaultOrder={defaultOrder}
+        defaultSections={defaultSections}
+      />
     </Layout>
   );
 }

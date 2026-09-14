@@ -165,6 +165,7 @@ Over the decades, we have evolved into a multi-disciplinary hub offering six dis
   return (
     <>
       <StandardPage
+        pageId="about_us"
         pageTitle={data?.pageHeading || "About IIMT Greater Noida"}
         pageSubtitle={data?.pageSubheading || "Transforming potential into performance through academic excellence since 1994."}
         breadcrumbs={[{ label: "About IIMT" }]}

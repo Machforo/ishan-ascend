@@ -4,7 +4,7 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import libraryImg from "@/assets/students-library.jpg";
-
+import DynamicPageSections from "@/components/DynamicPageSections";
 
 export default function LibraryPage() {
   const { data } = useIIMTData("campuslife");
@@ -23,22 +23,26 @@ export default function LibraryPage() {
     { label: "Archive", value: "Past papers & dissertations" },
   ];
   const specs = library?.specs?.length > 0 ? library.specs : fallbackSpecs;
-  return (
-    <Layout>
+
+  const defaultSections: Record<string, React.ReactNode> = {
+    header: (
       <PageHeader
+        key="header"
         title="Library"
         subtitle="A comprehensive knowledge resource centre supporting academic excellence"
         breadcrumbs={[{ label: "Campus", href: "/infrastructure" }, { label: "Library" }]}
       />
-      {(library?.equipmentWideImage || library?.image || library?.bannerImage || library?.imageUrl) && (
-        <div className="container-wide mt-12">
-          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
-            <img src={library.equipmentWideImage || library.image || library.bannerImage || library.imageUrl} alt="Library Wide Angle" className="w-full h-full object-cover" />
+    ),
+    overview: (
+      <div key="overview">
+        {(library?.equipmentWideImage || library?.image || library?.bannerImage || library?.imageUrl) && (
+          <div className="container-wide mt-12">
+            <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+              <img src={library.equipmentWideImage || library.image || library.bannerImage || library.imageUrl} alt="Library Wide Angle" className="w-full h-full object-cover" />
+            </div>
           </div>
-        </div>
-      )}
-
-      <section className="py-20 md:py-28" ref={ref}>
+        )}
+        <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-4xl mx-auto">
             {!library?.equipmentWideImage && (
@@ -110,8 +114,21 @@ export default function LibraryPage() {
             </div>
           </div>
         </div>
-      </section>
-      <EnquiryCTA />
+        </section>
+      </div>
+    ),
+    cta: <EnquiryCTA key="cta" />,
+  };
+
+  const defaultOrder = ["header", "overview", "cta"];
+
+  return (
+    <Layout>
+      <DynamicPageSections
+        pageId="library"
+        defaultOrder={defaultOrder}
+        defaultSections={defaultSections}
+      />
     </Layout>
   );
 }

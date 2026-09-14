@@ -2,11 +2,8 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { Monitor, Wifi, Clock, Shield } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
-
-
-
+import DynamicPageSections from "@/components/DynamicPageSections";
 
 export default function ITLabPage() {
   const { data } = useIIMTData("campuslife");
@@ -33,23 +30,25 @@ export default function ITLabPage() {
     "Save work regularly — the institute is not responsible for data loss"
   ];
 
-  return (
-    <Layout>
+  const defaultSections: Record<string, React.ReactNode> = {
+    header: (
       <PageHeader
+        key="header"
         title="IT Lab"
         subtitle="Well-equipped computer labs supporting BCA, BBA, B.Com and certificate programs"
         breadcrumbs={[{ label: "Campus", href: "/infrastructure" }, { label: "IT Lab" }]}
       />
-
-      {(itLabs?.equipmentWideImage || itLabs?.bannerImage || itLabs?.image) && (
-        <div className="container-wide mt-12">
-          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
-            <img src={itLabs.equipmentWideImage || itLabs.bannerImage || itLabs.image} alt="IT Lab Equipment Wide" className="w-full h-full object-cover" />
+    ),
+    overview: (
+      <div key="overview">
+        {(itLabs?.equipmentWideImage || itLabs?.bannerImage || itLabs?.image) && (
+          <div className="container-wide mt-12">
+            <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+              <img src={itLabs.equipmentWideImage || itLabs.bannerImage || itLabs.image} alt="IT Lab Equipment Wide" className="w-full h-full object-cover" />
+            </div>
           </div>
-        </div>
-      )}
-
-      <section className="py-20 md:py-28" ref={ref}>
+        )}
+        <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-4xl mx-auto">
             <div className="reveal space-y-5 mb-12">
@@ -135,9 +134,21 @@ export default function ITLabPage() {
             </div>
           </div>
         </div>
-      </section>
+        </section>
+      </div>
+    ),
+    cta: <EnquiryCTA key="cta" />,
+  };
 
-      <EnquiryCTA />
+  const defaultOrder = ["header", "overview", "cta"];
+
+  return (
+    <Layout>
+      <DynamicPageSections
+        pageId="it_lab"
+        defaultOrder={defaultOrder}
+        defaultSections={defaultSections}
+      />
     </Layout>
   );
 }

@@ -6,6 +6,8 @@ import { Target, Eye, Compass } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import PageGallery from "@/components/PageGallery";
 
+import DynamicPageSections from "@/components/DynamicPageSections";
+
 export default function MissionVisionPage() {
   const { data } = useIIMTData("aboutus");
 
@@ -41,109 +43,136 @@ export default function MissionVisionPage() {
       }))
     : defaultCoreValues;
 
-  return (
-    <Layout>
+  const defaultSections: Record<string, React.ReactNode> = {
+    header: (
       <PageHeader
         title="Mission & Vision"
         subtitle="Guiding principles that drive academic excellence and holistic development at IIMT"
         breadcrumbs={[{ label: "About", href: "/about" }, { label: "Mission & Vision" }]}
       />
-
-      {mv?.bannerImage && (
-        <div className="container-wide mt-12">
-          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
-            <img src={mv.bannerImage} alt="Mission & Vision Banner" className="w-full h-full object-cover" />
-          </div>
+    ),
+    banner_image: mv?.bannerImage ? (
+      <div className="container-wide mt-12">
+        <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+          <img src={mv.bannerImage} alt="Mission & Vision Banner" className="w-full h-full object-cover" />
         </div>
-      )}
-
-      <section className="py-20 md:py-28" ref={ref}>
-        <div className="container-wide">
-          <div className="max-w-4xl mx-auto space-y-16">
-            {/* Vision */}
-            <div className="reveal grid md:grid-cols-[80px_1fr] gap-6 items-start">
-              <div className="w-16 h-16 rounded-2xl bg-gold-light flex items-center justify-center shrink-0">
-                <Eye className="w-8 h-8 text-navy" />
-              </div>
-              <div>
-                <h2 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-4">Our Vision</h2>
-                <div 
-                  className="text-lg text-foreground/70 leading-relaxed whitespace-pre-wrap" 
-                  dangerouslySetInnerHTML={{ __html: vision }} 
-                />
-              </div>
+      </div>
+    ) : null,
+    vision: (
+      <section className="py-12 md:py-16" ref={ref}>
+        <div className="container-wide max-w-4xl mx-auto">
+          <div className="reveal grid md:grid-cols-[80px_1fr] gap-6 items-start">
+            <div className="w-16 h-16 rounded-2xl bg-gold-light flex items-center justify-center shrink-0">
+              <Eye className="w-8 h-8 text-navy" />
             </div>
-
-            {/* Mission */}
-            <div className="reveal delay-100 grid md:grid-cols-[80px_1fr] gap-6 items-start">
-              <div className="w-16 h-16 rounded-2xl bg-gold-light flex items-center justify-center shrink-0">
-                <Target className="w-8 h-8 text-navy" />
-              </div>
-              <div>
-                <h2 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-4">Our Mission</h2>
-                {missionStr && /<\/?[a-z][\s\S]*>/i.test(missionStr) ? (
-                  <div 
-                    className="text-foreground/70 leading-relaxed space-y-4 prose prose-slate max-w-none" 
-                    dangerouslySetInnerHTML={{ __html: missionStr }} 
-                  />
-                ) : (
-                  <ul className="space-y-3">
-                    {missionList.map((item: string, i: number) => (
-                      <li key={i} className="flex items-start gap-3">
-                        <div className="w-2 h-2 rounded-full bg-gold shrink-0 mt-2" />
-                        <p className="text-foreground/70 leading-relaxed">{item}</p>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
+            <div>
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-4">Our Vision</h2>
+              <div 
+                className="text-lg text-foreground/70 leading-relaxed whitespace-pre-wrap" 
+                dangerouslySetInnerHTML={{ __html: vision }} 
+              />
             </div>
-
-            {/* Core Values */}
-            <div className="reveal delay-200 grid md:grid-cols-[80px_1fr] gap-6 items-start">
-              <div className="w-16 h-16 rounded-2xl bg-gold-light flex items-center justify-center shrink-0">
-                <Compass className="w-8 h-8 text-navy" />
-              </div>
-              <div>
-                <h2 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-4">Core Values</h2>
-                <div className="grid sm:grid-cols-2 gap-4">
-                  {coreValues.map((v: any, i: number) => (
-                    <div key={v.title || i} className="p-4 rounded-xl border bg-card">
-                      <h3 className="font-semibold text-foreground text-sm mb-1">{v.title}</h3>
-                      <p className="text-xs text-muted-foreground leading-relaxed">{v.description || v.desc}</p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Editorial Photos */}
-            {mv?.editorialPhotos?.length > 0 && (
-              <div className="reveal pt-10 border-t">
-                <h3 className="text-2xl font-display font-bold text-navy mb-6 text-center">Our Vision in Action</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                  {mv.editorialPhotos.map((photo: any, i: number) => {
-                    const url = photo?.url || photo;
-                    if (!url) return null;
-                    return (
-                      <div key={i} className="rounded-2xl overflow-hidden shadow-md h-48 bg-slate-100 group">
-                        <img 
-                          src={url} 
-                          alt={`Vision Action ${i + 1}`} 
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </section>
+    ),
+    mission: (
+      <section className="py-12 md:py-16 bg-slate-50/50">
+        <div className="container-wide max-w-4xl mx-auto">
+          <div className="reveal delay-100 grid md:grid-cols-[80px_1fr] gap-6 items-start">
+            <div className="w-16 h-16 rounded-2xl bg-gold-light flex items-center justify-center shrink-0">
+              <Target className="w-8 h-8 text-navy" />
+            </div>
+            <div>
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-4">Our Mission</h2>
+              {missionStr && /<\/?[a-z][\s\S]*>/i.test(missionStr) ? (
+                <div 
+                  className="text-foreground/70 leading-relaxed space-y-4 prose prose-slate max-w-none" 
+                  dangerouslySetInnerHTML={{ __html: missionStr }} 
+                />
+              ) : (
+                <ul className="space-y-3">
+                  {missionList.map((item: string, i: number) => (
+                    <li key={i} className="flex items-start gap-3">
+                      <div className="w-2 h-2 rounded-full bg-gold shrink-0 mt-2" />
+                      <p className="text-foreground/70 leading-relaxed">{item}</p>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+    ),
+    core_values: (
+      <section className="py-12 md:py-16">
+        <div className="container-wide max-w-4xl mx-auto">
+          <div className="reveal delay-200 grid md:grid-cols-[80px_1fr] gap-6 items-start">
+            <div className="w-16 h-16 rounded-2xl bg-gold-light flex items-center justify-center shrink-0">
+              <Compass className="w-8 h-8 text-navy" />
+            </div>
+            <div>
+              <h2 className="text-2xl md:text-3xl font-display font-bold text-foreground mb-4">Core Values</h2>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {coreValues.map((v: any, i: number) => (
+                  <div key={v.title || i} className="p-4 rounded-xl border bg-card">
+                    <h3 className="font-semibold text-foreground text-sm mb-1">{v.title}</h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{v.description || v.desc}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    ),
+    editorial_photos: mv?.editorialPhotos?.length > 0 ? (
+      <section className="py-8 md:py-12 border-t">
+        <div className="container-wide max-w-4xl mx-auto">
+          <div className="reveal">
+            <h3 className="text-2xl font-display font-bold text-navy mb-6 text-center">Our Vision in Action</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {mv.editorialPhotos.map((photo: any, i: number) => {
+                const url = photo?.url || photo;
+                if (!url) return null;
+                return (
+                  <div key={i} className="rounded-2xl overflow-hidden shadow-md h-48 bg-slate-100 group">
+                    <img 
+                      src={url} 
+                      alt={`Vision Action ${i + 1}`} 
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+    ) : null,
+    gallery: <PageGallery images={data?.pageGallery} />,
+    cta: <EnquiryCTA />
+  };
 
-      <PageGallery images={data?.pageGallery} />
-      <EnquiryCTA />
+  const defaultOrder = [
+    'header',
+    'banner_image',
+    'vision',
+    'mission',
+    'core_values',
+    'editorial_photos',
+    'gallery',
+    'cta'
+  ];
+
+  return (
+    <Layout>
+      <DynamicPageSections
+        pageId="mission_vision"
+        defaultSections={defaultSections}
+        defaultOrder={defaultOrder}
+      />
     </Layout>
   );
 }

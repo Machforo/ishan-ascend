@@ -2,10 +2,10 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
-import { FileText, Calendar, Phone, CheckCircle2, ArrowRight } from "lucide-react";
+import { Calendar, Phone, CheckCircle2 } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 import ImageWithFallback from "@/components/ImageWithFallback";
-
+import DynamicPageSections from "@/components/DynamicPageSections";
 
 const steps = [
   { num: "01", title: "CCS University Registration", desc: "Begin by registering on the official CCS University web-portal. This is mandatory for all students seeking admission to B.Com, BBA, BCA, M.Com, B.Ed, and M.Ed programmes at IIMT." },
@@ -37,30 +37,34 @@ export default function AdmissionsPage() {
   const alert = data?.howToApply?.highlight ? { title: "Important Update", content: data.howToApply.highlight, isActive: true } : { title: "Admissions Open for 2025-26", content: "Applications are being accepted for all programs.", isActive: true };
   const contact = { phone: "8448797700", email: "admissions@ishan.ac" };
 
-  return (
-    <Layout>
+  const defaultSections: Record<string, React.ReactNode> = {
+    header: (
       <PageHeader
+        key="header"
         title="Admissions 2025-26"
         subtitle="Step-by-step guide to securing your seat at IIMT — BBA, B.Com, BCA, M.Com, B.Ed & M.Ed"
         breadcrumbs={[{ label: "Admissions" }]}
       />
-
-      <section className="py-20 md:py-28" ref={ref}>
+    ),
+    alert_banner: alert.isActive ? (
+      <div key="alert_banner" className="container-wide pt-12">
+        <div className="max-w-4xl mx-auto">
+          <div className="reveal bg-gold-light rounded-xl p-6 mb-14 border border-[hsl(var(--gold)/0.2)]">
+            <div className="flex items-start gap-4">
+              <Calendar className="w-6 h-6 text-navy shrink-0 mt-0.5" />
+              <div>
+                <p className="font-semibold text-foreground mb-1">{alert.title}</p>
+                <p className="text-sm text-foreground/70">{alert.content}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    ) : null,
+    how_to_apply: (
+      <section key="how_to_apply" className="py-12 md:py-16" ref={ref}>
         <div className="container-wide">
           <div className="max-w-4xl mx-auto">
-            {/* Alert banner */}
-            {alert.isActive && (
-              <div className="reveal bg-gold-light rounded-xl p-6 mb-14 border border-[hsl(var(--gold)/0.2)]">
-                <div className="flex items-start gap-4">
-                  <Calendar className="w-6 h-6 text-navy shrink-0 mt-0.5" />
-                  <div>
-                    <p className="font-semibold text-foreground mb-1">{alert.title}</p>
-                    <p className="text-sm text-foreground/70">{alert.content}</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
             {/* Banner Image */}
             {data?.howToApply?.bannerImage && (
               <div className="reveal mb-14 rounded-2xl overflow-hidden aspect-[21/9]">
@@ -103,36 +107,55 @@ export default function AdmissionsPage() {
                 ))}
               </div>
             )}
-
-            {/* Documents */}
-            <h2 className="text-2xl font-display font-bold text-foreground mb-6">Document Checklist</h2>
-            <div className="reveal grid sm:grid-cols-2 gap-3 mb-16">
-              {docs.map((doc: string, i: number) => (
-                <div key={i} className="flex items-start gap-2.5 px-4 py-3 rounded-lg border bg-card text-sm text-foreground/80">
-                  <CheckCircle2 className="w-4 h-4 text-gold shrink-0 mt-0.5" />
-                  {doc}
-                </div>
-              ))}
-            </div>
-
-            {/* Contact */}
-            <div className="reveal rounded-xl border bg-section-alt p-8 text-center">
-              <h3 className="text-xl font-display font-bold text-foreground mb-3">Need Help with Admissions?</h3>
-              <p className="text-sm text-foreground/70 mb-6">Our admissions counsellors are available Monday to Saturday, 9 AM – 5 PM</p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <a href={`tel:+91${contact.phone}`} className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold bg-navy text-primary-foreground rounded-lg hover:bg-navy/90 transition-colors active:scale-[0.97]">
-                  <Phone className="w-4 h-4" /> Call: {contact.phone}
-                </a>
-                <a href={`https://wa.me/91${contact.phone}`} target="_blank" rel="noopener" className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold border border-navy/20 text-navy rounded-lg hover:bg-navy/5 transition-colors active:scale-[0.97]">
-                  WhatsApp Us
-                </a>
-              </div>
-            </div>
           </div>
         </div>
       </section>
+    ),
+    documents: (
+      <div key="documents" className="container-wide pb-12">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-display font-bold text-foreground mb-6">Document Checklist</h2>
+          <div className="reveal grid sm:grid-cols-2 gap-3 mb-16">
+            {docs.map((doc: string, i: number) => (
+              <div key={i} className="flex items-start gap-2.5 px-4 py-3 rounded-lg border bg-card text-sm text-foreground/80">
+                <CheckCircle2 className="w-4 h-4 text-gold shrink-0 mt-0.5" />
+                {doc}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    ),
+    contact_card: (
+      <div key="contact_card" className="container-wide pb-16">
+        <div className="max-w-4xl mx-auto">
+          <div className="reveal rounded-xl border bg-section-alt p-8 text-center">
+            <h3 className="text-xl font-display font-bold text-foreground mb-3">Need Help with Admissions?</h3>
+            <p className="text-sm text-foreground/70 mb-6">Our admissions counsellors are available Monday to Saturday, 9 AM – 5 PM</p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <a href={`tel:+91${contact.phone}`} className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold bg-navy text-primary-foreground rounded-lg hover:bg-navy/90 transition-colors active:scale-[0.97]">
+                <Phone className="w-4 h-4" /> Call: {contact.phone}
+              </a>
+              <a href={`https://wa.me/91${contact.phone}`} target="_blank" rel="noopener" className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold border border-navy/20 text-navy rounded-lg hover:bg-navy/5 transition-colors active:scale-[0.97]">
+                WhatsApp Us
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    ),
+    cta: <EnquiryCTA key="cta" />,
+  };
 
-      <EnquiryCTA />
+  const defaultOrder = ["header", "alert_banner", "how_to_apply", "documents", "contact_card", "cta"];
+
+  return (
+    <Layout>
+      <DynamicPageSections
+        pageId="admissions"
+        defaultOrder={defaultOrder}
+        defaultSections={defaultSections}
+      />
     </Layout>
   );
 }

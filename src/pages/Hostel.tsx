@@ -4,7 +4,7 @@ import EnquiryCTA from "@/components/EnquiryCTA";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { CheckCircle2 } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
-
+import DynamicPageSections from "@/components/DynamicPageSections";
 
 const fallbackAmenities = [
   "Separate boys and girls blocks", "Furnished rooms (2/3 sharing)", "Attached washrooms",
@@ -25,18 +25,25 @@ export default function HostelPage() {
   ];
   const amenities = hostel?.amenities?.length > 0 ? hostel.amenities : fallbackAmenities;
 
-  return (
-    <Layout>
-      <PageHeader title="Hostel" subtitle="Safe, comfortable residential facilities for outstation students" breadcrumbs={[{ label: "Campus", href: "/infrastructure" }, { label: "Hostel" }]} />
-      {(hostel?.bannerImage || hostel?.image || hostel?.heroWideAngle) && (
-        <div className="container-wide mt-12">
-          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
-            <img src={hostel.bannerImage || hostel.image || hostel.heroWideAngle} alt="Hostel Banner" className="w-full h-full object-cover" />
+  const defaultSections: Record<string, React.ReactNode> = {
+    header: (
+      <PageHeader
+        key="header"
+        title="Hostel"
+        subtitle="Safe, comfortable residential facilities for outstation students"
+        breadcrumbs={[{ label: "Campus", href: "/infrastructure" }, { label: "Hostel" }]}
+      />
+    ),
+    overview: (
+      <div key="overview">
+        {(hostel?.bannerImage || hostel?.image || hostel?.heroWideAngle) && (
+          <div className="container-wide mt-12">
+            <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+              <img src={hostel.bannerImage || hostel.image || hostel.heroWideAngle} alt="Hostel Banner" className="w-full h-full object-cover" />
+            </div>
           </div>
-        </div>
-      )}
-
-      <section className="py-20 md:py-28" ref={ref}>
+        )}
+        <section key="overview" className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-4xl mx-auto">
             <div className="reveal space-y-5 mb-12">
@@ -109,9 +116,21 @@ export default function HostelPage() {
             </div>
           </div>
         </div>
-      </section>
+        </section>
+      </div>
+    ),
+    cta: <EnquiryCTA key="cta" />,
+  };
 
-      <EnquiryCTA />
+  const defaultOrder = ["header", "overview", "cta"];
+
+  return (
+    <Layout>
+      <DynamicPageSections
+        pageId="hostel"
+        defaultOrder={defaultOrder}
+        defaultSections={defaultSections}
+      />
     </Layout>
   );
 }

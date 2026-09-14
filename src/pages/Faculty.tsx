@@ -6,6 +6,8 @@ import { Search, X } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
 
 
+import DynamicPageSections from "@/components/DynamicPageSections";
+
 const defaultDepartments = [];
 
 const defaultFaculty = [];
@@ -27,14 +29,15 @@ export default function FacultyPage() {
     return matchesDept && matchesSearch;
   });
 
-  return (
-    <Layout>
+  const defaultSections: Record<string, React.ReactNode> = {
+    header: (
       <PageHeader
         title="Faculty Directory"
         subtitle="Experienced academicians and industry practitioners shaping future professionals"
         breadcrumbs={[{ label: "Faculty" }]}
       />
-
+    ),
+    core_faculty_grid: (
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-4xl mx-auto mb-16 space-y-6 text-center">
@@ -105,6 +108,18 @@ export default function FacultyPage() {
           </div>
         </div>
       </section>
+    )
+  };
+
+  const defaultOrder = ['header', 'core_faculty_grid'];
+
+  return (
+    <Layout>
+      <DynamicPageSections
+        pageId="faculty"
+        defaultSections={defaultSections}
+        defaultOrder={defaultOrder}
+      />
     </Layout>
   );
 }

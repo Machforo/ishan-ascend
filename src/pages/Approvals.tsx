@@ -14,19 +14,22 @@ const defaultAccreditations = [
   { title: "CCS University", description: "Affiliation for all degree programs. Chaudhary Charan Singh University, Meerut.", logo: "" },
 ];
 
+import DynamicPageSections from "@/components/DynamicPageSections";
+
 export default function ApprovalsPage() {
   const { data } = useIIMTData("aboutus");
   const accreditations = data?.approvalsAffiliations?.length > 0 ? data.approvalsAffiliations : defaultAccreditations;
   const ref = useScrollReveal([accreditations]);
 
-  return (
-    <Layout>
+  const defaultSections: Record<string, React.ReactNode> = {
+    header: (
       <PageHeader
         title="Approvals & Affiliations"
         subtitle="IIMT is fully recognized by national regulatory bodies, ensuring credibility and academic standards."
         breadcrumbs={[{ label: "About", href: "/about" }, { label: "Approvals & Affiliations" }]}
       />
-
+    ),
+    approvals_grid: (
       <section className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-4xl mx-auto mb-16 space-y-6 text-center">
@@ -88,6 +91,18 @@ export default function ApprovalsPage() {
           </div>
         </div>
       </section>
+    )
+  };
+
+  const defaultOrder = ['header', 'approvals_grid'];
+
+  return (
+    <Layout>
+      <DynamicPageSections
+        pageId="approvals"
+        defaultSections={defaultSections}
+        defaultOrder={defaultOrder}
+      />
     </Layout>
   );
 }

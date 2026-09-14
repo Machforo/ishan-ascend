@@ -5,6 +5,8 @@ import { useIIMTData } from "@/hooks/useIIMTData";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { rt, richTextToPlain } from "@/lib/richText";
+
 export default function ProgramsSection() {
   const ref = useScrollReveal();
   const { data } = useIIMTData("courses");
@@ -68,15 +70,23 @@ export default function ProgramsSection() {
   ];
   
   const rawPrograms = data?.data?.length > 0 ? data.data : (Array.isArray(data) && data.length > 0 ? data : fallbackPrograms);
-  const programs = rawPrograms.map((p: any) => ({
-    name: p.programName || p.name,
-    type: p.type || "UG",
-    category: p.category || "Management",
-    description: p.homepageSummary || p.description || p.overview,
-    link: p.link || `/courses/${(p.programName || p.name || "").toLowerCase().replace(/[^a-z0-9]/g, '')}`,
-    overview: p.overview,
-    outcomes: p.careerOutcome ? p.careerOutcome.split(",").map((s: string) => s.trim()) : p.outcomes
-  }));
+  const programs = rawPrograms.map((p: any) => {
+    const rawSubtitle = p.quickFacts || (p.description && !p.description.includes("<") && !p.description.includes("&lt;") ? p.description : null);
+    const cleanSubtitle = rawSubtitle
+      ? richTextToPlain(rawSubtitle)
+      : `${p.type || "UG"} Degree • ${p.duration || (p.type === "PG" ? "2 Years" : "3 Years")}`;
+
+    return {
+      name: p.programName || p.name,
+      type: p.type || "UG",
+      category: p.category || "Management",
+      subtitle: cleanSubtitle,
+      description: p.homepageSummary || p.description || p.overview,
+      link: p.link || `/courses/${(p.programName || p.name || "").toLowerCase().replace(/[^a-z0-9]/g, '')}`,
+      overview: p.overview,
+      outcomes: p.careerOutcome ? p.careerOutcome.split(",").map((s: string) => s.trim()) : p.outcomes
+    };
+  });
   
   // Dynamically generate available filters
   const availableTypes = Array.from(new Set(programs.map((p: any) => p.type || "Other"))).filter(Boolean) as string[];
@@ -165,9 +175,7 @@ export default function ProgramsSection() {
                   <div>
                     <h3 className="text-2xl font-display font-bold text-navy">{program.name || "Program Name"}</h3>
                     <p className="text-xs uppercase tracking-wider text-gold mt-1 font-semibold">
-                      {program.description?.includes('.') 
-                        ? program.description.split('.')[1]?.trim() 
-                        : (program.description || program.quickFacts || "Full Time")}
+                      {program.subtitle}
                     </p>
                   </div>
                 </div>
@@ -176,8 +184,8 @@ export default function ProgramsSection() {
                   <div>
                     <p className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">Overview</p>
                     <div 
-                      className="text-sm text-foreground/70 leading-relaxed italic line-clamp-4"
-                      dangerouslySetInnerHTML={{ __html: program.homepageSummary || program.overview || program.description }}
+                      className="text-sm text-foreground/70 leading-relaxed italic line-clamp-4 rich-text"
+                      dangerouslySetInnerHTML={{ __html: rt(program.homepageSummary || program.overview || program.description) }}
                     />
                   </div>
 

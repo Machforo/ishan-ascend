@@ -5,6 +5,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Link } from "react-router-dom";
 import { Wifi, Monitor, BookOpen, Building2, Cctv, MapPin, ArrowRight } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
+import DynamicPageSections from "@/components/DynamicPageSections";
 
 const fallbackFacilities = [
   { icon: "Monitor", title: "Smart Classrooms", desc: "Air-conditioned classrooms equipped with projectors, interactive whiteboards, and modern AV systems for engaging lectures.", link: "/infrastructure" },
@@ -36,15 +37,17 @@ export default function InfrastructurePage() {
 
   const facilities = infrastructure?.facilities?.length > 0 ? infrastructure.facilities : fallbackFacilities;
 
-  return (
-    <Layout>
+  const defaultSections: Record<string, React.ReactNode> = {
+    header: (
       <PageHeader
+        key="header"
         title="Campus Infrastructure"
         subtitle="Modern facilities designed to create an optimal learning environment"
         breadcrumbs={[{ label: "Campus", href: "/infrastructure" }, { label: "Infrastructure" }]}
       />
-
-      <section className="py-20 md:py-28" ref={ref}>
+    ),
+    overview: (
+      <section key="overview" className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="reveal max-w-3xl mb-14">
             <div 
@@ -75,8 +78,19 @@ export default function InfrastructurePage() {
           </div>
         </div>
       </section>
+    ),
+    cta: <EnquiryCTA key="cta" />,
+  };
 
-      <EnquiryCTA />
+  const defaultOrder = ["header", "overview", "cta"];
+
+  return (
+    <Layout>
+      <DynamicPageSections
+        pageId="infrastructure"
+        defaultOrder={defaultOrder}
+        defaultSections={defaultSections}
+      />
     </Layout>
   );
 }

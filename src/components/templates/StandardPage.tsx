@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils";
 import PageSections from "@/components/PageSections";
 import PageGallery from "@/components/PageGallery";
 
+import { usePageLayout } from "@/hooks/usePageLayout";
+
 export interface PageSection {
   id: string;
   type: "hero" | "content" | "grid" | "call-to-action";
@@ -23,10 +25,65 @@ export interface StandardPageProps {
   breadcrumbs?: { label: string; href?: string }[];
   sections: PageSection[];
   children?: React.ReactNode;
+  pageId?: string;
 }
 
-export default function StandardPage({ pageTitle, pageSubtitle, breadcrumbs, sections, children }: StandardPageProps) {
-  const ref = useScrollReveal([sections]);
+export default function StandardPage({ pageTitle, pageSubtitle, breadcrumbs, sections, children, pageId }: StandardPageProps) {
+  const { data: layoutData } = usePageLayout(pageId || "");
+
+  const orderedSections = React.useMemo(() => {
+    if (!pageId || !layoutData?.sections || layoutData.sections.length === 0) {
+      return sections;
+    }
+
+    const secMap = new Map<string, PageSection>();
+    sections.forEach(s => {
+      secMap.set(s.id, s);
+      secMap.set(s.id.replace(/-/g, '_'), s);
+      secMap.set(s.id.replace(/_/g, '-'), s);
+      if (s.id === 'our-journey' || s.id === 'milestones') {
+        secMap.set('our-journey', s);
+        secMap.set('milestones', s);
+        secMap.set('our_journey', s);
+      }
+      if (s.id === 'key-differentiators' || s.id === 'differentiators') {
+        secMap.set('key-differentiators', s);
+        secMap.set('differentiators', s);
+        secMap.set('key_differentiators', s);
+      }
+      if (s.id === 'about-banner' || s.id === 'banner') {
+        secMap.set('about-banner', s);
+        secMap.set('banner', s);
+        secMap.set('about_banner', s);
+      }
+    });
+
+    const result: PageSection[] = [];
+    const used = new Set<string>();
+
+    layoutData.sections.forEach(ls => {
+      if (ls.isHidden) {
+        used.add(ls.id);
+        return;
+      }
+      const match = secMap.get(ls.id) || secMap.get(ls.id.replace(/-/g, '_')) || secMap.get(ls.id.replace(/_/g, '-'));
+      if (match && !used.has(match.id)) {
+        used.add(match.id);
+        result.push(match);
+      }
+    });
+
+    // Append any unmentioned sections
+    sections.forEach(s => {
+      if (!used.has(s.id)) {
+        result.push(s);
+      }
+    });
+
+    return result;
+  }, [sections, layoutData, pageId]);
+
+  const ref = useScrollReveal([orderedSections]);
 
   const renderSection = (section: PageSection, index: number) => {
     switch (section.type) {
@@ -112,7 +169,7 @@ export default function StandardPage({ pageTitle, pageSubtitle, breadcrumbs, sec
         breadcrumbs={breadcrumbs}
       />
       <div ref={ref}>
-        {sections.map((section, index) => renderSection(section, index))}
+        {orderedSections.map((section, index) => renderSection(section, index))}
       </div>
     {children}
     <PageSections />

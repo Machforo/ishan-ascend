@@ -12,21 +12,46 @@ import FAQSection from "@/components/FAQSection";
 import FacultySection from "@/components/FacultySection";
 import CTASection from "@/components/CTASection";
 
+import DynamicPageSections from "@/components/DynamicPageSections";
+
 const Index = () => {
+  const defaultSections: Record<string, React.ReactNode> = {
+    hero: <HeroSection />,
+    stats: <StatsBar />,
+    about: <div id="about"><AboutSection /></div>,
+    programs: <div id="programs"><ProgramsSection /></div>,
+    why_iimt: <div id="why-iimt"><WhyIIMTSection /></div>,
+    placements: <div id="placements"><PlacementsSection /></div>,
+    faculty: <FacultySection />,
+    campus: <div id="campus"><CampusExperience /></div>,
+    news: <div id="news"><NewsSection /></div>,
+    testimonials: <TestimonialsSection />,
+    faqs: <FAQSection />,
+    cta: <CTASection />
+  };
+
+  const defaultOrder = [
+    'hero',
+    'stats',
+    'about',
+    'programs',
+    'why_iimt',
+    'placements',
+    'faculty',
+    'campus',
+    'news',
+    'testimonials',
+    'faqs',
+    'cta'
+  ];
+
   return (
     <Layout>
-      <HeroSection />
-      <StatsBar />
-      <div id="about"><AboutSection /></div>
-      <div id="programs"><ProgramsSection /></div>
-      <div id="why-iimt"><WhyIIMTSection /></div>
-      <div id="placements"><PlacementsSection /></div>
-      <FacultySection />
-      <div id="campus"><CampusExperience /></div>
-      <div id="news"><NewsSection /></div>
-      <TestimonialsSection />
-      <FAQSection />
-      <CTASection />
+      <DynamicPageSections
+        pageId="homepage"
+        defaultSections={defaultSections}
+        defaultOrder={defaultOrder}
+      />
     </Layout>
   );
 };
