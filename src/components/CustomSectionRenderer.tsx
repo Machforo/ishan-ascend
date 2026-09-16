@@ -20,6 +20,13 @@ export default function CustomSectionRenderer({ section }: { section: SectionLay
     const rawHtml = section.htmlContent || "";
     if (!rawHtml.trim()) return null;
 
+    if (typeof window !== 'undefined') {
+      if (!(window as any).__renderedCustomHtmls) {
+        (window as any).__renderedCustomHtmls = new Set();
+      }
+      (window as any).__renderedCustomHtmls.add(rawHtml.replace(/\s+/g, ' ').trim());
+    }
+
     return (
       <section className="page-custom-section py-8">
         <div

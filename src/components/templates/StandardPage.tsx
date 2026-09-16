@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
@@ -30,6 +31,10 @@ export interface StandardPageProps {
 }
 
 export default function StandardPage({ pageTitle, pageSubtitle, breadcrumbs, sections, children, pageId }: StandardPageProps) {
+  const location = useLocation();
+  if (typeof window !== 'undefined' && pageId) {
+    (window as any).__renderedDynamicPagePath = location.pathname;
+  }
   const { data: layoutData } = usePageLayout(pageId || "");
 
   const orderedSections = React.useMemo(() => {

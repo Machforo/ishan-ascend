@@ -30,6 +30,12 @@ export default function PageSections({ sections: propSections }: { sections?: an
     fetchGlobalSections();
   }, [location.pathname]);
 
+  // If this page's layout is dynamically rendered (via DynamicPageSections or StandardPage),
+  // all sections including custom sections are already rendered inline in their layout positions.
+  if (typeof window !== 'undefined' && (window as any).__renderedDynamicPagePath === location.pathname) {
+    return null;
+  }
+
   // Use global data if it exists, otherwise fallback to props
   let actualSections = globalData?.sections || propSections;
 
@@ -39,9 +45,19 @@ export default function PageSections({ sections: propSections }: { sections?: an
 
   if (!actualSections || !Array.isArray(actualSections) || actualSections.length === 0) return null;
 
+  // Filter out any section whose html content has already been rendered on this page
+  const renderedSet: Set<string> = (typeof window !== 'undefined' && (window as any).__renderedCustomHtmls) || new Set();
+  const unrenderedSections = actualSections.filter((sec: any) => {
+    const html = (sec.htmlContent || "").replace(/\s+/g, ' ').trim();
+    if (!html) return false;
+    return !renderedSet.has(html);
+  });
+
+  if (unrenderedSections.length === 0) return null;
+
   return (
     <>
-      {actualSections.map((sec: any, i: number) => (
+      {unrenderedSections.map((sec: any, i: number) => (
         <div key={i} className="page-custom-section" dangerouslySetInnerHTML={{ __html: rt(sec.htmlContent || "") }} />
       ))}
     </>
