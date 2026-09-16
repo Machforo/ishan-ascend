@@ -28,7 +28,7 @@ export function usePageLayout(pageId: string) {
   return useQuery<PageLayoutResponse>({
     queryKey: ["iimt-page-layout", pageId],
     queryFn: async () => {
-      const apiBase = import.meta.env.VITE_API_URL || "http://localhost:5000/api";
+      const apiBase = import.meta.env.VITE_API_URL || "https://ishan-backend-g096.onrender.com/api";
       try {
         const response = await fetch(`${apiBase}/iimt/page-layout/${pageId}`);
         if (response.ok) {
@@ -38,9 +38,9 @@ export function usePageLayout(pageId: string) {
         console.warn(`Could not load page layout from ${apiBase}:`, err);
       }
       // If primary failed and was not localhost, try local fallback
-      if (apiBase !== "http://localhost:5000/api") {
+      if (apiBase !== "https://ishan-backend-g096.onrender.com/api") {
         try {
-          const fb = await fetch(`http://localhost:5000/api/iimt/page-layout/${pageId}`);
+          const fb = await fetch(`https://ishan-backend-g096.onrender.com/api/iimt/page-layout/${pageId}`);
           if (fb.ok) return await fb.json();
         } catch {}
       }

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { rt } from "@/lib/richText";
 
 export default function PageSections({ sections: propSections }: { sections?: any }) {
   const [globalData, setGlobalData] = useState<any>(null);
@@ -8,8 +9,12 @@ export default function PageSections({ sections: propSections }: { sections?: an
   useEffect(() => {
     const fetchGlobalSections = async () => {
       try {
-        const apiBase = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
-        const res = await fetch(`${apiBase}/iimt/page-sections/by-url?url=${location.pathname}`);
+        const apiBase = import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || "https://ishan-backend-g096.onrender.com/api";
+        const cleanPath = location.pathname.replace(/\/+$/, '') || '/';
+        let res = await fetch(`${apiBase}/iimt/page-sections/by-url?url=${encodeURIComponent(location.pathname)}`);
+        if (!res.ok && cleanPath !== location.pathname) {
+          res = await fetch(`${apiBase}/iimt/page-sections/by-url?url=${encodeURIComponent(cleanPath)}`);
+        }
         if (res.ok) {
           const data = await res.json();
           if (data && data.sections && data.sections.length > 0) {
@@ -37,7 +42,7 @@ export default function PageSections({ sections: propSections }: { sections?: an
   return (
     <>
       {actualSections.map((sec: any, i: number) => (
-        <div key={i} className="page-custom-section" dangerouslySetInnerHTML={{ __html: sec.htmlContent || "" }} />
+        <div key={i} className="page-custom-section" dangerouslySetInnerHTML={{ __html: rt(sec.htmlContent || "") }} />
       ))}
     </>
   );

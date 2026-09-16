@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import { usePageLayout, SectionLayoutItem } from "@/hooks/usePageLayout";
 import CustomSectionRenderer from "@/components/CustomSectionRenderer";
+import PageGallery from "@/components/PageGallery";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 interface DynamicPageSectionsProps {
@@ -53,6 +54,12 @@ export default function DynamicPageSections({
           renderedIds.add(sec.id.replace(/-/g, "_"));
           renderedIds.add(sec.id.replace(/_/g, "-"));
           return <React.Fragment key={sec.id}>{target}</React.Fragment>;
+        }
+
+        // Built-in gallery section placed in layout
+        if (sec.id === "gallery" || sec.id === "page_gallery") {
+          renderedIds.add(sec.id);
+          return <PageGallery key={sec.id} isInline={true} />;
         }
 
         // Otherwise, render custom section (custom_html, hero, split, cards, cta, faq)

@@ -43,12 +43,28 @@ export default function TestimonialsSection() {
   const [activeTab, setActiveTab] = useState<'students' | 'parents'>('students');
   const { data } = useIIMTData("homepage");
 
-  const students = data?.successStories?.students?.length > 0 
-    ? data.successStories.students.map((s: any) => ({ name: s.name, role: "Student", text: s.feedback, image: s.photo }))
+  const validStudents = Array.isArray(data?.successStories?.students)
+    ? data.successStories.students.filter((s: any) => s && (s.name || s.feedback))
+    : [];
+  const students = validStudents.length > 0 
+    ? validStudents.map((s: any) => ({ 
+        name: s.name || "Student", 
+        role: "Student", 
+        text: s.feedback || "", 
+        image: s.photo || "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=400&q=80" 
+      }))
     : studentTestimonials;
 
-  const parents = data?.successStories?.parents?.length > 0 
-    ? data.successStories.parents.map((p: any) => ({ name: p.name, role: "Parent", text: p.feedback, image: p.photo }))
+  const validParents = Array.isArray(data?.successStories?.parents)
+    ? data.successStories.parents.filter((p: any) => p && (p.name || p.feedback))
+    : [];
+  const parents = validParents.length > 0 
+    ? validParents.map((p: any) => ({ 
+        name: p.name || "Parent", 
+        role: "Parent", 
+        text: p.feedback || "", 
+        image: p.photo || "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80" 
+      }))
     : parentTestimonials;
 
   return (

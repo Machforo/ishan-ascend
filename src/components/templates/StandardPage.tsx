@@ -5,6 +5,7 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { cn } from "@/lib/utils";
 import PageSections from "@/components/PageSections";
 import PageGallery from "@/components/PageGallery";
+import CustomSectionRenderer from "@/components/CustomSectionRenderer";
 
 import { usePageLayout } from "@/hooks/usePageLayout";
 
@@ -70,6 +71,22 @@ export default function StandardPage({ pageTitle, pageSubtitle, breadcrumbs, sec
       if (match && !used.has(match.id)) {
         used.add(match.id);
         result.push(match);
+      } else if (ls.id === 'gallery' || ls.id === 'page_gallery') {
+        used.add(ls.id);
+        result.push({
+          id: ls.id,
+          type: 'content',
+          className: 'py-0 bg-transparent',
+          content: <PageGallery key={ls.id} isInline={true} />
+        });
+      } else if (ls.type === 'custom_html' || ls.htmlContent || ls.type === 'hero' || ls.type === 'split' || ls.type === 'cards' || ls.type === 'cta' || ls.type === 'faq') {
+        used.add(ls.id);
+        result.push({
+          id: ls.id,
+          type: 'content',
+          className: 'py-0 bg-transparent',
+          content: <CustomSectionRenderer key={ls.id} section={ls} />
+        });
       }
     });
 
@@ -171,8 +188,7 @@ export default function StandardPage({ pageTitle, pageSubtitle, breadcrumbs, sec
       <div ref={ref}>
         {orderedSections.map((section, index) => renderSection(section, index))}
       </div>
-    {children}
-    <PageSections />
-      </Layout>
+      {children}
+    </Layout>
   );
 }

@@ -44,61 +44,67 @@ export default function ECellPage() {
     }
   };
 
-  return (
-    <Layout>
+  const defaultSections: Record<string, React.ReactNode> = {
+    header: (
       <PageHeader
+        key="header"
         title="Entrepreneurship Cell & Internships"
         subtitle="Nurturing the next generation of business leaders and creators."
         breadcrumbs={[{ label: "E-Cell & Internships" }]}
       />
-
-      <section className="py-20 md:py-28" ref={ref}>
+    ),
+    about: (
+      <section key="about" className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            <div className="reveal-left space-y-6">
-              <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">About E-Cell</p>
-              <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground leading-tight">
-                {content.aboutTitle}
-              </h2>
-              <div className="text-foreground/70 leading-relaxed">
-                <RichTextRenderer content={content.aboutDescription} />
-              </div>
-              <div className="grid sm:grid-cols-2 gap-6 pt-4">
-                {content.offerings?.map((o: any, i: number) => (
-                  <div key={i} className="flex gap-4">
-                    <div className="shrink-0">{getIcon(o.icon)}</div>
-                    <div className="space-y-1">
-                      <h4 className="font-bold text-foreground">{o.title}</h4>
-                      <p className="text-xs text-foreground/60 leading-relaxed">{o.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
+          <div className="max-w-4xl mx-auto space-y-6">
+            <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">About E-Cell</p>
+            <h2 className="text-3xl md:text-4xl font-display font-bold text-foreground leading-tight">
+              {content.aboutTitle}
+            </h2>
+            <div className="text-foreground/70 leading-relaxed">
+              <RichTextRenderer content={content.aboutDescription} />
             </div>
-
-            <div className="reveal-right bg-navy rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-2xl">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-gold/10 rounded-full blur-3xl -mr-32 -mt-32" />
-              <div className="relative z-10 space-y-6">
-                <Briefcase className="w-12 h-12 text-gold" />
-                <h3 className="text-2xl md:text-3xl font-display font-bold leading-tight">{content.internshipTitle}</h3>
-                <div className="text-white/70 leading-relaxed">
-                  <RichTextRenderer content={content.internshipDescription} />
+            <div className="grid sm:grid-cols-2 gap-6 pt-4">
+              {content.offerings?.map((o: any, i: number) => (
+                <div key={i} className="flex gap-4">
+                  <div className="shrink-0">{getIcon(o.icon)}</div>
+                  <div className="space-y-1">
+                    <h4 className="font-bold text-foreground">{o.title}</h4>
+                    <p className="text-xs text-foreground/60 leading-relaxed">{o.description}</p>
+                  </div>
                 </div>
-                <ul className="space-y-3 text-sm text-white/80">
-                  {content.internshipPoints?.map((pt: any, i: number) => (
-                    <li key={i} className="flex items-center gap-2">• {typeof pt === 'string' ? pt : pt.text}</li>
-                  ))}
-                </ul>
-                <Link to={content.internshipCtaLink || "/contact"} className="inline-flex items-center gap-2 text-gold font-bold hover:gap-3 transition-all pt-4">
-                  {content.internshipCtaText} <ArrowRight className="w-4 h-4" />
-                </Link>
-              </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
-
-      <section id="alumni" className="py-16 md:py-24 bg-section-alt scroll-mt-24">
+    ),
+    internships: (
+      <section key="internships" className="py-12 bg-section-alt">
+        <div className="container-wide max-w-4xl mx-auto">
+          <div className="bg-navy rounded-3xl p-8 md:p-12 text-white relative overflow-hidden shadow-2xl">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-gold/10 rounded-full blur-3xl -mr-32 -mt-32" />
+            <div className="relative z-10 space-y-6">
+              <Briefcase className="w-12 h-12 text-gold" />
+              <h3 className="text-2xl md:text-3xl font-display font-bold leading-tight">{content.internshipTitle}</h3>
+              <div className="text-white/70 leading-relaxed">
+                <RichTextRenderer content={content.internshipDescription} />
+              </div>
+              <ul className="space-y-3 text-sm text-white/80">
+                {content.internshipPoints?.map((pt: any, i: number) => (
+                  <li key={i} className="flex items-center gap-2">• {typeof pt === 'string' ? pt : pt.text}</li>
+                ))}
+              </ul>
+              <Link to={content.internshipCtaLink || "/contact"} className="inline-flex items-center gap-2 text-gold font-bold hover:gap-3 transition-all pt-4">
+                {content.internshipCtaText} <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    ),
+    stories: (
+      <section key="stories" id="alumni" className="py-16 md:py-24 bg-background scroll-mt-24">
         <div className="container-wide text-center">
           <div className="max-w-2xl mx-auto space-y-4">
             <p className="text-sm font-semibold uppercase tracking-[0.2em] text-gold">Alumni Spotlight</p>
@@ -109,6 +115,18 @@ export default function ECellPage() {
           </div>
         </div>
       </section>
+    )
+  };
+
+  const defaultOrder = ["header", "about", "internships", "stories"];
+
+  return (
+    <Layout>
+      <DynamicPageSections
+        pageId="e_cell"
+        defaultSections={defaultSections}
+        defaultOrder={defaultOrder}
+      />
     </Layout>
   );
 }

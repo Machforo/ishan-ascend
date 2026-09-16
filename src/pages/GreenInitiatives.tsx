@@ -1,10 +1,10 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import EnquiryCTA from "@/components/EnquiryCTA";
+import DynamicPageSections from "@/components/DynamicPageSections";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { Leaf, Sun, Recycle, Droplets, TreePine } from "lucide-react";
 import { useIIMTData } from "@/hooks/useIIMTData";
-
 
 const initiatives = [
   { icon: Sun, title: "Energy Conservation", desc: "We prioritize energy efficiency through LED lighting across campus, sensor-based systems in common areas, and a commitment to reducing overall carbon footprint. Solar installations contribute significantly to our renewable energy goals.", stat: "20% Renewable energy" },
@@ -19,23 +19,24 @@ export default function GreenInitiativesPage() {
   const content = data?.greenInitiatives?.content;
   const ref = useScrollReveal([content]);
 
-  return (
-    <Layout>
+  const defaultSections: Record<string, React.ReactNode> = {
+    header: (
       <PageHeader
+        key="header"
         title="Green Initiatives"
         subtitle="Our commitment to sustainability through solar energy, waste management, and eco-conscious campus practices"
         breadcrumbs={[{ label: "About", href: "/about" }, { label: "Green Initiatives" }]}
       />
-
-      {data?.greenInitiatives?.bannerImage && (
-        <div className="container-wide mt-12">
-          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
-            <img src={data.greenInitiatives.bannerImage} alt="Green Initiatives Banner" className="w-full h-full object-cover" />
-          </div>
+    ),
+    banner_image: data?.greenInitiatives?.bannerImage ? (
+      <div key="banner_image" className="container-wide mt-12">
+        <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+          <img src={data.greenInitiatives.bannerImage} alt="Green Initiatives Banner" className="w-full h-full object-cover" />
         </div>
-      )}
-
-      <section className="py-20 md:py-28" ref={ref}>
+      </div>
+    ) : null,
+    initiatives_list: (
+      <section key="initiatives_list" className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-4xl mx-auto space-y-8">
             {content && (
@@ -63,32 +64,46 @@ export default function GreenInitiativesPage() {
                 </div>
               );
             })}
-
-            {data?.greenInitiatives?.images?.length > 0 && (
-              <div className="reveal mt-12 pt-10 border-t">
-                <h3 className="text-2xl font-display font-bold text-navy mb-6 text-center">Green Campus Gallery</h3>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                  {data.greenInitiatives.images.map((photo: any, i: number) => {
-                    const url = photo?.url || photo;
-                    if (!url) return null;
-                    return (
-                      <div key={i} className="rounded-2xl overflow-hidden shadow-md h-48 bg-slate-100 group">
-                        <img 
-                          src={url} 
-                          alt={`Green Initiative ${i + 1}`} 
-                          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
-                        />
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            )}
           </div>
         </div>
       </section>
+    ),
+    gallery: data?.greenInitiatives?.images?.length > 0 ? (
+      <section key="gallery" className="py-12 bg-section-alt">
+        <div className="container-wide">
+          <div className="max-w-4xl mx-auto">
+            <h3 className="text-2xl font-display font-bold text-navy mb-6 text-center">Green Campus Gallery</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
+              {data.greenInitiatives.images.map((photo: any, i: number) => {
+                const url = photo?.url || photo;
+                if (!url) return null;
+                return (
+                  <div key={i} className="rounded-2xl overflow-hidden shadow-md h-48 bg-slate-100 group">
+                    <img 
+                      src={url} 
+                      alt={`Green Initiative ${i + 1}`} 
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+    ) : null,
+    cta: <EnquiryCTA key="cta" />
+  };
 
-      <EnquiryCTA />
+  const defaultOrder = ["header", "banner_image", "initiatives_list", "gallery", "cta"];
+
+  return (
+    <Layout>
+      <DynamicPageSections
+        pageId="green_initiatives"
+        defaultSections={defaultSections}
+        defaultOrder={defaultOrder}
+      />
     </Layout>
   );
 }

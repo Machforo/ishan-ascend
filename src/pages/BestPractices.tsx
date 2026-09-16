@@ -1,33 +1,33 @@
 import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import EnquiryCTA from "@/components/EnquiryCTA";
+import DynamicPageSections from "@/components/DynamicPageSections";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { useIIMTData } from "@/hooks/useIIMTData";
 
-
 export default function BestPracticesPage() {
   const { data } = useIIMTData("aboutus");
-  // Schema: bestPractices is an array of { title, content, image }
   const practices: Array<{title:string;content:string;image?:string}> = data?.bestPractices?.length > 0 ? data.bestPractices : [];
   const ref = useScrollReveal([practices]);
 
-  return (
-    <Layout>
+  const defaultSections: Record<string, React.ReactNode> = {
+    header: (
       <PageHeader
+        key="header"
         title="Best Practices"
         subtitle="NAAC-documented institutional best practices that set IIMT apart"
         breadcrumbs={[{ label: "About", href: "/about" }, { label: "Best Practices" }]}
       />
-
-      {data?.bestPracticesBanner && (
-        <div className="container-wide mt-12">
-          <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
-            <img src={data.bestPracticesBanner} alt="Best Practices Banner" className="w-full h-full object-cover" />
-          </div>
+    ),
+    banner_image: data?.bestPracticesBanner ? (
+      <div key="banner_image" className="container-wide mt-12">
+        <div className="rounded-[2.5rem] overflow-hidden shadow-xl max-h-[400px]">
+          <img src={data.bestPracticesBanner} alt="Best Practices Banner" className="w-full h-full object-cover" />
         </div>
-      )}
-
-      <section className="py-20 md:py-28" ref={ref}>
+      </div>
+    ) : null,
+    practices_list: (
+      <section key="practices_list" className="py-20 md:py-28" ref={ref}>
         <div className="container-wide">
           <div className="max-w-3xl mx-auto prose prose-foreground">
             <div className="reveal space-y-8">
@@ -80,8 +80,19 @@ export default function BestPracticesPage() {
           </div>
         </div>
       </section>
+    ),
+    cta: <EnquiryCTA key="cta" />
+  };
 
-      <EnquiryCTA />
+  const defaultOrder = ["header", "banner_image", "practices_list", "cta"];
+
+  return (
+    <Layout>
+      <DynamicPageSections
+        pageId="best_practices"
+        defaultSections={defaultSections}
+        defaultOrder={defaultOrder}
+      />
     </Layout>
   );
 }
