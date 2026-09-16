@@ -62,13 +62,13 @@ export default function DynamicPageSections({
         }
 
         // Built-in gallery section placed in layout
-        if (sec.id === "gallery" || sec.id === "page_gallery") {
+        if (sec.id === "gallery" || sec.id === "page_gallery" || sec.type === "gallery" || sec.id.includes("gallery")) {
           renderedIds.add(sec.id);
           return <PageGallery key={sec.id} isInline={true} />;
         }
 
         // Otherwise, render custom section (custom_html, hero, split, cards, cta, faq)
-        if (sec.type === "custom_html" || sec.htmlContent || sec.type === "hero" || sec.type === "split" || sec.type === "cards" || sec.type === "cta" || sec.type === "faq") {
+        if (sec.type === "custom_html" || sec.htmlContent || sec.type === "hero" || sec.type === "split" || sec.type === "cards" || sec.type === "cta" || sec.type === "faq" || sec.type === "gallery") {
           return <CustomSectionRenderer key={sec.id} section={sec} />;
         }
 
