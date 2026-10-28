@@ -7,28 +7,49 @@ import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 interface DynamicPageSectionsProps {
   pageId: string;
-  defaultSections: Record<string, ReactNode>;
-  defaultOrder: string[];
+  defaultSections?: Record<string, ReactNode>;
+  defaultOrder?: string[];
+  renderSection?: (id: string) => ReactNode;
 }
 
 export default function DynamicPageSections({
   pageId,
   defaultSections,
-  defaultOrder
+  defaultOrder,
+  renderSection,
 }: DynamicPageSectionsProps) {
   const location = useLocation();
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     (window as any).__renderedDynamicPagePath = location.pathname;
   }
   const { data: layoutData, isLoading } = usePageLayout(pageId);
   const containerRef = useScrollReveal([layoutData, defaultSections]);
 
-  // If loading or no valid sections array received, render default order
+  // Safe fallback calculation for effectiveOrder: ensures .map is never called on undefined
+  const effectiveOrder: string[] =
+    defaultOrder && defaultOrder.length > 0
+      ? defaultOrder
+      : defaultSections
+      ? Object.keys(defaultSections)
+      : [];
+
+  const resolveSectionNode = (id: string): ReactNode => {
+    if (renderSection) {
+      const node = renderSection(id);
+      if (node) return node;
+    }
+    if (!defaultSections) return null;
+    const under = id.replace(/-/g, "_");
+    const dash = id.replace(/_/g, "-");
+    return defaultSections[id] || defaultSections[under] || defaultSections[dash] || null;
+  };
+
+  // If loading or no valid sections array received, render fallback order
   if (isLoading || !layoutData || !Array.isArray(layoutData.sections) || layoutData.sections.length === 0) {
     return (
       <div ref={containerRef}>
-        {defaultOrder.map((id) => (
-          <React.Fragment key={id}>{defaultSections[id] || null}</React.Fragment>
+        {effectiveOrder.map((id) => (
+          <React.Fragment key={id}>{resolveSectionNode(id)}</React.Fragment>
         ))}
       </div>
     );
@@ -48,12 +69,8 @@ export default function DynamicPageSections({
           return null;
         }
 
-        // Direct or aliased match (hyphen vs underscore)
-        const direct = defaultSections[sec.id];
-        const under = defaultSections[sec.id.replace(/-/g, "_")];
-        const dash = defaultSections[sec.id.replace(/_/g, "-")];
-        const target = direct || under || dash;
-
+        // Direct or aliased match
+        const target = resolveSectionNode(sec.id);
         if (target) {
           renderedIds.add(sec.id);
           renderedIds.add(sec.id.replace(/-/g, "_"));
@@ -67,8 +84,16 @@ export default function DynamicPageSections({
           return <PageGallery key={sec.id} isInline={true} />;
         }
 
-        // Otherwise, render custom section (custom_html, hero, split, cards, cta, faq)
-        if (sec.type === "custom_html" || sec.htmlContent || sec.type === "hero" || sec.type === "split" || sec.type === "cards" || sec.type === "cta" || sec.type === "faq" || sec.type === "gallery") {
+        // Custom section added by user (custom_html, hero, split, cards, cta, faq)
+        if (
+          sec.type === "custom_html" ||
+          sec.htmlContent ||
+          sec.type === "hero" ||
+          sec.type === "split" ||
+          sec.type === "cards" ||
+          sec.type === "cta" ||
+          sec.type === "faq"
+        ) {
           return <CustomSectionRenderer key={sec.id} section={sec} />;
         }
 
@@ -76,9 +101,12 @@ export default function DynamicPageSections({
       })}
 
       {/* Crucial Safety: Render any default sections that were not returned by the backend layout and not hidden */}
-      {defaultOrder.map((id) => {
-        if (!renderedIds.has(id) && defaultSections[id]) {
-          return <React.Fragment key={id}>{defaultSections[id]}</React.Fragment>;
+      {effectiveOrder.map((id) => {
+        if (!renderedIds.has(id)) {
+          const node = resolveSectionNode(id);
+          if (node) {
+            return <React.Fragment key={id}>{node}</React.Fragment>;
+          }
         }
         return null;
       })}

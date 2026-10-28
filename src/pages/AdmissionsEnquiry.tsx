@@ -2,15 +2,30 @@ import Layout from "@/components/Layout";
 import PageHeader from "@/components/PageHeader";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 import { CheckCircle2, MessageSquare, MapPin, Laptop } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
 import { toast } from "sonner";
 import { useIIMTData } from "@/hooks/useIIMTData";
 
 export default function AdmissionsEnquiryPage() {
   const ref = useScrollReveal();
+  const [searchParams] = useSearchParams();
   const [form, setForm] = useState({ name: "", phone: "", email: "", program: "", message: "" });
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  useEffect(() => {
+    const rawParam = searchParams.get("program") || searchParams.get("course");
+    if (!rawParam) return;
+    const lower = rawParam.toLowerCase();
+    if (lower.includes("bba")) setForm(p => ({ ...p, program: "BBA" }));
+    else if (lower.includes("bca")) setForm(p => ({ ...p, program: "BCA" }));
+    else if (lower.includes("b.com") || lower.includes("bcom")) setForm(p => ({ ...p, program: "B.Com" }));
+    else if (lower.includes("m.com") || lower.includes("mcom")) setForm(p => ({ ...p, program: "M.Com" }));
+    else if (lower.includes("b.ed") || lower.includes("bed")) setForm(p => ({ ...p, program: "B.Ed" }));
+    else if (lower.includes("m.ed") || lower.includes("med")) setForm(p => ({ ...p, program: "M.Ed" }));
+    else setForm(p => ({ ...p, program: rawParam }));
+  }, [searchParams]);
 
   const { data } = useIIMTData("admissions");
   const eqData = data?.enquiryPage;

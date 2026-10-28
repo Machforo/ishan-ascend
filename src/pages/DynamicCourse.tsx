@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { useIIMTData } from "@/hooks/useIIMTData";
@@ -191,9 +191,12 @@ export default function DynamicCourse() {
               </div>
 
               <div className="mt-10 pt-8 border-t border-primary-foreground/10">
-                <button className="w-full bg-gold hover:bg-gold-light text-navy font-bold py-4 rounded-xl transition-colors shadow-lg active:scale-[0.98]">
+                <Link
+                  to={`/admissions-enquiry?program=${encodeURIComponent(course.name || course.programName || "")}`}
+                  className="block w-full bg-gold hover:bg-gold-light text-navy text-center font-bold py-4 rounded-xl transition-colors shadow-lg active:scale-[0.98]"
+                >
                   Apply Now
-                </button>
+                </Link>
               </div>
             </div>
           </div>
