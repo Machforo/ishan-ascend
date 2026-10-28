@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 export interface SectionLayoutItem {
   id: string;
   name: string;
-  type: 'builtin' | 'custom_html' | 'hero' | 'split' | 'cards' | 'cta' | 'faq';
+  type: 'builtin' | 'custom_html' | 'hero' | 'split' | 'cards' | 'cta' | 'faq' | 'gallery';
   order: number;
   isHidden: boolean;
   heading?: string;
